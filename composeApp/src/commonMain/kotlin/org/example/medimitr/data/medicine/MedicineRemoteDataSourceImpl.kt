@@ -1,18 +1,12 @@
-package org.example.medimitr.data
+package org.example.medimitr.data.medicine
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
+import org.example.medimitr.data.MedicineDto
 
-interface MedicineRemoteDataSource {
-    suspend fun searchMedicines(query: String): List<MedicineDto>
-
-    suspend fun getMedicineDetails(id: String): MedicineDto?
-    // Add other methods like getCategories, getPromotions etc.
-}
-
-class KtorMedicineRemoteDataSource(
+class MedicineRemoteDataSourceImpl(
     private val httpClient: HttpClient,
     private val baseUrl: String = "YOUR_BASE_API_URL", // Inject or define base URL
 ) : MedicineRemoteDataSource {
@@ -34,4 +28,3 @@ class KtorMedicineRemoteDataSource(
         }
     }
 }
-// Create DataSources for Auth, Orders, UserProfile etc.

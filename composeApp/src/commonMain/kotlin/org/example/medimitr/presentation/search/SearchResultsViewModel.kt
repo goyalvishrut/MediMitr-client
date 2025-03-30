@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.Medicine
-import org.example.medimitr.domain.MedicineRepository
+import org.example.medimitr.domain.medicine.MedicineRepository
 import org.example.medimitr.presentation.base.BaseViewModel
 import org.koin.core.component.inject
 

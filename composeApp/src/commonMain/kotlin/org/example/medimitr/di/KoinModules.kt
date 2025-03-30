@@ -1,10 +1,11 @@
 package org.example.medimitr.di
 
 // Import other ViewModels, Repositories, DataSources as you create them
-import org.example.medimitr.data.KtorMedicineRemoteDataSource
-import org.example.medimitr.data.MedicineRemoteDataSource
-import org.example.medimitr.domain.MedicineRepository
-import org.example.medimitr.domain.MedicineRepositoryImpl
+
+import org.example.medimitr.data.medicine.MedicineRemoteDataSource
+import org.example.medimitr.data.medicine.MedicineRemoteDataSourceImpl
+import org.example.medimitr.domain.medicine.MedicineRepository
+import org.example.medimitr.domain.medicine.MedicineRepositoryImpl
 import org.example.medimitr.network.createHttpClient
 import org.example.medimitr.presentation.checkout.CheckoutViewModel
 import org.example.medimitr.presentation.search.SearchResultsViewModel
@@ -23,7 +24,7 @@ val networkModule =
 val dataModule =
     module {
         // DataSources
-        single<MedicineRemoteDataSource> { KtorMedicineRemoteDataSource(get()) }
+        single<MedicineRemoteDataSource> { MedicineRemoteDataSourceImpl(get()) }
         // Add bindings for AuthRemoteDataSource, OrderRemoteDataSource etc.
 
         // Repositories

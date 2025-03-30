@@ -1,16 +1,9 @@
-package org.example.medimitr.domain
+package org.example.medimitr.domain.medicine
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.example.medimitr.data.MedicineRemoteDataSource
-
-interface MedicineRepository {
-    // Use Flow for reactive data streams to UI
-    fun searchMedicines(query: String): Flow<Result<List<Medicine>>>
-
-    fun getMedicineDetails(id: String): Flow<Result<Medicine?>>
-    // Add other methods
-}
+import org.example.medimitr.data.medicine.MedicineRemoteDataSource
+import org.example.medimitr.domain.Medicine
 
 // Result wrapper for cleaner error handling
 // (You can create a more sophisticated sealed class for Result)
@@ -44,5 +37,3 @@ class MedicineRepositoryImpl(
             }
         }
 }
-// Create Repositories for Auth, Orders, UserProfile, Cart etc.
-// The CartRepository might manage state in memory for simplicity in MVP
