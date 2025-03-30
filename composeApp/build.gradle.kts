@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -33,6 +34,10 @@ kotlin {
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            // Ktor Android Engine
+            implementation("io.ktor:ktor-client-android:2.3.9")
+            // Koin Android Integration (ViewModel support)
+//            implementation(libs.koin.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -43,6 +48,26 @@ kotlin {
             implementation(compose.components.uiToolingPreview)
             implementation(libs.androidx.lifecycle.viewmodel)
             implementation(libs.androidx.lifecycle.runtime.compose)
+
+            implementation(libs.ktor.ktor.client.core) // Use latest Ktor version
+            implementation(libs.ktor.client.content.negotiation)
+
+            implementation(libs.ktor.ktor.serialization.kotlinx.json) // JSON serialization with Kotlinx
+
+            implementation(libs.ktor.client.logging)
+
+            // Kotlinx Serialization
+            implementation(libs.kotlinx.serialization.json) // Use latest
+
+            // Coroutines
+            implementation(libs.kotlinx.coroutines.core) // Use latest
+
+            // Koin for Dependency Injection
+            implementation(libs.koin.core) // Core Koin library // Use latest Koin version
+
+//            implementation(libs.androidx.navigation.compose)
+//            implementation(libs.koin.androidx.compose) // Koin integration for Compose
+//            implementation(libs.coil.compose) // Coil for image loading
         }
     }
 }
