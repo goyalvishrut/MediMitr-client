@@ -28,7 +28,6 @@ val networkModule =
     module {
         single { createHttpClient() } // Provides the Ktor HttpClient
         // You might provide the Base URL here if needed elsewhere
-        // single { "YOUR_BASE_API_URL" }
         single<ApiService> { ApiServiceImpl(get()) }
         single<MedicineRemoteDataSource> { MedicineRemoteDataSourceImpl(get()) }
     }
