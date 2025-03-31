@@ -69,7 +69,7 @@ kotlin {
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.tab.navigator)
 
-            implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.no.arg)
 
 //            implementation(libs.androidx.navigation.compose)
 //            implementation(libs.koin.androidx.compose) // Koin integration for Compose

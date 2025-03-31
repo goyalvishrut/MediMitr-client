@@ -1,7 +1,9 @@
 package org.example.medimitr.di
 
+import com.russhwolf.settings.Settings
 import org.example.medimitr.data.api.ApiService
 import org.example.medimitr.data.api.ApiServiceImpl
+import org.example.medimitr.data.local.TokenManager
 import org.example.medimitr.data.medicine.MedicineRemoteDataSource
 import org.example.medimitr.data.medicine.MedicineRemoteDataSourceImpl
 import org.example.medimitr.domain.auth.AuthRepository
@@ -36,9 +38,12 @@ val networkModule =
 val dataModule =
     module {
 
+        single<Settings> { Settings() } // Use Settings() constructor
+        single { TokenManager(get()) }
+
         // Repositories
         single<MedicineRepository> { MedicineRepositoryImpl(get()) }
-        single<AuthRepository> { AuthRepositoryImpl(get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<CartRepository> { CartRepositoryImpl() }
         single<OrderRepository> { OrderRepositoryImpl(get()) }
     }

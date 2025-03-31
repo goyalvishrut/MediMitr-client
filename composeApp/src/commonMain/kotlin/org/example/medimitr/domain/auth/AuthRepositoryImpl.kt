@@ -1,19 +1,19 @@
 package org.example.medimitr.domain.auth
 
 import org.example.medimitr.data.api.ApiService
+import org.example.medimitr.data.local.TokenManager
 
 class AuthRepositoryImpl(
     private val apiService: ApiService,
+    private val tokenManager: TokenManager,
 ) : AuthRepository {
-    private var token: String? = null
-
     override suspend fun login(
         email: String,
         password: String,
     ): Result<String> =
         try {
             val response = apiService.login(email, password)
-            token = response.token
+            tokenManager.saveToken(response.token)
             Result.success(response.token)
         } catch (e: Exception) {
             Result.failure(e)
@@ -26,11 +26,11 @@ class AuthRepositoryImpl(
     ): Result<String> =
         try {
             val response = apiService.signup(username, password, email)
-            token = response.token
+            tokenManager.saveToken(response.token)
             Result.success(response.token)
         } catch (e: Exception) {
             Result.failure(e)
         }
 
-    override fun isLoggedIn() = token != null
+    override fun isLoggedIn() = tokenManager.getToken() != null
 }
