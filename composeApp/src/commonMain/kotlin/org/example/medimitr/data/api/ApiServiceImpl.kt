@@ -11,7 +11,7 @@ import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import org.example.medimitr.data.local.TokenManager
+import org.example.medimitr.data.local.TokenStorage
 import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.data.model.response.MedicineResponse
 import org.example.medimitr.domain.auth.AuthResponse
@@ -19,7 +19,7 @@ import org.example.medimitr.domain.order.Order
 
 class ApiServiceImpl(
     private val client: HttpClient,
-    private val tokenManager: TokenManager,
+    private val tokenStorage: TokenStorage,
 ) : ApiService {
     override suspend fun login(
         email: String,
@@ -50,7 +50,7 @@ class ApiServiceImpl(
                 headers {
                     append(
                         HttpHeaders.Authorization,
-                        "Bearer ${tokenManager.getToken()}",
+                        "Bearer ${tokenStorage.getToken()}",
                     )
                 }
             }.body()

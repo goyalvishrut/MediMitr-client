@@ -37,6 +37,7 @@ kotlin {
             implementation("io.ktor:ktor-client-android:2.3.9")
             // Koin Android Integration (ViewModel support)
             implementation(libs.koin.android)
+            implementation(libs.androidx.security.crypto)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
