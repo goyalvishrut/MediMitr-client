@@ -36,7 +36,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatReadableDate
-import org.example.medimitr.common.formatText
+import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.order.Order
 import org.example.medimitr.ui.screenmodel.OrderDetailScreenModel
@@ -127,7 +127,7 @@ fun OrderDetailsContent(order: Order) {
         item {
             Divider(modifier = Modifier.padding(vertical = 12.dp))
             Text(
-                text = "Total Amount: ₹${"%.2f".formatText(order.total)}",
+                text = "Total Amount: ₹${order.total.formatToTwoDecimal()}",
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth().wrapContentWidth(Alignment.End),
@@ -157,12 +157,12 @@ fun OrderItemRow(item: CartItem) {
         Column(modifier = Modifier.weight(1f)) {
             Text(item.medicine.name, style = MaterialTheme.typography.bodyLarge)
             Text(
-                "Qty: ${item.quantity} @ ₹${"%.2f".formatText(item.medicine.price)} each",
+                "Qty: ${item.quantity} @ ₹${item.medicine.price.formatToTwoDecimal()} each",
                 style = MaterialTheme.typography.bodySmall,
             )
         }
         Text(
-            text = "₹${"%.2f".formatText(item.quantity * item.medicine.price)}",
+            text = "₹${(item.quantity * item.medicine.price).formatToTwoDecimal()}",
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
         )

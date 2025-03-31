@@ -30,7 +30,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatReadableDate
-import org.example.medimitr.common.formatText
+import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.order.Order
 import org.example.medimitr.ui.screenmodel.OrderHistoryScreenModel
 import org.koin.mp.KoinPlatform.getKoin
@@ -41,7 +41,6 @@ class OrderHistoryScreen : Screen {
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow
         val screenModel = rememberScreenModel { getKoin().get<OrderHistoryScreenModel>() }
-        // Use Voyager's Koin integration to get ScreenModel
         val state by screenModel.uiState.collectAsState()
 
         Scaffold(
@@ -113,7 +112,7 @@ fun OrderSummaryItem(
             )
             Text("Status: ${order.status}", style = MaterialTheme.typography.bodyMedium)
             Text(
-                text = "Total: ₹${"%.2f".formatText(order.total)}", // Use INR symbol
+                text = "Total: ₹${order.total.formatToTwoDecimal()}", // Use INR symbol
                 style = MaterialTheme.typography.bodyLarge,
                 modifier = Modifier.align(Alignment.End),
             )

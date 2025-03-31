@@ -12,6 +12,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import org.example.medimitr.ui.screens.order.CartScreen
+import org.example.medimitr.ui.screens.order.OrderHistoryScreen
 import org.example.medimitr.ui.screens.search.SearchScreen
 
 object SearchTab : Tab {
@@ -58,7 +59,7 @@ object OrderHistoryTab : Tab {
 
     @Composable
     override fun Content() {
-        Navigator(CartScreen())
+        Navigator(OrderHistoryScreen())
     }
 }
 

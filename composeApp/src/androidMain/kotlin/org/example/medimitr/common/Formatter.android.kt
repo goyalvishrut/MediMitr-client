@@ -9,4 +9,4 @@ actual fun formatReadableDate(timeInMilliSec: Long): String {
     return sdf.format(Date(timeInMilliSec))
 }
 
-actual fun String.formatText(vararg args: Any?): String = this.format(args)
+actual fun Any.formatToTwoDecimal(): String = "%.2f".format(this)
