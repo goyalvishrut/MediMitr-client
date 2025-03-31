@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens
+package org.example.medimitr.ui.screens.order
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -12,7 +12,6 @@ class OrderRepositoryImpl(
             val total = cartItems.sumOf { it.medicine.price * it.quantity }
             val orderRequest =
                 OrderRequest(
-                    userId = 10,
                     items =
                         cartItems.map {
                             OrderRequest.OrderItemRequest(

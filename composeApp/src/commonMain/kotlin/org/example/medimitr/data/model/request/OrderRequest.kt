@@ -4,7 +4,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class OrderRequest(
-    val userId: Int, // User ID
     val items: List<OrderItemRequest>,
     val deliveryAddress: String,
     val totalAmount: Double,

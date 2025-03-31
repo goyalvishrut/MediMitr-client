@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.order.OrderRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.screens.OrderPlacedScreen
+import org.example.medimitr.ui.screens.order.OrderPlacedScreen
 
 // ui/screenmodel/CheckoutScreenModel.kt
 class CheckoutScreenModel(

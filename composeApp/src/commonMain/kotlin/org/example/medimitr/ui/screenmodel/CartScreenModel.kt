@@ -1,10 +1,9 @@
 package org.example.medimitr.ui.screenmodel
 
-import androidx.compose.runtime.getValue
 import cafe.adriel.voyager.core.model.ScreenModel
 import cafe.adriel.voyager.navigator.Navigator
 import org.example.medimitr.domain.cart.CartRepository
-import org.example.medimitr.ui.screens.CheckoutScreen
+import org.example.medimitr.ui.screens.order.CheckoutScreen
 
 // ui/screenmodel/CartScreenModel.kt
 class CartScreenModel(

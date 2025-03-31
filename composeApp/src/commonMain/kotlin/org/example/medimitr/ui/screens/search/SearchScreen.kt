@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens
+package org.example.medimitr.ui.screens.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

@@ -7,7 +7,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.screens.LoginScreen
+import org.example.medimitr.ui.screens.login.LoginScreen
 
 // ui/screenmodel/SignupScreenModel.kt
 class SignupScreenModel(

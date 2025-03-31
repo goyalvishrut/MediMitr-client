@@ -2,9 +2,6 @@ package org.example.medimitr.ui.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -16,14 +13,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabNavigator
-import cafe.adriel.voyager.navigator.tab.TabOptions
 import kotlinx.coroutines.flow.map
 import org.example.medimitr.domain.cart.CartRepository
 import org.koin.mp.KoinPlatform.getKoin
@@ -41,6 +35,8 @@ class MainScreen : Screen {
                     NavigationBar {
                         TabNavigationItem(tab = SearchTab)
                         TabNavigationItem(tab = CartTab, badge = cartItemCount)
+                        TabNavigationItem(tab = OrderHistoryTab)
+                        TabNavigationItem(tab = AccountTab)
                     }
                 },
             ) { padding ->
@@ -70,38 +66,4 @@ private fun TabNavigationItem(
         },
         label = { Text(tab.options.title) },
     )
-}
-
-// ui/screen/SearchTab.kt
-object SearchTab : Tab {
-    override val options: TabOptions
-        @Composable
-        get() =
-            TabOptions(
-                index = 0u,
-                title = "Search",
-                icon = rememberVectorPainter(Icons.Default.Search),
-            )
-
-    @Composable
-    override fun Content() {
-        Navigator(SearchScreen())
-    }
-}
-
-// ui/screen/CartTab.kt
-object CartTab : Tab {
-    override val options: TabOptions
-        @Composable
-        get() =
-            TabOptions(
-                index = 1u,
-                title = "Cart",
-                icon = rememberVectorPainter(Icons.Default.ShoppingCart),
-            )
-
-    @Composable
-    override fun Content() {
-        Navigator(CartScreen())
-    }
 }

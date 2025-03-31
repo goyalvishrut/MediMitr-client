@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens
+package org.example.medimitr.ui.screens.login
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +11,7 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.domain.auth.AuthRepository
+import org.example.medimitr.ui.screens.MainScreen
 import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/AuthCheckScreen.kt
