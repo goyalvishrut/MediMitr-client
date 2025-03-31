@@ -7,5 +7,6 @@ interface MedicineRepository {
     fun searchMedicines(query: String): Flow<Result<List<Medicine>>>
 
     fun getMedicineDetails(id: String): Flow<Result<Medicine?>>
-    // Add other methods
+
+    fun getAllMedicines(): Flow<Result<List<Medicine>>>
 }

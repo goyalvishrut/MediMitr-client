@@ -61,6 +61,16 @@ class ApiServiceImpl(
         }
     }
 
+    override suspend fun getAllMedicines(): List<MedicineDto> {
+        try {
+            return client.get("$BASE_URL/medicines").body()
+        } catch (e: Exception) {
+            // Handle specific exceptions (e.g., 404 Not Found)
+            println("Error fetching all medicines: $e")
+            return emptyList()
+        }
+    }
+
     companion object {
         private const val BASE_URL = ""
     }

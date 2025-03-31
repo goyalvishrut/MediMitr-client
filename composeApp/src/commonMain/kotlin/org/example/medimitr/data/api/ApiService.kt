@@ -21,4 +21,6 @@ interface ApiService {
     suspend fun searchMedicines(query: String): List<MedicineDto>
 
     suspend fun getMedicineDetails(id: String): MedicineDto?
+
+    suspend fun getAllMedicines(): List<MedicineDto>
 }

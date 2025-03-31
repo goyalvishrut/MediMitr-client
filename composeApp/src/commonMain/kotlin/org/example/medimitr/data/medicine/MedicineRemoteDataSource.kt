@@ -6,5 +6,6 @@ interface MedicineRemoteDataSource {
     suspend fun searchMedicines(query: String): List<MedicineDto>
 
     suspend fun getMedicineDetails(id: String): MedicineDto?
-    // Add other methods like getCategories, getPromotions etc.
+
+    suspend fun getAllMedicines(): List<MedicineDto>
 }

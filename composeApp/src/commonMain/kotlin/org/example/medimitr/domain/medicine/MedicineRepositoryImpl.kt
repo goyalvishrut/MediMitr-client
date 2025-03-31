@@ -35,4 +35,16 @@ class MedicineRepositoryImpl(
                 emit(Result.failure(e))
             }
         }
+
+    override fun getAllMedicines(): Flow<Result<List<Medicine>>> =
+        flow {
+            try {
+                val dtoList = remoteDataSource.getAllMedicines()
+                val domainList = dtoList.map { it.toDomain() }
+                emit(Result.success(domainList))
+            } catch (e: Exception) {
+                println("Error in getAllMedicines repo: $e")
+                emit(Result.failure(e))
+            }
+        }
 }

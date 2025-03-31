@@ -9,4 +9,6 @@ class MedicineRemoteDataSourceImpl(
     override suspend fun searchMedicines(query: String): List<MedicineDto> = apiService.searchMedicines(query)
 
     override suspend fun getMedicineDetails(id: String): MedicineDto? = apiService.getMedicineDetails(id)
+
+    override suspend fun getAllMedicines(): List<MedicineDto> = apiService.getAllMedicines()
 }
