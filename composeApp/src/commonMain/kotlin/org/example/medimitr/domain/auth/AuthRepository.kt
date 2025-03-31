@@ -2,7 +2,7 @@ package org.example.medimitr.domain.auth
 
 interface AuthRepository {
     suspend fun login(
-        username: String,
+        email: String,
         password: String,
     ): Result<String>
 

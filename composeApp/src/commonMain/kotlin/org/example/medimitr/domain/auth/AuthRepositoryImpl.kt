@@ -8,11 +8,11 @@ class AuthRepositoryImpl(
     private var token: String? = null
 
     override suspend fun login(
-        username: String,
+        email: String,
         password: String,
     ): Result<String> =
         try {
-            val response = apiService.login(username, password)
+            val response = apiService.login(email, password)
             token = response.token
             Result.success(response.token)
         } catch (e: Exception) {

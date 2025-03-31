@@ -16,13 +16,13 @@ class ApiServiceImpl(
     private val client: HttpClient,
 ) : ApiService {
     override suspend fun login(
-        username: String,
+        email: String,
         password: String,
     ): AuthResponse =
         client
             .post("$BASE_URL/login") {
                 contentType(ContentType.Application.Json)
-                setBody(mapOf("username" to username, "password" to password))
+                setBody(mapOf("email" to email, "password" to password))
             }.body()
 
     override suspend fun signup(
@@ -43,33 +43,15 @@ class ApiServiceImpl(
                 setBody(order)
             }.body()
 
-    override suspend fun searchMedicines(query: String): List<MedicineDto> {
-        // Error handling (try-catch) is crucial here in real code
-        return client
+    override suspend fun searchMedicines(query: String): List<MedicineDto> =
+        client
             .get("$BASE_URL/medicines/search") {
                 parameter("q", query)
-            }.body() // Ktor automatically deserializes based on ContentNegotiation
-    }
+            }.body()
 
-    override suspend fun getMedicineDetails(id: String): MedicineDto? {
-        try {
-            return client.get("$BASE_URL/medicines/$id").body()
-        } catch (e: Exception) {
-            // Handle specific exceptions (e.g., 404 Not Found)
-            println("Error fetching medicine details: $e")
-            return null
-        }
-    }
+    override suspend fun getMedicineDetails(id: String): MedicineDto? = client.get("$BASE_URL/medicines/$id").body()
 
-    override suspend fun getAllMedicines(): List<MedicineDto> {
-        try {
-            return client.get("$BASE_URL/medicines").body()
-        } catch (e: Exception) {
-            // Handle specific exceptions (e.g., 404 Not Found)
-            println("Error fetching all medicines: $e")
-            return emptyList()
-        }
-    }
+    override suspend fun getAllMedicines(): List<MedicineDto> = client.get("$BASE_URL/medicines").body()
 
     companion object {
         private const val BASE_URL = ""

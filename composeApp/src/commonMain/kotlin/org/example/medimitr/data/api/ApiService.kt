@@ -6,7 +6,7 @@ import org.example.medimitr.domain.order.Order
 
 interface ApiService {
     suspend fun login(
-        username: String,
+        email: String,
         password: String,
     ): AuthResponse
 

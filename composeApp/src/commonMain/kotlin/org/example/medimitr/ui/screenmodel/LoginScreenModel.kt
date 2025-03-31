@@ -13,19 +13,19 @@ import org.example.medimitr.ui.screens.MainScreen
 class LoginScreenModel(
     private val authRepository: AuthRepository,
 ) : BaseScreenModel() {
-    var username by mutableStateOf("")
+    var email by mutableStateOf("")
     var password by mutableStateOf("")
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
     fun onLoginClick(navigator: Navigator) {
-        if (username.isBlank() || password.isBlank()) {
+        if (email.isBlank() || password.isBlank()) {
             errorMessage = "Please fill all fields"
             return
         }
         isLoading = true
         viewModelScope.launch {
-            val result = authRepository.login(username, password)
+            val result = authRepository.login(email, password)
             isLoading = false
             if (result.isSuccess) {
                 navigator.replaceAll(MainScreen())

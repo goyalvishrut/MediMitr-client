@@ -38,9 +38,9 @@ class LoginScreen : Screen {
             verticalArrangement = Arrangement.Center,
         ) {
             TextField(
-                value = screenModel.username,
-                onValueChange = { screenModel.username = it },
-                label = { Text("Username") },
+                value = screenModel.email,
+                onValueChange = { screenModel.email = it },
+                label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth(),
             )
             Spacer(Modifier.height(8.dp))
