@@ -12,5 +12,5 @@ data class OrderHistoryResponse(
     val totalAmount: Double, // Total cost
     val deliveryAddress: String, // Delivery address
     val phone: String, // Contact phone
-    val orderHistoryDetails: List<OrderHistoryDetails>,
+    val items: List<OrderHistoryDetails>,
 )
