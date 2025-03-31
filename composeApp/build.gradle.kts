@@ -50,9 +50,8 @@ kotlin {
 
             implementation(libs.ktor.ktor.client.core) // Use latest Ktor version
             implementation(libs.ktor.client.content.negotiation)
-
+            implementation(libs.ktor.client.cio)
             implementation(libs.ktor.ktor.serialization.kotlinx.json) // JSON serialization with Kotlinx
-
             implementation(libs.ktor.client.logging)
 
             // Kotlinx Serialization

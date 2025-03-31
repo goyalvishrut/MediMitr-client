@@ -2,6 +2,7 @@ package org.example.medimitr.network
 
 import io.ktor.client.*
 import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.cio.CIO
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
@@ -12,7 +13,7 @@ internal expect fun httpClientEngine(): HttpClientEngine
 
 // Function to create the HttpClient (used by Koin)
 fun createHttpClient(): HttpClient =
-    HttpClient(httpClientEngine()) {
+    HttpClient(CIO) {
         // Logging
         install(Logging) {
             level = LogLevel.INFO // Or LogLevel.ALL for more detail
