@@ -1,6 +1,7 @@
 package org.example.medimitr.domain.order
 
 import org.example.medimitr.data.api.ApiService
+import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.domain.cart.CartItem
 
 class OrderRepositoryImpl(
@@ -9,15 +10,23 @@ class OrderRepositoryImpl(
     override suspend fun placeOrder(cartItems: List<CartItem>): Result<Order> =
         try {
             val total = cartItems.sumOf { it.medicine.price * it.quantity }
-            val order =
-                Order(
-                    id = "",
-                    status = "",
-                    items = cartItems,
-                    total = total,
-                    datePlaced = "",
+            val orderRequest =
+                OrderRequest(
+                    userId = "",
+                    items =
+                        cartItems.map {
+                            OrderRequest.OrderItemRequest(
+                                medicineId = it.medicine.id.toInt(),
+                                quantity = it.quantity,
+                                price = it.medicine.price,
+                            )
+                        },
+                    deliveryAddress = "",
+                    phone = "",
+                    totalAmount = total,
+                    prescriptionUrl = null,
                 )
-            val response = apiService.placeOrder(order)
+            val response = apiService.placeOrder(orderRequest)
             Result.success(response)
         } catch (e: Exception) {
             Result.failure(e)

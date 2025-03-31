@@ -1,6 +1,7 @@
 package org.example.medimitr.data.api
 
-import org.example.medimitr.data.MedicineDto
+import org.example.medimitr.data.model.request.OrderRequest
+import org.example.medimitr.data.model.response.MedicineResponse
 import org.example.medimitr.domain.auth.AuthResponse
 import org.example.medimitr.domain.order.Order
 
@@ -16,11 +17,11 @@ interface ApiService {
         email: String,
     ): AuthResponse
 
-    suspend fun placeOrder(order: Order): Order
+    suspend fun placeOrder(orderRequest: OrderRequest): Order
 
-    suspend fun searchMedicines(query: String): List<MedicineDto>
+    suspend fun searchMedicines(query: String): List<MedicineResponse>
 
-    suspend fun getMedicineDetails(id: String): MedicineDto?
+    suspend fun getMedicineDetails(id: String): MedicineResponse?
 
-    suspend fun getAllMedicines(): List<MedicineDto>
+    suspend fun getAllMedicines(): List<MedicineResponse>
 }

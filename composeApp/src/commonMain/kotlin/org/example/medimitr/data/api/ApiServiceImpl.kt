@@ -3,12 +3,16 @@ package org.example.medimitr.data.api
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.get
+import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import org.example.medimitr.data.MedicineDto
+import org.example.medimitr.data.model.request.OrderRequest
+import org.example.medimitr.data.model.response.MedicineResponse
 import org.example.medimitr.domain.auth.AuthResponse
 import org.example.medimitr.domain.order.Order
 
@@ -36,22 +40,28 @@ class ApiServiceImpl(
                 setBody(mapOf("username" to username, "password" to password, "email" to email))
             }.body()
 
-    override suspend fun placeOrder(order: Order): Order =
+    override suspend fun placeOrder(orderRequest: OrderRequest): Order =
         client
             .post("$BASE_URL/orders") {
                 contentType(ContentType.Application.Json)
-                setBody(order)
+                setBody(orderRequest)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "Bearer $yourJwtToken",
+                    ) // Replace yourJwtToken
+                }
             }.body()
 
-    override suspend fun searchMedicines(query: String): List<MedicineDto> =
+    override suspend fun searchMedicines(query: String): List<MedicineResponse> =
         client
             .get("$BASE_URL/medicines/search") {
                 parameter("q", query)
             }.body()
 
-    override suspend fun getMedicineDetails(id: String): MedicineDto? = client.get("$BASE_URL/medicines/$id").body()
+    override suspend fun getMedicineDetails(id: String): MedicineResponse? = client.get("$BASE_URL/medicines/$id").body()
 
-    override suspend fun getAllMedicines(): List<MedicineDto> = client.get("$BASE_URL/medicines").body()
+    override suspend fun getAllMedicines(): List<MedicineResponse> = client.get("$BASE_URL/medicines").body()
 
     companion object {
         private const val BASE_URL = "http://192.168.29.57:8080"

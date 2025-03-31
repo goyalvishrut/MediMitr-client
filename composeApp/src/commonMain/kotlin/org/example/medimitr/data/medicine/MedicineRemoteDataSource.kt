@@ -1,11 +1,11 @@
 package org.example.medimitr.data.medicine
 
-import org.example.medimitr.data.MedicineDto
+import org.example.medimitr.domain.medicine.Medicine
 
 interface MedicineRemoteDataSource {
-    suspend fun searchMedicines(query: String): List<MedicineDto>
+    suspend fun searchMedicines(query: String): List<Medicine>
 
-    suspend fun getMedicineDetails(id: String): MedicineDto?
+    suspend fun getMedicineDetails(id: String): Medicine?
 
-    suspend fun getAllMedicines(): List<MedicineDto>
+    suspend fun getAllMedicines(): List<Medicine>
 }

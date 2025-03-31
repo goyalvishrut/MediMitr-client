@@ -69,6 +69,8 @@ kotlin {
             implementation(libs.voyager.screenmodel)
             implementation(libs.voyager.tab.navigator)
 
+            implementation(libs.multiplatform.settings)
+
 //            implementation(libs.androidx.navigation.compose)
 //            implementation(libs.koin.androidx.compose) // Koin integration for Compose
 //            implementation(libs.coil.compose) // Coil for image loading

@@ -15,9 +15,8 @@ class MedicineRepositoryImpl(
     override fun searchMedicines(query: String): Flow<SimpleResult<List<Medicine>>> =
         flow {
             try {
-                val dtoList = remoteDataSource.searchMedicines(query)
-                val domainList = dtoList.map { it.toDomain() }
-                emit(Result.success(domainList))
+                val medicines = remoteDataSource.searchMedicines(query)
+                emit(Result.success(medicines))
             } catch (e: Exception) {
                 // Log the error
                 println("Error in searchMedicines repo: $e")
@@ -28,8 +27,8 @@ class MedicineRepositoryImpl(
     override fun getMedicineDetails(id: String): Flow<SimpleResult<Medicine?>> =
         flow {
             try {
-                val dto = remoteDataSource.getMedicineDetails(id)
-                emit(Result.success(dto?.toDomain()))
+                val medicine = remoteDataSource.getMedicineDetails(id)
+                emit(Result.success(medicine))
             } catch (e: Exception) {
                 println("Error in getMedicineDetails repo: $e")
                 emit(Result.failure(e))
@@ -39,9 +38,8 @@ class MedicineRepositoryImpl(
     override fun getAllMedicines(): Flow<Result<List<Medicine>>> =
         flow {
             try {
-                val dtoList = remoteDataSource.getAllMedicines()
-                val domainList = dtoList.map { it.toDomain() }
-                emit(Result.success(domainList))
+                val medicines = remoteDataSource.getAllMedicines()
+                emit(Result.success(medicines))
             } catch (e: Exception) {
                 println("Error in getAllMedicines repo: $e")
                 emit(Result.failure(e))

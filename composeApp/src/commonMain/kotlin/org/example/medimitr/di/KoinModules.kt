@@ -35,6 +35,7 @@ val networkModule =
 // Data Module
 val dataModule =
     module {
+
         // Repositories
         single<MedicineRepository> { MedicineRepositoryImpl(get()) }
         single<AuthRepository> { AuthRepositoryImpl(get()) }
