@@ -9,7 +9,7 @@ data class MedicineDto(
     val name: String,
     val description: String?,
     val price: Double,
-    val requiresPrescription: Boolean,
+    val requiresPrescription: Boolean = false,
     val imageUrl: String?,
 ) {
     fun toDomain(): Medicine =

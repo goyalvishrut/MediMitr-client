@@ -22,7 +22,7 @@ class SearchScreenModel(
         isLoading = true
         viewModelScope.launch {
             val result =
-                medicineRepository.searchMedicines(searchQuery).collect {
+                medicineRepository.getAllMedicines().collect {
                     isLoading = false
                     medicines = it.getOrElse { emptyList() }
                 }
