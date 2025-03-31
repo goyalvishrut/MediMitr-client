@@ -7,5 +7,5 @@ data class Order(
     val status: String,
     val items: List<CartItem>,
     val total: Double,
-    val datePlaced: String, // Consider using kotlinx-datetime later
+    val datePlaced: Long, // Consider using kotlinx-datetime later
 )

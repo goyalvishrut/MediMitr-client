@@ -32,7 +32,7 @@ class OrderRepositoryImpl(
                     status = response.status,
                     items = emptyList(),
                     total = response.totalAmount,
-                    datePlaced = response.orderDate.toString(),
+                    datePlaced = response.orderDate,
                 )
             Result.success(result)
         } catch (e: Exception) {
