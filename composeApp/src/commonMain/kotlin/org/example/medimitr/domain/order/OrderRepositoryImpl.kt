@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flow
 import org.example.medimitr.data.api.ApiService
 import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.domain.cart.CartItem
+import org.example.medimitr.domain.medicine.Medicine
 
 class OrderRepositoryImpl(
     private val apiService: ApiService,
@@ -50,7 +51,21 @@ class OrderRepositoryImpl(
                         Order(
                             id = it.id,
                             status = it.status,
-                            items = emptyList(),
+                            items =
+                                it.items.map { orderItem ->
+                                    CartItem(
+                                        medicine =
+                                            Medicine(
+                                                id = orderItem.medicineId.toString(),
+                                                name = orderItem.medicineName,
+                                                price = orderItem.price,
+                                                imageUrl = "",
+                                                description = "",
+                                                requiresPrescription = false,
+                                            ),
+                                        quantity = orderItem.quantity,
+                                    )
+                                },
                             total = it.totalAmount,
                             datePlaced = it.orderDate,
                         )
@@ -71,7 +86,21 @@ class OrderRepositoryImpl(
                     Order(
                         id = response.id,
                         status = response.status,
-                        items = emptyList(),
+                        items =
+                            response.items.map { orderItem ->
+                                CartItem(
+                                    medicine =
+                                        Medicine(
+                                            id = orderItem.medicineId.toString(),
+                                            name = orderItem.medicineName,
+                                            price = orderItem.price,
+                                            imageUrl = "",
+                                            description = "",
+                                            requiresPrescription = false,
+                                        ),
+                                    quantity = orderItem.quantity,
+                                )
+                            },
                         total = response.totalAmount,
                         datePlaced = response.orderDate,
                     )
