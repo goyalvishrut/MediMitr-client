@@ -6,4 +6,6 @@ interface TokenStorage {
     fun getToken(): String?
 
     fun clearToken()
+
+    fun isTokenValid(): Boolean
 }

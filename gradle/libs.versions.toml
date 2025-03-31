@@ -15,6 +15,7 @@ androidx-test-junit = "1.2.1"
 coil = "2.6.0"
 compose-multiplatform = "1.7.3"
 junit = "4.13.2"
+jwt = "4.4.0"
 koinKtor = "4.0.2"
 koinCore = "4.0.2"
 kotlin = "2.1.10"
@@ -31,6 +32,7 @@ voyager = "1.1.0-beta03"
 
 [libraries]
 androidx-security-crypto = { module = "androidx.security:security-crypto", version.ref = "securityCrypto" }
+jwt = { module = "com.auth0:jwt", version.ref = "jwt" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }

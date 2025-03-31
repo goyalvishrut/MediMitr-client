@@ -3,6 +3,8 @@ package org.example.medimitr.data.local
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 class AndroidTokenStorage(
     context: Context,
@@ -26,6 +28,32 @@ class AndroidTokenStorage(
 
     override fun clearToken() {
         sharedPreferences.edit().remove(JWT_TOKEN).apply()
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    override fun isTokenValid(): Boolean {
+        val token = getToken() ?: return false
+        try {
+            // Split JWT into header, payload, and signature
+            val parts = token.split(".")
+            if (parts.size != 3) return false
+
+            // Decode the payload (second part)
+            val payload = String(Base64.UrlSafe.decode(parts[1]))
+            val exp =
+                payload
+                    .split(",")
+                    .map { it.split(":") }
+                    .find { it[0].contains("exp") }
+                    ?.get(1)
+                    ?.toLongOrNull() ?: return false
+
+            // Check if token is expired (exp is in seconds)
+            val currentTime = System.currentTimeMillis() / 1000
+            return exp > currentTime
+        } catch (e: Exception) {
+            return false // Invalid token format or decoding error
+        }
     }
 
     companion object {

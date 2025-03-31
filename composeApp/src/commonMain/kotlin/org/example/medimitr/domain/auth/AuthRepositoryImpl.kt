@@ -32,5 +32,5 @@ class AuthRepositoryImpl(
             Result.failure(e)
         }
 
-    override fun isLoggedIn() = tokenStorage.getToken() != null
+    override fun isLoggedIn() = tokenStorage.isTokenValid()
 }
