@@ -1,4 +1,4 @@
-package org.example.medimitr.domain.auth
+package org.example.medimitr.data.model.response
 
 import kotlinx.serialization.Serializable
 

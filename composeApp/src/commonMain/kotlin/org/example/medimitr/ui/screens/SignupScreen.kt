@@ -38,10 +38,11 @@ class SignupScreen : Screen {
             verticalArrangement = Arrangement.Center,
         ) {
             TextField(
-                value = screenModel.username,
-                onValueChange = { screenModel.username = it },
-                label = { Text("Username") },
+                value = screenModel.name,
+                onValueChange = { screenModel.name = it },
+                label = { Text("Name") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
             Spacer(Modifier.height(8.dp))
             TextField(
@@ -60,6 +61,21 @@ class SignupScreen : Screen {
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
+            TextField(
+                value = screenModel.phone,
+                onValueChange = { screenModel.phone = it },
+                label = { Text("Phone") },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
+            )
+            Spacer(Modifier.height(8.dp))
+            TextField(
+                value = screenModel.address,
+                onValueChange = { screenModel.address = it },
+                label = { Text("Address") },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            Spacer(Modifier.height(8.dp))
             Spacer(Modifier.height(16.dp))
             if (screenModel.isLoading) {
                 CircularProgressIndicator()

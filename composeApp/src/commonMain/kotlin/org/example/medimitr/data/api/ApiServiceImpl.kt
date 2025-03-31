@@ -7,15 +7,17 @@ import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.utils.EmptyContent.headers
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
+import io.ktor.http.auth.AuthScheme
 import io.ktor.http.contentType
 import org.example.medimitr.data.local.TokenStorage
+import org.example.medimitr.data.model.request.NewUserRequest
 import org.example.medimitr.data.model.request.OrderRequest
+import org.example.medimitr.data.model.response.AuthResponse
 import org.example.medimitr.data.model.response.MedicineResponse
 import org.example.medimitr.data.model.response.OrderResponse
-import org.example.medimitr.domain.auth.AuthResponse
+import org.example.medimitr.data.model.response.UserCreatedResponse
 
 class ApiServiceImpl(
     private val client: HttpClient,
@@ -31,15 +33,11 @@ class ApiServiceImpl(
                 setBody(mapOf("email" to email, "password" to password))
             }.body()
 
-    override suspend fun signup(
-        username: String,
-        password: String,
-        email: String,
-    ): AuthResponse =
+    override suspend fun signup(newUserRequest: NewUserRequest): UserCreatedResponse =
         client
-            .post("$BASE_URL/signup") {
+            .post("$BASE_URL/create/user") {
                 contentType(ContentType.Application.Json)
-                setBody(mapOf("username" to username, "password" to password, "email" to email))
+                setBody(newUserRequest)
             }.body()
 
     override suspend fun placeOrder(orderRequest: OrderRequest): OrderResponse =
@@ -50,7 +48,7 @@ class ApiServiceImpl(
                 headers {
                     append(
                         HttpHeaders.Authorization,
-                        "Bearer ${tokenStorage.getToken()}",
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
                     )
                 }
             }.body()

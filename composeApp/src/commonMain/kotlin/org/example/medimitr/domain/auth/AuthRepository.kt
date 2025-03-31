@@ -7,10 +7,12 @@ interface AuthRepository {
     ): Result<String>
 
     suspend fun signup(
-        username: String,
+        name: String,
         password: String,
         email: String,
-    ): Result<String>
+        phone: String,
+        address: String,
+    ): Result<User>
 
     fun isLoggedIn(): Boolean
 }

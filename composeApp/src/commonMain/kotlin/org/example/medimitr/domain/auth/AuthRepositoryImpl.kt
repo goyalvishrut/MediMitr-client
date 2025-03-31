@@ -2,6 +2,7 @@ package org.example.medimitr.domain.auth
 
 import org.example.medimitr.data.api.ApiService
 import org.example.medimitr.data.local.TokenStorage
+import org.example.medimitr.data.model.request.NewUserRequest
 
 class AuthRepositoryImpl(
     private val apiService: ApiService,
@@ -20,14 +21,32 @@ class AuthRepositoryImpl(
         }
 
     override suspend fun signup(
-        username: String,
+        name: String,
         password: String,
         email: String,
-    ): Result<String> =
+        phone: String,
+        address: String,
+    ): Result<User> =
         try {
-            val response = apiService.signup(username, password, email)
-            tokenStorage.saveToken(response.token)
-            Result.success(response.token)
+            val response =
+                apiService.signup(
+                    NewUserRequest(
+                        email = email,
+                        password = password,
+                        phone = phone,
+                        address = address,
+                        name = name,
+                    ),
+                )
+            Result.success(
+                User(
+                    id = response.id,
+                    email = response.email,
+                    name = response.name,
+                    address = response.address,
+                    phone = response.phone,
+                ),
+            )
         } catch (e: Exception) {
             Result.failure(e)
         }
