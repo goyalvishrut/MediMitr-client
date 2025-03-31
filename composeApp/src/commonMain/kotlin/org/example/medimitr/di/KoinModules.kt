@@ -25,22 +25,24 @@ import org.example.medimitr.ui.screenmodel.SignupScreenModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
+val localDataSourceModule =
+    module {
+        single<Settings> { Settings() } // Use Settings() constructor
+        single { TokenManager(get()) }
+    }
+
 // Network Module
 val networkModule =
     module {
         single { createHttpClient() } // Provides the Ktor HttpClient
         // You might provide the Base URL here if needed elsewhere
-        single<ApiService> { ApiServiceImpl(get()) }
+        single<ApiService> { ApiServiceImpl(get(), get()) }
         single<MedicineRemoteDataSource> { MedicineRemoteDataSourceImpl(get()) }
     }
 
 // Data Module
 val dataModule =
     module {
-
-        single<Settings> { Settings() } // Use Settings() constructor
-        single { TokenManager(get()) }
-
         // Repositories
         single<MedicineRepository> { MedicineRepositoryImpl(get()) }
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
@@ -66,4 +68,5 @@ val screenModelModule =
     }
 
 // List of all modules
-val sharedModules = listOf(networkModule, dataModule, viewModelModule, screenModelModule)
+val sharedModules =
+    listOf(localDataSourceModule, networkModule, dataModule, viewModelModule, screenModelModule)
