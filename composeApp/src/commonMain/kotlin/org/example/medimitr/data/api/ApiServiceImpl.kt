@@ -54,6 +54,6 @@ class ApiServiceImpl(
     override suspend fun getAllMedicines(): List<MedicineDto> = client.get("$BASE_URL/medicines").body()
 
     companion object {
-        private const val BASE_URL = "http://localhost:8080"
+        private const val BASE_URL = "http://192.168.29.57:8080"
     }
 }

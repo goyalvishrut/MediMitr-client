@@ -3,6 +3,7 @@ package org.example.medimitr.network
 import io.ktor.client.*
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.cio.CIO
+import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.serialization.kotlinx.json.*
@@ -29,6 +30,12 @@ fun createHttpClient(): HttpClient =
                     ignoreUnknownKeys = true // Important for API evolution
                 },
             )
+        }
+
+        install(HttpTimeout) {
+            requestTimeoutMillis = 5000 // 10 seconds
+            connectTimeoutMillis = 5000
+            socketTimeoutMillis = 5000
         }
 
         // Default request configuration (e.g., Base URL - if applicable)
