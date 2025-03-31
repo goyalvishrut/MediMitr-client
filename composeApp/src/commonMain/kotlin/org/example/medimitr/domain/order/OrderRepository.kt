@@ -8,5 +8,5 @@ interface OrderRepository {
 
     fun getOrderHistory(): Flow<Result<List<Order>>>
 
-    fun getOrderById(orderId: Int): Flow<Result<Order?>>
+    fun getOrderById(orderId: Int): Flow<Result<Order>>
 }

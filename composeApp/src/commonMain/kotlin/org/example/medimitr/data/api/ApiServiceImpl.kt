@@ -16,6 +16,7 @@ import org.example.medimitr.data.model.request.NewUserRequest
 import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.data.model.response.AuthResponse
 import org.example.medimitr.data.model.response.MedicineResponse
+import org.example.medimitr.data.model.response.OrderHistoryResponse
 import org.example.medimitr.data.model.response.OrderResponse
 import org.example.medimitr.data.model.response.UserCreatedResponse
 
@@ -62,6 +63,30 @@ class ApiServiceImpl(
     override suspend fun getMedicineDetails(id: String): MedicineResponse? = client.get("$BASE_URL/medicines/$id").body()
 
     override suspend fun getAllMedicines(): List<MedicineResponse> = client.get("$BASE_URL/medicines").body()
+
+    override suspend fun getOrderHistory(): List<OrderHistoryResponse> =
+        client
+            .get("$BASE_URL/orders") {
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body()
+
+    override suspend fun getOrderById(orderId: Int): OrderHistoryResponse =
+        client
+            .get("$BASE_URL/orders/$orderId") {
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body()
 
     companion object {
         private const val BASE_URL = "http://192.168.29.57:8080"

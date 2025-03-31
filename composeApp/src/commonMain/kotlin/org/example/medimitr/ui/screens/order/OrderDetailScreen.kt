@@ -1,12 +1,32 @@
 package org.example.medimitr.ui.screens.order
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -17,7 +37,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatText
-import org.example.medimitr.data.model.OrderItem
+import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.order.Order
 import org.example.medimitr.ui.screenmodel.OrderDetailScreenModel
 import org.koin.mp.KoinPlatform.getKoin
@@ -128,21 +148,21 @@ fun OrderInfoSection(order: Order) {
 }
 
 @Composable
-fun OrderItemRow(item: OrderItem) {
+fun OrderItemRow(item: CartItem) {
     // Assuming OrderItem now contains medicineName
     Row(
         modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
-            Text(item.medicineName, style = MaterialTheme.typography.bodyLarge)
+            Text(item.medicine.name, style = MaterialTheme.typography.bodyLarge)
             Text(
-                "Qty: ${item.quantity} @ ₹${"%.2f".formatText(item.price)} each",
+                "Qty: ${item.quantity} @ ₹${"%.2f".formatText(item.medicine.price)} each",
                 style = MaterialTheme.typography.bodySmall,
             )
         }
         Text(
-            text = "₹${"%.2f".formatText(item.quantity * item.price)}",
+            text = "₹${"%.2f".formatText(item.quantity * item.medicine.price)}",
             style = MaterialTheme.typography.bodyMedium,
             fontWeight = FontWeight.Medium,
         )

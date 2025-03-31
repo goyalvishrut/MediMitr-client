@@ -4,6 +4,7 @@ import org.example.medimitr.data.model.request.NewUserRequest
 import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.data.model.response.AuthResponse
 import org.example.medimitr.data.model.response.MedicineResponse
+import org.example.medimitr.data.model.response.OrderHistoryResponse
 import org.example.medimitr.data.model.response.OrderResponse
 import org.example.medimitr.data.model.response.UserCreatedResponse
 
@@ -22,4 +23,8 @@ interface ApiService {
     suspend fun getMedicineDetails(id: String): MedicineResponse?
 
     suspend fun getAllMedicines(): List<MedicineResponse>
+
+    suspend fun getOrderHistory(): List<OrderHistoryResponse>
+
+    suspend fun getOrderById(orderId: Int): OrderHistoryResponse
 }
