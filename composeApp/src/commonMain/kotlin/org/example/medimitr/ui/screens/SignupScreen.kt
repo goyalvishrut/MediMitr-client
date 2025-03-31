@@ -49,6 +49,7 @@ class SignupScreen : Screen {
                 onValueChange = { screenModel.email = it },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
             Spacer(Modifier.height(8.dp))
             TextField(
@@ -57,6 +58,7 @@ class SignupScreen : Screen {
                 label = { Text("Password") },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.fillMaxWidth(),
+                singleLine = true,
             )
             Spacer(Modifier.height(16.dp))
             if (screenModel.isLoading) {
