@@ -25,7 +25,7 @@ class OrderHistoryScreenModel(
         loadOrderHistory()
     }
 
-    fun loadOrderHistory() {
+    private fun loadOrderHistory() {
         _uiState.update { it.copy(isLoading = true, error = null) }
         viewModelScope.launch {
             orderRepository
