@@ -37,6 +37,7 @@ class MainScreen : Screen {
                         TabNavigationItem(tab = CartTab, badge = cartItemCount)
                         TabNavigationItem(tab = OrderHistoryTab)
                         TabNavigationItem(tab = AccountTab)
+                        TabNavigationItem(tab = ContactTab)
                     }
                 },
             ) { padding ->

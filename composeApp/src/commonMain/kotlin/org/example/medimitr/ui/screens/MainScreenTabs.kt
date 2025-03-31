@@ -2,7 +2,8 @@ package org.example.medimitr.ui.screens
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
@@ -52,7 +53,7 @@ object OrderHistoryTab : Tab {
             TabOptions(
                 index = 2u,
                 title = "History",
-                icon = rememberVectorPainter(Icons.Default.Info),
+                icon = rememberVectorPainter(Icons.Default.Menu),
             )
 
     @Composable
@@ -69,6 +70,22 @@ object AccountTab : Tab {
                 index = 3u,
                 title = "Account",
                 icon = rememberVectorPainter(Icons.Default.AccountBox),
+            )
+
+    @Composable
+    override fun Content() {
+        Navigator(CartScreen())
+    }
+}
+
+object ContactTab : Tab {
+    override val options: TabOptions
+        @Composable
+        get() =
+            TabOptions(
+                index = 4u,
+                title = "Contact",
+                icon = rememberVectorPainter(Icons.Default.Email),
             )
 
     @Composable
