@@ -54,6 +54,7 @@ kotlin {
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.ktor.serialization.kotlinx.json) // JSON serialization with Kotlinx
             implementation(libs.ktor.client.logging)
+            implementation(libs.ktor.client.auth)
 
             // Kotlinx Serialization
             implementation(libs.kotlinx.serialization.json) // Use latest
