@@ -14,8 +14,8 @@ import io.ktor.http.contentType
 import org.example.medimitr.data.local.TokenStorage
 import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.data.model.response.MedicineResponse
+import org.example.medimitr.data.model.response.OrderResponse
 import org.example.medimitr.domain.auth.AuthResponse
-import org.example.medimitr.domain.order.Order
 
 class ApiServiceImpl(
     private val client: HttpClient,
@@ -42,7 +42,7 @@ class ApiServiceImpl(
                 setBody(mapOf("username" to username, "password" to password, "email" to email))
             }.body()
 
-    override suspend fun placeOrder(orderRequest: OrderRequest): Order =
+    override suspend fun placeOrder(orderRequest: OrderRequest): OrderResponse =
         client
             .post("$BASE_URL/orders") {
                 contentType(ContentType.Application.Json)

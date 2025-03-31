@@ -27,7 +27,15 @@ class OrderRepositoryImpl(
                     prescriptionUrl = null,
                 )
             val response = apiService.placeOrder(orderRequest)
-            Result.success(response)
+            val result =
+                Order(
+                    id = response.id,
+                    status = response.status,
+                    items = emptyList(),
+                    total = response.totalAmount,
+                    datePlaced = response.orderDate.toString(),
+                )
+            Result.success(result)
         } catch (e: Exception) {
             Result.failure(e)
         }

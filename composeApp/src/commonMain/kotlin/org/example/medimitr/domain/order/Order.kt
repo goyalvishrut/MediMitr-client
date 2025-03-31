@@ -3,7 +3,7 @@ package org.example.medimitr.domain.order
 import org.example.medimitr.domain.cart.CartItem
 
 data class Order(
-    val id: String,
+    val id: Int,
     val status: String,
     val items: List<CartItem>,
     val total: Double,

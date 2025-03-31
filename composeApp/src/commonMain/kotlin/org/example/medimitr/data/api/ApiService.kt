@@ -2,8 +2,8 @@ package org.example.medimitr.data.api
 
 import org.example.medimitr.data.model.request.OrderRequest
 import org.example.medimitr.data.model.response.MedicineResponse
+import org.example.medimitr.data.model.response.OrderResponse
 import org.example.medimitr.domain.auth.AuthResponse
-import org.example.medimitr.domain.order.Order
 
 interface ApiService {
     suspend fun login(
@@ -17,7 +17,7 @@ interface ApiService {
         email: String,
     ): AuthResponse
 
-    suspend fun placeOrder(orderRequest: OrderRequest): Order
+    suspend fun placeOrder(orderRequest: OrderRequest): OrderResponse
 
     suspend fun searchMedicines(query: String): List<MedicineResponse>
 
