@@ -41,7 +41,7 @@ kotlin {
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
-            implementation(compose.material)
+            implementation(compose.material3)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
@@ -63,6 +63,12 @@ kotlin {
 
             // Koin for Dependency Injection
             implementation(libs.koin.core) // Core Koin library // Use latest Koin version
+
+//            implementation(libs.navigation.compose)
+
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.screenmodel)
+            implementation(libs.voyager.tab.navigator)
 
 //            implementation(libs.androidx.navigation.compose)
 //            implementation(libs.koin.androidx.compose) // Koin integration for Compose

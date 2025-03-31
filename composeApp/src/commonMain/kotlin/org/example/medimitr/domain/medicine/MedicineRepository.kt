@@ -1,7 +1,6 @@
 package org.example.medimitr.domain.medicine
 
 import kotlinx.coroutines.flow.Flow
-import org.example.medimitr.domain.Medicine
 
 interface MedicineRepository {
     // Use Flow for reactive data streams to UI

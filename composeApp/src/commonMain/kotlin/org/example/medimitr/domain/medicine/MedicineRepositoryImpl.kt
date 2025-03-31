@@ -3,7 +3,6 @@ package org.example.medimitr.domain.medicine
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.example.medimitr.data.medicine.MedicineRemoteDataSource
-import org.example.medimitr.domain.Medicine
 
 // Result wrapper for cleaner error handling
 // (You can create a more sophisticated sealed class for Result)

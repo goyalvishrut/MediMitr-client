@@ -1,9 +1,7 @@
 package org.example.medimitr
 
 import android.app.Application
-import org.example.medimitr.di.dataModule
-import org.example.medimitr.di.networkModule
-import org.example.medimitr.di.viewModelModule
+import org.example.medimitr.di.sharedModules
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -18,7 +16,7 @@ class MainApplication : Application() {
             // Use androidLogger in debug builds, Level.INFO or Level.ERROR in production
             androidLogger(Level.DEBUG)
             // Load shared KMM modules
-            modules(listOf(networkModule, dataModule, viewModelModule))
+            modules(sharedModules)
             // Add any Android specific modules here if needed:
             // modules(androidSpecificModule)
         }

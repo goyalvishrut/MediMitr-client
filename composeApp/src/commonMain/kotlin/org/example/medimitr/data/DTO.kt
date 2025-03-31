@@ -1,7 +1,7 @@
 package org.example.medimitr.data
 
 import kotlinx.serialization.Serializable
-import org.example.medimitr.domain.Medicine
+import org.example.medimitr.domain.medicine.Medicine
 
 @Serializable
 data class MedicineDto(
