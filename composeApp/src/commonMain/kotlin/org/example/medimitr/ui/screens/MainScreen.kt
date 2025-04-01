@@ -34,7 +34,6 @@ class MainScreen : Screen {
                 bottomBar = {
                     NavigationBar {
                         TabNavigationItem(tab = HomeTab)
-                        TabNavigationItem(tab = SearchTab)
                         TabNavigationItem(tab = CartTab, badge = cartItemCount)
                         TabNavigationItem(tab = OrderHistoryTab)
                         TabNavigationItem(tab = AccountTab)

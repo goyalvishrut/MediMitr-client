@@ -4,7 +4,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -32,28 +31,12 @@ object HomeTab : Tab {
     }
 }
 
-object SearchTab : Tab {
-    override val options: TabOptions
-        @Composable
-        get() =
-            TabOptions(
-                index = 1u,
-                title = "Search",
-                icon = rememberVectorPainter(Icons.Default.Search),
-            )
-
-    @Composable
-    override fun Content() {
-        Navigator(SearchScreen())
-    }
-}
-
 object CartTab : Tab {
     override val options: TabOptions
         @Composable
         get() =
             TabOptions(
-                index = 2u,
+                index = 1u,
                 title = "Cart",
                 icon = rememberVectorPainter(Icons.Default.ShoppingCart),
             )
@@ -69,7 +52,7 @@ object OrderHistoryTab : Tab {
         @Composable
         get() =
             TabOptions(
-                index = 3u,
+                index = 2u,
                 title = "History",
                 icon = rememberVectorPainter(Icons.Default.Menu),
             )
@@ -85,7 +68,7 @@ object AccountTab : Tab {
         @Composable
         get() =
             TabOptions(
-                index = 4u,
+                index = 3u,
                 title = "Account",
                 icon = rememberVectorPainter(Icons.Default.AccountBox),
             )
