@@ -77,6 +77,8 @@ kotlin {
 //            implementation(libs.androidx.navigation.compose)
 //            implementation(libs.koin.androidx.compose) // Koin integration for Compose
 //            implementation(libs.coil.compose) // Coil for image loading
+            implementation("io.coil-kt.coil3:coil-compose-core:3.1.0")
+            implementation("io.coil-kt.coil3:coil-network-ktor:3.0.0-alpha08")
         }
     }
 }
