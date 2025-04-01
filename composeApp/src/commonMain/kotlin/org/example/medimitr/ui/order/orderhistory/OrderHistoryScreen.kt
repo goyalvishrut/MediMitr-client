@@ -1,30 +1,25 @@
 package org.example.medimitr.ui.order.orderhistory
 
+import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -44,31 +39,73 @@ class OrderHistoryScreen : Screen {
 
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("Order History") })
-                // Can add back navigation if this screen is pushed onto a stack
+                TopAppBar(
+                    title = {
+                        Text(
+                            "Order History",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 24.sp,
+                        )
+                    },
+                    colors =
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                        ),
+                )
             },
+            containerColor = Color(0xFFF5F7FA), // Light gray background
         ) { paddingValues ->
             Box(
                 modifier =
                     Modifier
                         .fillMaxSize()
                         .padding(paddingValues)
-                        .padding(16.dp),
+                        .padding(horizontal = 16.dp, vertical = 8.dp),
                 contentAlignment = Alignment.Center,
             ) {
                 when {
-                    state.isLoading -> CircularProgressIndicator()
-                    state.error != null ->
+                    state.isLoading -> {
+                        CircularProgressIndicator(
+                            color = MaterialTheme.colorScheme.primary,
+                            strokeWidth = 4.dp,
+                        )
+                    }
+
+                    state.error != null -> {
                         Text(
                             "Error: ${state.error}",
                             color = MaterialTheme.colorScheme.error,
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.padding(16.dp),
                         )
+                    }
 
-                    state.orders.isEmpty() -> Text("You haven't placed any orders yet.")
-                    else ->
-                        OrderHistoryList(state.orders) { orderId ->
-                            navigator.push(OrderDetailScreen(orderId)) // Navigate to Detail Screen
+                    state.orders.isEmpty() -> {
+                        Column(
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center,
+                        ) {
+                            Text(
+                                "No Orders Yet",
+                                style = MaterialTheme.typography.headlineSmall,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Gray,
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Text(
+                                "Start shopping to see your orders here!",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.Gray,
+                            )
                         }
+                    }
+
+                    else -> {
+                        OrderHistoryList(state.orders) { orderId ->
+                            navigator.push(OrderDetailScreen(orderId))
+                        }
+                    }
                 }
             }
         }
@@ -82,7 +119,7 @@ fun OrderHistoryList(
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         items(orders, key = { it.id }) { order ->
             OrderSummaryItem(order = order, onClick = { onOrderClick(order.id) })
@@ -99,22 +136,72 @@ fun OrderSummaryItem(
         modifier =
             Modifier
                 .fillMaxWidth()
-                .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                .clip(RoundedCornerShape(16.dp))
+                .clickable(onClick = onClick)
+                .shadow(4.dp, RoundedCornerShape(16.dp))
+                .animateContentSize(),
+        colors =
+            CardDefaults.cardColors(
+                containerColor = Color.White,
+            ),
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text("Order #${order.id}", style = MaterialTheme.typography.titleMedium)
-            Spacer(Modifier.height(4.dp))
-            Text(
-                "Placed on: ${formatReadableDate(order.datePlaced)}",
-                style = MaterialTheme.typography.bodySmall,
-            )
-            Text("Status: ${order.status}", style = MaterialTheme.typography.bodyMedium)
-            Text(
-                text = "Total: ₹${order.total.formatToTwoDecimal()}", // Use INR symbol
-                style = MaterialTheme.typography.bodyLarge,
-                modifier = Modifier.align(Alignment.End),
-            )
+        Box(
+            modifier =
+                Modifier
+                    .background(
+                        brush =
+                            Brush.verticalGradient(
+                                colors =
+                                    listOf(
+                                        MaterialTheme.colorScheme.surface,
+                                        MaterialTheme.colorScheme.surfaceVariant,
+                                    ),
+                            ),
+                    ).padding(16.dp),
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        "Order #${order.id}",
+                        style = MaterialTheme.typography.titleMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Text(
+                        "₹${order.total.formatToTwoDecimal()}",
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.secondary,
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    Text(
+                        "Placed: ${formatReadableDate(order.datePlaced)}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = Color.Gray,
+                    )
+                    Text(
+                        order.status,
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontWeight = FontWeight.Medium,
+                        color =
+                            when (order.status.lowercase()) {
+                                "delivered" -> Color(0xFF2ECC71)
+                                "pending" -> Color(0xFFFFA500)
+                                "cancelled" -> Color(0xFFE74C3C)
+                                else -> MaterialTheme.colorScheme.onSurface
+                            },
+                    )
+                }
+            }
         }
     }
 }
