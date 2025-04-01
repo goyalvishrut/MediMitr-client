@@ -1,6 +1,5 @@
 package org.example.medimitr.ui.order.orderhistory
 
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -196,7 +195,7 @@ fun OrderInfoSection(order: Order) {
                                     ),
                             ),
                     ).padding(16.dp)
-                    .animateContentSize(),
+                    .fillMaxWidth(),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text(
