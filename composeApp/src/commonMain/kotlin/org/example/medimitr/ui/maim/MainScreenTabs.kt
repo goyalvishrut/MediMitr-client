@@ -1,9 +1,9 @@
 package org.example.medimitr.ui.maim
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -54,7 +54,7 @@ object OrderHistoryTab : Tab {
             TabOptions(
                 index = 2u,
                 title = "History",
-                icon = rememberVectorPainter(Icons.Default.Menu),
+                icon = rememberVectorPainter(Icons.Default.History),
             )
 
     @Composable
@@ -70,7 +70,7 @@ object AccountTab : Tab {
             TabOptions(
                 index = 3u,
                 title = "Account",
-                icon = rememberVectorPainter(Icons.Default.AccountBox),
+                icon = rememberVectorPainter(Icons.Default.AccountCircle),
             )
 
     @Composable

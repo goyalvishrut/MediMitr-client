@@ -1,12 +1,13 @@
 package org.example.medimitr.ui.maim
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,12 +50,12 @@ class MainScreen : Screen {
 }
 
 @Composable
-private fun TabNavigationItem(
+private fun RowScope.TabNavigationItem(
     tab: Tab,
     badge: Int = 0,
 ) {
     val tabNavigator = LocalTabNavigator.current
-    NavigationRailItem(
+    NavigationBarItem(
         selected = tabNavigator.current == tab,
         onClick = { tabNavigator.current = tab },
         icon = {
