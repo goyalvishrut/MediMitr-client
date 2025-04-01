@@ -36,7 +36,7 @@ class MainScreen : Screen {
                     NavigationBar {
                         TabNavigationItem(tab = HomeTab)
                         TabNavigationItem(tab = CartTab, badge = cartItemCount)
-                        TabNavigationItem(tab = OrderHistoryTab)
+                        TabNavigationItem(tab = OrderTab)
                         TabNavigationItem(tab = AccountTab)
                     }
                 },

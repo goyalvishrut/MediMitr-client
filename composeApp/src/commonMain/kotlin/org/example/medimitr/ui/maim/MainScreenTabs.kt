@@ -47,13 +47,13 @@ object CartTab : Tab {
     }
 }
 
-object OrderHistoryTab : Tab {
+object OrderTab : Tab {
     override val options: TabOptions
         @Composable
         get() =
             TabOptions(
                 index = 2u,
-                title = "History",
+                title = "Orders",
                 icon = rememberVectorPainter(Icons.Default.History),
             )
 
