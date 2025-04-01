@@ -34,7 +34,7 @@ fun AppNavigation() {
             AuthStatus.LOGGED_IN -> {
                 // User is logged in, show the main app UI with bottom navigation
                 // This composable likely contains its own nested Voyager Navigator
-                Navigator(MainScreen())
+                MainScreen()
             }
 
             AuthStatus.LOGGED_OUT -> {
