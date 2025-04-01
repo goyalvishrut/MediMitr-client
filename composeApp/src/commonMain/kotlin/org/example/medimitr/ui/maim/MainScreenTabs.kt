@@ -1,9 +1,10 @@
 package org.example.medimitr.ui.maim
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ListAlt
 import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.ListAlt
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
@@ -54,7 +55,7 @@ object OrderTab : Tab {
             TabOptions(
                 index = 2u,
                 title = "Orders",
-                icon = rememberVectorPainter(Icons.Default.History),
+                icon = rememberVectorPainter(Icons.AutoMirrored.Filled.ListAlt),
             )
 
     @Composable
