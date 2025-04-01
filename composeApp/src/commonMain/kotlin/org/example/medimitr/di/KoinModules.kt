@@ -50,7 +50,7 @@ val dataModule =
     module {
         // Repositories
         single<MedicineRepository> { MedicineRepositoryImpl(get()) }
-        single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
+        single<AuthRepository> { AuthRepositoryImpl(get(), get(), get()) }
         single<CartRepository> { CartRepositoryImpl() }
         single<OrderRepository> { OrderRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }

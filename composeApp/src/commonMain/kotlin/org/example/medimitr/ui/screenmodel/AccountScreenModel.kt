@@ -1,6 +1,5 @@
 package org.example.medimitr.ui.screenmodel
 
-import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
@@ -9,7 +8,6 @@ import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.User
 import org.example.medimitr.domain.auth.UserRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.screens.login.AuthCheckScreen
 
 // Enum to track which field is being edited inline
 enum class EditingField { NONE, EMAIL, ADDRESS, PHONE }
@@ -143,11 +141,27 @@ class AccountScreenModel(
         }
     }
 
-    fun logout(navigator: Navigator) {
+    fun logout() {
+        if (_uiState.value.isLoggingOut) return
         _uiState.update { it.copy(isLoggingOut = true) }
         viewModelScope.launch {
-            userRepository.logout()
-            navigator.replaceAll(AuthCheckScreen()) // Assuming LoginScreen is the screen to navigate to after logout
+            try {
+                userRepository.logout()
+                // **DO NOT NAVIGATE HERE**
+                // The change in auth status observed at the root will handle navigation.
+                // Optionally reset the loading state if needed, although the screen
+                // will likely disappear due to root recomposition.
+                // _uiState.update { it.copy(isLoggingOut = false) }
+            } catch (e: Exception) {
+                // Handle logout error (e.g., show message)
+                _uiState.update {
+                    it.copy(
+                        isLoggingOut = false,
+                        updateError = "Logout failed: ${e.message}",
+                    )
+                }
+            }
+            // Assuming LoginScreen is the screen to navigate to after logout
             // Logout state / navigation will likely be handled by observing
             // the overall auth state at a higher level in the app,
             // but we set the flag here.

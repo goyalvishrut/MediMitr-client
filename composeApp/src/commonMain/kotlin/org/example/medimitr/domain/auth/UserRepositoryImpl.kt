@@ -1,6 +1,7 @@
 package org.example.medimitr.domain.auth
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import org.example.medimitr.data.api.ApiService
 import org.example.medimitr.data.local.TokenStorage
@@ -9,6 +10,10 @@ class UserRepositoryImpl(
     private val apiService: ApiService,
     private val tokenStorage: TokenStorage,
 ) : UserRepository {
+    private var authStatus = AuthStatus.UNKNOWN
+
+    override val observeAuthStatus: MutableStateFlow<AuthStatus> = MutableStateFlow(authStatus)
+
     override suspend fun getCurrentUser(): Flow<Result<User>> =
         flow {
             try {
@@ -53,5 +58,16 @@ class UserRepositoryImpl(
 
     override fun logout() {
         tokenStorage.clearToken()
+        updateAuthStatus()
+    }
+
+    override fun updateAuthStatus() {
+        authStatus =
+            if (tokenStorage.isTokenValid()) {
+                AuthStatus.LOGGED_IN
+            } else {
+                AuthStatus.LOGGED_OUT
+            }
+        observeAuthStatus.tryEmit(authStatus)
     }
 }

@@ -129,7 +129,7 @@ class AccountScreen : Screen { // Use object if no parameters needed
                             onSave = screenModel::saveField,
                             onCancel = screenModel::cancelEditing,
                             onChangePasswordRequest = { screenModel.showPasswordDialog(true) },
-                            onLogout = { screenModel.logout(navigator) },
+                            onLogout = { screenModel.logout() },
                         )
                 }
             }

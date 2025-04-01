@@ -7,6 +7,7 @@ import org.example.medimitr.data.model.request.NewUserRequest
 class AuthRepositoryImpl(
     private val apiService: ApiService,
     private val tokenStorage: TokenStorage,
+    private val userRepository: UserRepository,
 ) : AuthRepository {
     override suspend fun login(
         email: String,
@@ -15,6 +16,7 @@ class AuthRepositoryImpl(
         try {
             val response = apiService.login(email, password)
             tokenStorage.saveToken(response.token)
+            userRepository.updateAuthStatus()
             Result.success(response.token)
         } catch (e: Exception) {
             Result.failure(e)
