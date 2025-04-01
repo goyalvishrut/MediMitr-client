@@ -3,7 +3,6 @@ package org.example.medimitr.ui.order.checkout
 import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -43,44 +42,34 @@ class CheckoutScreenModel(
     private fun loadUserDefaultAddress() {
         _uiState.update { it.copy(isLoadingAddress = true, addressError = null) }
         viewModelScope.launch {
-            userRepository
-                .getCurrentUser() // Assuming this returns Flow<User?>
-                .catch { e ->
+            val result = userRepository.getCurrentUser() // Assuming this returns Flow<User?>
+            if (result.isSuccess) {
+                val user = result.getOrNull()
+
+                if (user == null) {
                     _uiState.update {
                         it.copy(
                             isLoadingAddress = false,
-                            addressError = "Failed to load address: ${e.message}",
+                            addressError = "User not found.",
                         )
                     }
-                }.collect { result ->
-                    if (result.isSuccess) {
-                        val user = result.getOrNull()
-
-                        if (user == null) {
-                            _uiState.update {
-                                it.copy(
-                                    isLoadingAddress = false,
-                                    addressError = "User not found.",
-                                )
-                            }
-                            return@collect
-                        } else {
-                            _uiState.update {
-                                it.copy(
-                                    isLoadingAddress = false,
-                                    deliveryAddress = user.address,
-                                )
-                            }
-                        }
-                    } else {
-                        _uiState.update {
-                            it.copy(
-                                isLoadingAddress = false,
-                                addressError = "User not found.",
-                            )
-                        }
+                    return@launch
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoadingAddress = false,
+                            deliveryAddress = user.address,
+                        )
                     }
                 }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isLoadingAddress = false,
+                        addressError = "User not found.",
+                    )
+                }
+            }
         }
     }
 
@@ -137,8 +126,7 @@ class CheckoutScreenModel(
                     phone =
                         userRepository
                             .getCurrentUser()
-                            .firstOrNull()
-                            ?.getOrNull()
+                            .getOrNull()
                             ?.phone
                             .orEmpty(),
                     // Get phone if needed

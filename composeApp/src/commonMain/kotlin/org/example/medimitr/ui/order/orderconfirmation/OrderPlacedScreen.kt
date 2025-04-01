@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import org.example.medimitr.ui.order.cart.CartScreen
 
 // ui/screen/OrderPlacedScreen.kt
 data class OrderPlacedScreen(
@@ -30,9 +31,12 @@ data class OrderPlacedScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Text("Order Placed Successfully!", style = MaterialTheme.typography.headlineMedium)
+            Text(
+                "Order Placed Successfully! \n Order ID: $orderId",
+                style = MaterialTheme.typography.headlineMedium,
+            )
             Spacer(Modifier.height(16.dp))
-            Button(onClick = { navigator.pop() }) {
+            Button(onClick = { navigator.replaceAll(CartScreen()) }) {
                 Text("Back to Cart")
             }
         }

@@ -41,28 +41,33 @@ class AccountScreenModel(
     private fun loadUserDetails() {
         _uiState.update { it.copy(isLoading = true, loadError = null) }
         viewModelScope.launch {
-            userRepository
-                .getCurrentUser()
-                .catch { e ->
+            val result = userRepository.getCurrentUser()
+            if (result.isSuccess) {
+                val user = result.getOrNull()
+                if (user == null) {
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            loadError = "Failed to load user data: ${e.message}",
+                            loadError = "User not found.",
                         )
                     }
-                }.collect { result ->
-                    if (result.isSuccess) {
-                        val user = result.getOrThrow()
-                        _uiState.update { it.copy(isLoading = false, user = user) }
-                    } else {
-                        _uiState.update {
-                            it.copy(
-                                isLoading = false,
-                                loadError = "Failed to load user data: ${result.exceptionOrNull()?.message}",
-                            )
-                        }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            user = user,
+                            loadError = null,
+                        )
                     }
                 }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        loadError = "Failed to load user details.",
+                    )
+                }
+            }
         }
     }
 

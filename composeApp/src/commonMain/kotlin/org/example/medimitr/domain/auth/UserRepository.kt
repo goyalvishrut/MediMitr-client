@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.StateFlow
 interface UserRepository {
     val observeAuthStatus: StateFlow<AuthStatus>
 
-    suspend fun getCurrentUser(): Flow<Result<User>>
+    suspend fun getCurrentUser(): Result<User>
 
     fun updateEmail(newValue: String): Flow<Result<Unit>>
 
