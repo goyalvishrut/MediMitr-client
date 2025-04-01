@@ -3,6 +3,10 @@ package org.example.medimitr.data.local
 import android.content.Context
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.longOrNull
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
@@ -40,17 +44,11 @@ class AndroidTokenStorage(
 
             // Decode the payload (second part)
             val payload = String(Base64.UrlSafe.decode(parts[1]))
-            val exp =
-                payload
-                    .split(",")
-                    .map { it.split(":") }
-                    .find { it[0].contains("exp") }
-                    ?.get(1)
-                    ?.toLongOrNull() ?: return false
+            val payloadJson = Json.parseToJsonElement(payload) as JsonObject
+            val expiration = payloadJson["exp"]?.jsonPrimitive?.longOrNull ?: return false
+            val currentTimeSeconds = System.currentTimeMillis() / 1000
 
-            // Check if token is expired (exp is in seconds)
-            val currentTime = System.currentTimeMillis() / 1000
-            return exp > currentTime
+            return currentTimeSeconds < expiration
         } catch (e: Exception) {
             return false // Invalid token format or decoding error
         }
