@@ -17,15 +17,24 @@ class HomeScreenModel(
     var medicines by mutableStateOf<List<Medicine>>(emptyList())
     var isLoading by mutableStateOf(false)
 
-    fun onSearch() {
-        if (searchQuery.isBlank()) return
+    fun start() {
         isLoading = true
         viewModelScope.launch {
-            val result =
-                medicineRepository.getAllMedicines().collect {
-                    isLoading = false
-                    medicines = it.getOrElse { emptyList() }
-                }
+            medicineRepository.getAllMedicines().collect { result ->
+                isLoading = false
+                medicines = result.getOrElse { emptyList() }
+            }
+        }
+    }
+
+    fun onSearch() {
+        isLoading = true
+        viewModelScope.launch {
+            // Use searchMedicines instead of getAllMedicines for proper filtering
+            medicineRepository.searchMedicines(searchQuery).collect { result ->
+                isLoading = false
+                medicines = result.getOrElse { emptyList() }
+            }
         }
     }
 
