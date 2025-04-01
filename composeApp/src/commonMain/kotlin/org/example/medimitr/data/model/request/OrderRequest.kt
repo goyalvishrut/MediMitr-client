@@ -15,5 +15,6 @@ data class OrderRequest(
         val medicineId: Int, // Medicine ID
         val quantity: Int, // Quantity ordered
         val price: Double, // Price per item
+        val medicineName: String, // Name of the medicine
     )
 }
