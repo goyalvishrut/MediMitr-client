@@ -54,7 +54,7 @@ class HomeScreen : Screen {
         Scaffold(
             topBar = {
                 TopAppBar(
-                    title = { Text("medimitr") },
+                    title = { Text("MediMitr") },
                     actions = {
                         IconButton(onClick = { /* TODO: Navigate to cart */ }) {
                             Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
