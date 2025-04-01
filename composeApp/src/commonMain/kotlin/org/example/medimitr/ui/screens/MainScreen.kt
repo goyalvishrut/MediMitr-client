@@ -29,15 +29,15 @@ class MainScreen : Screen {
         val cartRepository = getKoin().get<CartRepository>()
         val cartItemCount by cartRepository.cartItems.map { it.size }.collectAsState(initial = 0)
 
-        TabNavigator(SearchTab) { tabNavigator ->
+        TabNavigator(HomeTab) { tabNavigator ->
             Scaffold(
                 bottomBar = {
                     NavigationBar {
+                        TabNavigationItem(tab = HomeTab)
                         TabNavigationItem(tab = SearchTab)
                         TabNavigationItem(tab = CartTab, badge = cartItemCount)
                         TabNavigationItem(tab = OrderHistoryTab)
                         TabNavigationItem(tab = AccountTab)
-                        TabNavigationItem(tab = ContactTab)
                     }
                 },
             ) { padding ->
