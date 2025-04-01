@@ -58,11 +58,38 @@ class ApiServiceImpl(
         client
             .get("$BASE_URL/medicines/search") {
                 parameter("q", query)
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
             }.body()
 
-    override suspend fun getMedicineDetails(id: String): MedicineResponse? = client.get("$BASE_URL/medicines/$id").body()
+    override suspend fun getMedicineDetails(id: String): MedicineResponse? =
+        client
+            .get("$BASE_URL/medicines/$id") {
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body()
 
-    override suspend fun getAllMedicines(): List<MedicineResponse> = client.get("$BASE_URL/medicines").body()
+    override suspend fun getAllMedicines(): List<MedicineResponse> =
+        client
+            .get("$BASE_URL/medicines") {
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body()
 
     override suspend fun getOrderHistory(): List<OrderHistoryResponse> =
         client
