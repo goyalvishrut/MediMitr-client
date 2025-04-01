@@ -70,7 +70,7 @@ val screenModelModule =
         factory { SignupScreenModel(get()) }
         factory { HomeScreenModel(get()) }
         factory { CartScreenModel(get()) }
-        factory { CheckoutScreenModel(get(), get()) }
+        factory { CheckoutScreenModel(get(), get(), get(), get()) }
         factory { OrderDetailScreenModel(get()) }
         factory { OrderHistoryScreenModel(get()) }
         factory { AccountScreenModel(get()) }

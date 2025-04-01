@@ -18,7 +18,9 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 
 // ui/screen/OrderPlacedScreen.kt
-class OrderPlacedScreen : Screen {
+data class OrderPlacedScreen(
+    val orderId: String, // Order ID to display
+) : Screen {
     @Composable
     override fun Content() {
         val navigator = LocalNavigator.currentOrThrow

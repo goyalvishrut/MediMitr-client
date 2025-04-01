@@ -112,4 +112,14 @@ class OrderRepositoryImpl(
                 emit(Result.failure(e)) // Propagate error
             }
         }
+
+    override suspend fun placeOrderNew(
+        items: List<CartItem>,
+        deliveryAddress: String,
+        phone: String,
+        totalAmount: Double,
+        paymentMethod: String,
+    ): Result<Order> {
+        TODO("Not yet implemented")
+    }
 }

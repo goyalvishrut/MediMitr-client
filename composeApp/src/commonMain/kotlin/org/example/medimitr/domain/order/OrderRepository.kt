@@ -9,4 +9,12 @@ interface OrderRepository {
     fun getOrderHistory(): Flow<Result<List<Order>>>
 
     fun getOrderById(orderId: Int): Flow<Result<Order>>
+
+    suspend fun placeOrderNew(
+        items: List<CartItem>,
+        deliveryAddress: String,
+        phone: String,
+        totalAmount: Double,
+        paymentMethod: String,
+    ): Result<Order>
 }

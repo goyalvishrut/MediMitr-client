@@ -149,7 +149,7 @@ class CartScreenModel(
     fun onProceedToCheckout(navigator: Navigator) {
         // Can add more checks here if needed (e.g., minimum order value)
         if (_uiState.value.cartItems.isNotEmpty()) {
-            navigator.push(CheckoutScreen()) // Navigate to your checkout screen
+            navigator.push(CheckoutScreen(priceDetails = uiState.value.priceDetails)) // Navigate to your checkout screen
         }
     }
 
