@@ -61,7 +61,7 @@ class LoginScreen : Screen {
                 Text(it, color = Color.Red)
             }
             Button(
-                onClick = { screenModel.onLoginClick(navigator) },
+                onClick = { screenModel.onLoginClick() },
                 enabled = !screenModel.isLoading,
             ) {
                 Text("Login")

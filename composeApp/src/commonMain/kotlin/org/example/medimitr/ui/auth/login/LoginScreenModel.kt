@@ -3,7 +3,6 @@ package org.example.medimitr.ui.auth.login
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
@@ -17,7 +16,7 @@ class LoginScreenModel(
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
-    fun onLoginClick(navigator: Navigator) {
+    fun onLoginClick() {
         if (email.isBlank() || password.isBlank()) {
             errorMessage = "Please fill all fields"
             return
