@@ -12,7 +12,7 @@ class MedicineRepositoryImpl(
     private val remoteDataSource: MedicineRemoteDataSource,
     // Inject localDataSource here later for caching
 ) : MedicineRepository {
-    override fun searchMedicines(query: String): Flow<SimpleResult<List<Medicine>>> =
+    override fun searchMedicines(query: String): Flow<Result<List<Medicine>>> =
         flow {
             try {
                 val medicines = remoteDataSource.searchMedicines(query)
@@ -24,7 +24,7 @@ class MedicineRepositoryImpl(
             }
         }
 
-    override fun getMedicineDetails(id: String): Flow<SimpleResult<Medicine?>> =
+    override fun getMedicineDetails(id: String): Flow<Result<Medicine?>> =
         flow {
             try {
                 val medicine = remoteDataSource.getMedicineDetails(id)
