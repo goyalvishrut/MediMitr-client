@@ -119,7 +119,35 @@ class OrderRepositoryImpl(
         phone: String,
         totalAmount: Double,
         paymentMethod: String,
-    ): Result<Order> {
-        TODO("Not yet implemented")
-    }
+    ): Result<Order> =
+        try {
+            val total = items.sumOf { it.medicine.price * it.quantity }
+            val orderRequest =
+                OrderRequest(
+                    items =
+                        items.map {
+                            OrderRequest.OrderItemRequest(
+                                medicineId = it.medicine.id.toInt(),
+                                quantity = it.quantity,
+                                price = it.medicine.price,
+                            )
+                        },
+                    deliveryAddress = deliveryAddress,
+                    phone = phone,
+                    totalAmount = total,
+                    prescriptionUrl = null,
+                )
+            val response = apiService.placeOrder(orderRequest)
+            val result =
+                Order(
+                    id = response.id,
+                    status = response.status,
+                    items = emptyList(),
+                    total = response.totalAmount,
+                    datePlaced = response.orderDate,
+                )
+            Result.success(result)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
 }
