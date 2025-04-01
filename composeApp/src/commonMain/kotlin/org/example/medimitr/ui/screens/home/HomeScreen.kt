@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens.search
+package org.example.medimitr.ui.screens.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import org.example.medimitr.domain.cart.CartRepository
-import org.example.medimitr.ui.screenmodel.SearchScreenModel
+import org.example.medimitr.ui.screenmodel.HomeScreenModel
 import org.koin.mp.KoinPlatform.getKoin
 
-// ui/screen/SearchScreen.kt
-class SearchScreen : Screen {
+// ui/screen/HomeScreen.kt
+class HomeScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { getKoin().get<SearchScreenModel>() }
+        val screenModel = rememberScreenModel { getKoin().get<HomeScreenModel>() }
         val cartRepository = getKoin().get<CartRepository>()
 
         Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {

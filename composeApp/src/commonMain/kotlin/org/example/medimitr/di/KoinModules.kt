@@ -22,10 +22,10 @@ import org.example.medimitr.presentation.search.SearchResultsViewModel
 import org.example.medimitr.ui.screenmodel.AccountScreenModel
 import org.example.medimitr.ui.screenmodel.CartScreenModel
 import org.example.medimitr.ui.screenmodel.CheckoutScreenModel
+import org.example.medimitr.ui.screenmodel.HomeScreenModel
 import org.example.medimitr.ui.screenmodel.LoginScreenModel
 import org.example.medimitr.ui.screenmodel.OrderDetailScreenModel
 import org.example.medimitr.ui.screenmodel.OrderHistoryScreenModel
-import org.example.medimitr.ui.screenmodel.SearchScreenModel
 import org.example.medimitr.ui.screenmodel.SignupScreenModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
@@ -68,7 +68,7 @@ val screenModelModule =
     module {
         factory { LoginScreenModel(get()) }
         factory { SignupScreenModel(get()) }
-        factory { SearchScreenModel(get()) }
+        factory { HomeScreenModel(get()) }
         factory { CartScreenModel(get()) }
         factory { CheckoutScreenModel(get(), get()) }
         factory { OrderDetailScreenModel(get()) }

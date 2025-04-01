@@ -9,8 +9,8 @@ import org.example.medimitr.domain.medicine.Medicine
 import org.example.medimitr.domain.medicine.MedicineRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
 
-// ui/screenmodel/SearchScreenModel.kt
-class SearchScreenModel(
+// ui/screenmodel/HomeScreenModel.kt
+class HomeScreenModel(
     private val medicineRepository: MedicineRepository,
 ) : BaseScreenModel() {
     var searchQuery by mutableStateOf("")
