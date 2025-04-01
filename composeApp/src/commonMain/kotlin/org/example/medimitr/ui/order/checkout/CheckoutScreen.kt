@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens.order
+package org.example.medimitr.ui.order.checkout
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,8 +56,8 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatToTwoDecimal
-import org.example.medimitr.ui.screenmodel.CheckoutScreenModel
-import org.example.medimitr.ui.screenmodel.PriceDetails
+import org.example.medimitr.ui.order.cart.PriceDetailRow
+import org.example.medimitr.ui.order.cart.PriceDetails
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform.getKoin
 

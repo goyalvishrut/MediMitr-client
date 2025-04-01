@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screenmodel
+package org.example.medimitr.ui.order.cart
 
 import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.screens.order.CheckoutScreen
+import org.example.medimitr.ui.order.checkout.CheckoutScreen
 
 data class PriceDetails(
     val subtotal: Double = 0.0,

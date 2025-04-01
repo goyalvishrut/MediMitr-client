@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screenmodel
+package org.example.medimitr.ui.auth.login
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -7,7 +7,7 @@ import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.screens.MainScreen
+import org.example.medimitr.ui.maim.MainScreen
 
 // ui/screenmodel/LoginScreenModel.kt
 class LoginScreenModel(

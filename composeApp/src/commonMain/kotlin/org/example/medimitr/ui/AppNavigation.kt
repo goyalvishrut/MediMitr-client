@@ -12,8 +12,8 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import org.example.medimitr.domain.auth.AuthStatus
 import org.example.medimitr.domain.auth.UserRepository
-import org.example.medimitr.ui.screens.MainScreen
-import org.example.medimitr.ui.screens.login.AuthCheckScreen
+import org.example.medimitr.ui.auth.AuthCheckScreen
+import org.example.medimitr.ui.maim.MainScreen
 import org.koin.mp.KoinPlatform.getKoin
 
 @Composable

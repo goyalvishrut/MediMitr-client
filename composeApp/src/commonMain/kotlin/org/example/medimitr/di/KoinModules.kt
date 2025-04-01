@@ -19,14 +19,14 @@ import org.example.medimitr.domain.order.OrderRepositoryImpl
 import org.example.medimitr.network.createHttpClient
 import org.example.medimitr.presentation.checkout.CheckoutViewModel
 import org.example.medimitr.presentation.search.SearchResultsViewModel
-import org.example.medimitr.ui.screenmodel.AccountScreenModel
-import org.example.medimitr.ui.screenmodel.CartScreenModel
-import org.example.medimitr.ui.screenmodel.CheckoutScreenModel
-import org.example.medimitr.ui.screenmodel.HomeScreenModel
-import org.example.medimitr.ui.screenmodel.LoginScreenModel
-import org.example.medimitr.ui.screenmodel.OrderDetailScreenModel
-import org.example.medimitr.ui.screenmodel.OrderHistoryScreenModel
-import org.example.medimitr.ui.screenmodel.SignupScreenModel
+import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
+import org.example.medimitr.ui.auth.login.LoginScreenModel
+import org.example.medimitr.ui.auth.signup.SignupScreenModel
+import org.example.medimitr.ui.home.HomeScreenModel
+import org.example.medimitr.ui.order.cart.CartScreenModel
+import org.example.medimitr.ui.order.checkout.CheckoutScreenModel
+import org.example.medimitr.ui.order.orderhistory.OrderDetailScreenModel
+import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreenModel
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 

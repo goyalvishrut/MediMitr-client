@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens.order
+package org.example.medimitr.ui.order.orderhistory
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,7 +39,6 @@ import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.order.Order
-import org.example.medimitr.ui.screenmodel.OrderDetailScreenModel
 import org.koin.mp.KoinPlatform.getKoin
 
 // Screen requires orderId to know which order to display

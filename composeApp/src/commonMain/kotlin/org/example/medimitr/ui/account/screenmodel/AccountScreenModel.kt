@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screenmodel
+package org.example.medimitr.ui.account.screenmodel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

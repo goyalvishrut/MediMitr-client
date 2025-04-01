@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screenmodel
+package org.example.medimitr.ui.order.orderhistory
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

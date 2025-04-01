@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens.account
+package org.example.medimitr.ui.account.screen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -69,9 +69,9 @@ import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.domain.auth.User
-import org.example.medimitr.ui.screenmodel.AccountScreenModel
-import org.example.medimitr.ui.screenmodel.AccountUiState
-import org.example.medimitr.ui.screenmodel.EditingField
+import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
+import org.example.medimitr.ui.account.screenmodel.AccountUiState
+import org.example.medimitr.ui.account.screenmodel.EditingField
 import org.koin.mp.KoinPlatform.getKoin
 
 class AccountScreen : Screen { // Use object if no parameters needed

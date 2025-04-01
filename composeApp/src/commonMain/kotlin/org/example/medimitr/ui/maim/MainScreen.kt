@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens
+package org.example.medimitr.ui.maim
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding

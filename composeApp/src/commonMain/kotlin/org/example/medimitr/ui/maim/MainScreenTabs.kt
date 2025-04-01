@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens
+package org.example.medimitr.ui.maim
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
@@ -10,10 +10,10 @@ import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.Tab
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import org.example.medimitr.ui.screens.account.AccountScreen
-import org.example.medimitr.ui.screens.home.HomeScreen
-import org.example.medimitr.ui.screens.order.CartScreen
-import org.example.medimitr.ui.screens.order.OrderHistoryScreen
+import org.example.medimitr.ui.account.screen.AccountScreen
+import org.example.medimitr.ui.home.HomeScreen
+import org.example.medimitr.ui.order.cart.CartScreen
+import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
 
 object HomeTab : Tab {
     override val options: TabOptions

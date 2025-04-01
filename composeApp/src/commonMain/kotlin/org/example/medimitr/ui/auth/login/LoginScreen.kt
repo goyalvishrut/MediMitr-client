@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens.login
+package org.example.medimitr.ui.auth.login
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,14 +22,14 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import org.example.medimitr.ui.screenmodel.SignupScreenModel
+import org.example.medimitr.ui.auth.signup.SignupScreen
 import org.koin.mp.KoinPlatform.getKoin
 
-// ui/screen/SignupScreen.kt
-class SignupScreen : Screen {
+// ui/screen/LoginScreen.kt
+class LoginScreen : Screen {
     @Composable
     override fun Content() {
-        val screenModel = rememberScreenModel { getKoin().get<SignupScreenModel>() }
+        val screenModel = rememberScreenModel { getKoin().get<LoginScreenModel>() }
         val navigator = LocalNavigator.currentOrThrow
 
         Column(
@@ -37,14 +37,6 @@ class SignupScreen : Screen {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            TextField(
-                value = screenModel.name,
-                onValueChange = { screenModel.name = it },
-                label = { Text("Name") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-            )
-            Spacer(Modifier.height(8.dp))
             TextField(
                 value = screenModel.email,
                 onValueChange = { screenModel.email = it },
@@ -61,21 +53,6 @@ class SignupScreen : Screen {
                 modifier = Modifier.fillMaxWidth(),
                 singleLine = true,
             )
-            TextField(
-                value = screenModel.phone,
-                onValueChange = { screenModel.phone = it },
-                label = { Text("Phone") },
-                modifier = Modifier.fillMaxWidth(),
-                singleLine = true,
-            )
-            Spacer(Modifier.height(8.dp))
-            TextField(
-                value = screenModel.address,
-                onValueChange = { screenModel.address = it },
-                label = { Text("Address") },
-                modifier = Modifier.fillMaxWidth(),
-            )
-            Spacer(Modifier.height(8.dp))
             Spacer(Modifier.height(16.dp))
             if (screenModel.isLoading) {
                 CircularProgressIndicator()
@@ -84,15 +61,15 @@ class SignupScreen : Screen {
                 Text(it, color = Color.Red)
             }
             Button(
-                onClick = { screenModel.onSignupClick(navigator) },
+                onClick = { screenModel.onLoginClick(navigator) },
                 enabled = !screenModel.isLoading,
             ) {
-                Text("Sign Up")
+                Text("Login")
             }
             Spacer(Modifier.height(8.dp))
             Text(
-                "Already have an account? Login",
-                modifier = Modifier.clickable { navigator.pop() },
+                "Don't have an account? Sign up",
+                modifier = Modifier.clickable { navigator.push(SignupScreen()) },
             )
         }
     }

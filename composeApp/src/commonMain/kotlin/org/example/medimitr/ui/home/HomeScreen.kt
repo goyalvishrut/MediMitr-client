@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.screens.home
+package org.example.medimitr.ui.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -35,7 +35,6 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.medicine.Medicine
-import org.example.medimitr.ui.screenmodel.HomeScreenModel
 import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/HomeScreen.kt
