@@ -8,6 +8,8 @@ import org.example.medimitr.data.medicine.MedicineRemoteDataSource
 import org.example.medimitr.data.medicine.MedicineRemoteDataSourceImpl
 import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.domain.auth.AuthRepositoryImpl
+import org.example.medimitr.domain.auth.UserRepository
+import org.example.medimitr.domain.auth.UserRepositoryImpl
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.cart.CartRepositoryImpl
 import org.example.medimitr.domain.medicine.MedicineRepository
@@ -17,6 +19,7 @@ import org.example.medimitr.domain.order.OrderRepositoryImpl
 import org.example.medimitr.network.createHttpClient
 import org.example.medimitr.presentation.checkout.CheckoutViewModel
 import org.example.medimitr.presentation.search.SearchResultsViewModel
+import org.example.medimitr.ui.screenmodel.AccountScreenModel
 import org.example.medimitr.ui.screenmodel.CartScreenModel
 import org.example.medimitr.ui.screenmodel.CheckoutScreenModel
 import org.example.medimitr.ui.screenmodel.LoginScreenModel
@@ -50,6 +53,7 @@ val dataModule =
         single<AuthRepository> { AuthRepositoryImpl(get(), get()) }
         single<CartRepository> { CartRepositoryImpl() }
         single<OrderRepository> { OrderRepositoryImpl(get()) }
+        single<UserRepository> { UserRepositoryImpl(get(), get()) }
     }
 
 // ViewModel Module - Use singleOf for simpler ViewModel definition
@@ -69,6 +73,7 @@ val screenModelModule =
         factory { CheckoutScreenModel(get(), get()) }
         factory { OrderDetailScreenModel(get()) }
         factory { OrderHistoryScreenModel(get()) }
+        factory { AccountScreenModel(get()) }
     }
 
 // List of all modules

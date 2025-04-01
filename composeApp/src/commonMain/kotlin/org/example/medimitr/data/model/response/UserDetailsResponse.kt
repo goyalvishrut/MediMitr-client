@@ -3,7 +3,7 @@ package org.example.medimitr.data.model.response
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserCreatedResponse(
+data class UserDetailsResponse(
     // User entity
     val id: Int, // User ID
     val email: String, // User email

@@ -18,7 +18,7 @@ import org.example.medimitr.data.model.response.AuthResponse
 import org.example.medimitr.data.model.response.MedicineResponse
 import org.example.medimitr.data.model.response.OrderHistoryResponse
 import org.example.medimitr.data.model.response.OrderResponse
-import org.example.medimitr.data.model.response.UserCreatedResponse
+import org.example.medimitr.data.model.response.UserDetailsResponse
 
 class ApiServiceImpl(
     private val client: HttpClient,
@@ -34,7 +34,7 @@ class ApiServiceImpl(
                 setBody(mapOf("email" to email, "password" to password))
             }.body()
 
-    override suspend fun signup(newUserRequest: NewUserRequest): UserCreatedResponse =
+    override suspend fun signup(newUserRequest: NewUserRequest): UserDetailsResponse =
         client
             .post("$BASE_URL/create/user") {
                 contentType(ContentType.Application.Json)
@@ -88,7 +88,23 @@ class ApiServiceImpl(
                 }
             }.body()
 
+    override suspend fun getUser(token: String): UserDetailsResponse {
+        client
+            .get("$BASE_URL/user") {
+                contentType(ContentType.Application.Json)
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} $token",
+                    )
+                }
+            }.body<UserDetailsResponse>()
+            .let { user ->
+                return user
+            }
+    }
+
     companion object {
-        private const val BASE_URL = "http://192.168.29.57:8080"
+        private const val BASE_URL = "http://192.168.29.194:8080"
     }
 }

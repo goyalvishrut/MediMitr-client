@@ -6,7 +6,7 @@ import org.example.medimitr.data.model.response.AuthResponse
 import org.example.medimitr.data.model.response.MedicineResponse
 import org.example.medimitr.data.model.response.OrderHistoryResponse
 import org.example.medimitr.data.model.response.OrderResponse
-import org.example.medimitr.data.model.response.UserCreatedResponse
+import org.example.medimitr.data.model.response.UserDetailsResponse
 
 interface ApiService {
     suspend fun login(
@@ -14,7 +14,7 @@ interface ApiService {
         password: String,
     ): AuthResponse
 
-    suspend fun signup(newUserRequest: NewUserRequest): UserCreatedResponse
+    suspend fun signup(newUserRequest: NewUserRequest): UserDetailsResponse
 
     suspend fun placeOrder(orderRequest: OrderRequest): OrderResponse
 
@@ -27,4 +27,6 @@ interface ApiService {
     suspend fun getOrderHistory(): List<OrderHistoryResponse>
 
     suspend fun getOrderById(orderId: Int): OrderHistoryResponse
+
+    suspend fun getUser(token: String): UserDetailsResponse
 }
