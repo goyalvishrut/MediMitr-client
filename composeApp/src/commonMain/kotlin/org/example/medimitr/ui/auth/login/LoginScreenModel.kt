@@ -7,7 +7,6 @@ import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.maim.MainScreen
 
 // ui/screenmodel/LoginScreenModel.kt
 class LoginScreenModel(
@@ -28,7 +27,7 @@ class LoginScreenModel(
             val result = authRepository.login(email, password)
             isLoading = false
             if (result.isSuccess) {
-                navigator.replaceAll(MainScreen())
+                // Automatically navigate to the main screen after successful login
             } else {
                 errorMessage = result.exceptionOrNull()?.message ?: "Login failed"
             }
