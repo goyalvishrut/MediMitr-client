@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import cafe.adriel.voyager.navigator.Navigator
 import org.example.medimitr.domain.auth.AuthStatus
 import org.example.medimitr.domain.auth.UserRepository
-import org.example.medimitr.ui.auth.AuthCheckScreen
+import org.example.medimitr.ui.auth.login.LoginScreen
 import org.example.medimitr.ui.maim.MainScreen
 import org.koin.mp.KoinPlatform.getKoin
 
@@ -40,7 +40,7 @@ fun AppNavigation() {
             AuthStatus.LOGGED_OUT -> {
                 // User is logged out, show the authentication flow screens
                 // This uses a separate Voyager Navigator instance for the auth flow
-                Navigator(AuthCheckScreen()) // Start auth flow
+                Navigator(LoginScreen()) // Start auth flow
             }
         }
     }
