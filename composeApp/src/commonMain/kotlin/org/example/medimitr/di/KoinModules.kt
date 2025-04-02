@@ -12,6 +12,8 @@ import org.example.medimitr.domain.auth.UserRepository
 import org.example.medimitr.domain.auth.UserRepositoryImpl
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.cart.CartRepositoryImpl
+import org.example.medimitr.domain.location.LocationRepository
+import org.example.medimitr.domain.location.LocationRepositoryImpl
 import org.example.medimitr.domain.medicine.MedicineRepository
 import org.example.medimitr.domain.medicine.MedicineRepositoryImpl
 import org.example.medimitr.domain.order.OrderRepository
@@ -54,6 +56,7 @@ val dataModule =
         single<CartRepository> { CartRepositoryImpl() }
         single<OrderRepository> { OrderRepositoryImpl(get()) }
         single<UserRepository> { UserRepositoryImpl(get(), get()) }
+        single<LocationRepository> { LocationRepositoryImpl() }
     }
 
 // ViewModel Module - Use singleOf for simpler ViewModel definition
@@ -68,7 +71,7 @@ val screenModelModule =
     module {
         factory { LoginScreenModel(get()) }
         factory { SignupScreenModel(get()) }
-        factory { HomeScreenModel(get()) }
+        factory { HomeScreenModel(get(), get()) }
         factory { CartScreenModel(get()) }
         factory { CheckoutScreenModel(get(), get(), get(), get()) }
         factory { OrderDetailScreenModel(get()) }
