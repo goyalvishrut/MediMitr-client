@@ -57,20 +57,20 @@ sealed class Screen(
 
 // Screens for the HomeFlow (the tabs)
 @Serializable
-sealed class HomeFlowScreen(
+sealed class AuthorisedFlowScreen(
     val route: String,
 ) {
     @Serializable
-    object HomeTab : HomeFlowScreen("home_tab")
+    object HomeTab : AuthorisedFlowScreen("home_tab")
 
     @Serializable
-    object CartTab : HomeFlowScreen("cart_tab")
+    object CartTab : AuthorisedFlowScreen("cart_tab")
 
     @Serializable
-    object OrdersTab : HomeFlowScreen("orders_tab")
+    object OrdersTab : AuthorisedFlowScreen("orders_tab")
 
     @Serializable
-    object AccountTab : HomeFlowScreen("account_tab")
+    object AccountTab : AuthorisedFlowScreen("account_tab")
 }
 
 // Screens for HomeTab flow
@@ -191,17 +191,17 @@ fun HomeFlowScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = HomeFlowScreen.HomeTab,
+            startDestination = AuthorisedFlowScreen.HomeTab,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable<HomeFlowScreen.HomeTab> {
+            composable<AuthorisedFlowScreen.HomeTab> {
                 HomeTabFlow(
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
                     },
                 )
             }
-            composable<HomeFlowScreen.CartTab> {
+            composable<AuthorisedFlowScreen.CartTab> {
                 CartTabFlow(
                     parentNavController = navController,
                     onCurrentScreenChanged = { route ->
@@ -209,14 +209,14 @@ fun HomeFlowScreen() {
                     },
                 )
             }
-            composable<HomeFlowScreen.OrdersTab> {
+            composable<AuthorisedFlowScreen.OrdersTab> {
                 OrdersTabFlow(
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
                     },
                 )
             }
-            composable<HomeFlowScreen.AccountTab> {
+            composable<AuthorisedFlowScreen.AccountTab> {
                 AccountTabFlow(
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
@@ -240,9 +240,9 @@ fun BottomNavigationBar(navController: NavHostController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
             label = { Text("Home") },
-            selected = currentRoute == HomeFlowScreen.HomeTab.route,
+            selected = currentRoute == AuthorisedFlowScreen.HomeTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.HomeTab) {
+                navController.navigate(AuthorisedFlowScreen.HomeTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -251,9 +251,9 @@ fun BottomNavigationBar(navController: NavHostController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
             label = { Text("Cart") },
-            selected = currentRoute == HomeFlowScreen.CartTab.route,
+            selected = currentRoute == AuthorisedFlowScreen.CartTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.CartTab) {
+                navController.navigate(AuthorisedFlowScreen.CartTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -262,9 +262,9 @@ fun BottomNavigationBar(navController: NavHostController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.List, contentDescription = "Orders") },
             label = { Text("Orders") },
-            selected = currentRoute == HomeFlowScreen.OrdersTab.route,
+            selected = currentRoute == AuthorisedFlowScreen.OrdersTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.OrdersTab) {
+                navController.navigate(AuthorisedFlowScreen.OrdersTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -273,9 +273,9 @@ fun BottomNavigationBar(navController: NavHostController) {
         NavigationBarItem(
             icon = { Icon(Icons.Default.AccountCircle, contentDescription = "Account") },
             label = { Text("Account") },
-            selected = currentRoute == HomeFlowScreen.AccountTab.route,
+            selected = currentRoute == AuthorisedFlowScreen.AccountTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.AccountTab) {
+                navController.navigate(AuthorisedFlowScreen.AccountTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -362,8 +362,8 @@ fun CartTabFlow(
             OrderPlacedScreen(
                 orderId = args.orderId,
                 onGoToHome = {
-                    parentNavController.navigate(HomeFlowScreen.HomeTab) {
-                        popUpTo(HomeFlowScreen.CartTab) { inclusive = true }
+                    parentNavController.navigate(AuthorisedFlowScreen.HomeTab) {
+                        popUpTo(AuthorisedFlowScreen.CartTab) { inclusive = true }
                     }
                 },
             )
