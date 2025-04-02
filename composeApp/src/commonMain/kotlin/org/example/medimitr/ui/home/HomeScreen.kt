@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.LocationCity
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
@@ -59,7 +59,7 @@ class HomeScreen : Screen {
                             Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
                         }
                         IconButton(onClick = { /* TODO: Navigate to profile */ }) {
-                            Icon(Icons.Default.AccountCircle, contentDescription = "Profile")
+                            Icon(Icons.Default.LocationCity, contentDescription = "Place")
                         }
                     },
                 )
