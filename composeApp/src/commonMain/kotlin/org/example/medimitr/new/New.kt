@@ -27,6 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import org.example.medimitr.common.serializableType
 import org.example.medimitr.ui.account.screen.AccountScreen
 import org.example.medimitr.ui.home.HomeScreen
 import org.example.medimitr.ui.medicine.MedicineDetailScreen
@@ -37,6 +38,7 @@ import org.example.medimitr.ui.order.orderconfirmation.OrderPlacedScreen
 import org.example.medimitr.ui.order.orderhistory.OrderDetailScreen
 import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
 import org.example.medimitr.ui.search.SearchScreen
+import kotlin.reflect.typeOf
 
 // Top-level screens
 @Serializable
@@ -347,7 +349,7 @@ fun CartTabFlow(
                 onCheckout = { navController.navigate(CartTabFlowScreen.CheckoutScreen(priceDetails = it)) },
             )
         }
-        composable<CartTabFlowScreen.CheckoutScreen> {
+        composable<CartTabFlowScreen.CheckoutScreen>(typeMap = mapOf(typeOf<PriceDetails>() to serializableType<PriceDetails>())) {
             val args = it.toRoute<CartTabFlowScreen.CheckoutScreen>()
             CheckoutScreen(
                 priceDetails = args.priceDetails, // Replace with actual price details
