@@ -1,12 +1,12 @@
 package org.example.medimitr.presentation.base
 
+import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import org.koin.core.component.KoinComponent // Make ViewModel KoinComponent
 
 // Base ViewModel (Optional but helpful)
-abstract class BaseViewModel : KoinComponent {
+abstract class BaseViewModel : ViewModel() {
     // Create a dedicated scope for ViewModels, using Dispatchers.Main for UI updates
     // SupervisorJob prevents crash if one child coroutine fails
     // Using Main dispatcher (KMM provides expect/actual for this) is often default for UI interaction

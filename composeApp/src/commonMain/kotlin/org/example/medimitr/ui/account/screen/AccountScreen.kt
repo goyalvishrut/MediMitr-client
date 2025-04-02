@@ -68,11 +68,11 @@ import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
 import org.example.medimitr.ui.account.screenmodel.AccountUiState
 import org.example.medimitr.ui.account.screenmodel.EditingField
 import org.example.medimitr.ui.components.MediMitrTopAppBar
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountScreen() {
-    val screenModel = remember { getKoin().get<AccountScreenModel>() }
+    val screenModel = koinViewModel<AccountScreenModel>()
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 

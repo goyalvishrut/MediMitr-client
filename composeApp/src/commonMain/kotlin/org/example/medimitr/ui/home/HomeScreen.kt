@@ -75,6 +75,7 @@ import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.marketing.Category
 import org.example.medimitr.domain.marketing.Promotion
 import org.example.medimitr.domain.medicine.Medicine
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform.getKoin
 
@@ -86,7 +87,8 @@ fun HomeScreen(
     onSearchClick: () -> Unit,
     onMedicineClick: (String) -> Unit,
 ) {
-    val screenModel = remember { getKoin().get<HomeScreenModel>() }
+    val screenModel = koinViewModel<HomeScreenModel>()
+
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val citySheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)

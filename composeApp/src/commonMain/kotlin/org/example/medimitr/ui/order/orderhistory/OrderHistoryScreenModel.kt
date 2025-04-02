@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.order.Order
 import org.example.medimitr.domain.order.OrderRepository
-import org.example.medimitr.presentation.base.BaseScreenModel
+import org.example.medimitr.presentation.base.BaseViewModel
 
 data class OrderHistoryUiState(
     val isLoading: Boolean = false,
@@ -17,7 +17,7 @@ data class OrderHistoryUiState(
 
 class OrderHistoryScreenModel(
     private val orderRepository: OrderRepository,
-) : BaseScreenModel() {
+) : BaseViewModel() {
     private val _uiState = MutableStateFlow(OrderHistoryUiState())
     val uiState = _uiState.asStateFlow()
 

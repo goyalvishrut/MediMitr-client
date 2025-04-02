@@ -54,13 +54,13 @@ import androidx.compose.ui.unit.dp
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.ui.components.MediMitrTopAppBar
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 // ui/screen/CartScreen.kt
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
-    val screenModel = remember { getKoin().get<CartScreenModel>() }
+    val screenModel = koinViewModel<CartScreenModel>()
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val sheetState =

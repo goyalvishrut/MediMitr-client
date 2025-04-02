@@ -60,6 +60,9 @@ kotlin {
             // Kotlinx Serialization
             implementation(libs.kotlinx.serialization.json) // Use latest
 
+            implementation("io.insert-koin:koin-compose:4.1.0-Beta5")
+            implementation("io.insert-koin:koin-compose-viewmodel:4.1.0-Beta5")
+
             // Coroutines
             implementation(libs.kotlinx.coroutines.core) // Use latest
 

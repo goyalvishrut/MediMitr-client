@@ -11,7 +11,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -20,18 +19,16 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.order.Order
 import org.example.medimitr.ui.components.MediMitrTopAppBar
-import org.example.medimitr.ui.components.MediMitrTopAppBar
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderHistoryScreen(onOrderClick: (orderId: Int) -> Unit) {
-    val screenModel = remember { getKoin().get<OrderHistoryScreenModel>() }
+    val screenModel = koinViewModel<OrderHistoryScreenModel>()
     val state by screenModel.uiState.collectAsState()
 
     Scaffold(

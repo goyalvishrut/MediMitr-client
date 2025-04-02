@@ -13,13 +13,12 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 // ui/screen/SignupScreen.kt
 @Composable
@@ -27,7 +26,7 @@ fun SignupScreen(
     onBack: () -> Unit, // Assuming you have a Navigator interface for navigation
     onSignUpSuccess: () -> Unit, // Callback for sign-in action
 ) {
-    val screenModel = remember { getKoin().get<SignupScreenModel>() }
+    val screenModel = koinViewModel<SignupScreenModel>()
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),

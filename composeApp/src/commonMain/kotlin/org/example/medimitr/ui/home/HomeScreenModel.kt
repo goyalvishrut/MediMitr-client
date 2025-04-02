@@ -11,7 +11,7 @@ import org.example.medimitr.domain.marketing.Category
 import org.example.medimitr.domain.marketing.MarketingRepository
 import org.example.medimitr.domain.marketing.Promotion
 import org.example.medimitr.domain.medicine.Medicine
-import org.example.medimitr.presentation.base.BaseScreenModel
+import org.example.medimitr.presentation.base.BaseViewModel
 
 data class HomeUiState(
     val isLoading: Boolean = true,
@@ -32,7 +32,7 @@ class HomeScreenModel(
     private val cartRepository: CartRepository,
     private val locationRepository: LocationRepository,
     private val marketingRepository: MarketingRepository,
-) : BaseScreenModel() {
+) : BaseViewModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
 

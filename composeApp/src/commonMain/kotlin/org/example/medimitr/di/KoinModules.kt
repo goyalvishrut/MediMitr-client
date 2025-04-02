@@ -33,6 +33,7 @@ import org.example.medimitr.ui.order.orderhistory.OrderDetailScreenModel
 import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreenModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 expect val platformModule: Module
@@ -75,14 +76,23 @@ val viewModelModule =
 
 val screenModelModule =
     module {
-        factory { LoginScreenModel(get()) }
-        factory { SignupScreenModel(get()) }
-        factory { HomeScreenModel(get(), get(), get()) }
-        factory { CartScreenModel(get()) }
-        factory { CheckoutScreenModel(get(), get(), get(), get()) }
-        factory { OrderDetailScreenModel(get()) }
-        factory { OrderHistoryScreenModel(get()) }
-        factory { AccountScreenModel(get()) }
+//        factory { LoginScreenModel(get()) }
+//        factory { SignupScreenModel(get()) }
+//        factory { HomeScreenModel(get(), get(), get()) }
+//        factory { CartScreenModel(get()) }
+//        factory { CheckoutScreenModel(get(), get(), get(), get()) }
+//        factory { OrderDetailScreenModel(get()) }
+//        factory { OrderHistoryScreenModel(get()) }
+//        factory { AccountScreenModel(get()) }
+
+        viewModelOf(::LoginScreenModel)
+        viewModelOf(::SignupScreenModel)
+        viewModelOf(::HomeScreenModel)
+        viewModelOf(::CartScreenModel)
+        viewModelOf(::CheckoutScreenModel)
+        viewModelOf(::OrderDetailScreenModel)
+        viewModelOf(::OrderHistoryScreenModel)
+        viewModelOf(::AccountScreenModel)
     }
 
 // List of all modules

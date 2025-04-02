@@ -12,7 +12,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,7 +25,7 @@ import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.order.Order
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,7 +33,7 @@ fun OrderDetailScreen(
     orderId: Int,
     onBackPressed: () -> Unit,
 ) {
-    val screenModel = remember { getKoin().get<OrderDetailScreenModel>() }
+    val screenModel = koinViewModel<OrderDetailScreenModel>()
     val state by screenModel.uiState.collectAsState()
 
     LaunchedEffect(orderId) {
