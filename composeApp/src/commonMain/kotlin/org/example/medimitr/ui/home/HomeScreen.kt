@@ -76,9 +76,9 @@ import coil3.ImageLoader
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
 import org.example.medimitr.common.formatToTwoDecimal
+import org.example.medimitr.domain.marketing.Category
+import org.example.medimitr.domain.marketing.Promotion
 import org.example.medimitr.domain.medicine.Medicine
-import org.example.medimitr.domain.promotion.Category
-import org.example.medimitr.domain.promotion.Promotion
 import org.example.medimitr.ui.medicine.MedicineDetailScreen
 import org.example.medimitr.ui.order.cart.CartScreen
 import org.example.medimitr.ui.search.SearchScreen

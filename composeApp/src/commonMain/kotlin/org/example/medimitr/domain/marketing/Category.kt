@@ -1,4 +1,4 @@
-package org.example.medimitr.domain.promotion
+package org.example.medimitr.domain.marketing
 
 data class Category(
     val id: String,

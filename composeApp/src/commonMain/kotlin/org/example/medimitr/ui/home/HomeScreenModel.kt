@@ -7,9 +7,10 @@ import kotlinx.coroutines.launch
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.location.LocationRepository
+import org.example.medimitr.domain.marketing.Category
+import org.example.medimitr.domain.marketing.MarketingRepository
+import org.example.medimitr.domain.marketing.Promotion
 import org.example.medimitr.domain.medicine.Medicine
-import org.example.medimitr.domain.promotion.Category
-import org.example.medimitr.domain.promotion.Promotion
 import org.example.medimitr.presentation.base.BaseScreenModel
 
 data class HomeUiState(
@@ -29,7 +30,8 @@ data class HomeUiState(
 // ui/screenmodel/HomeScreenModel.kt
 class HomeScreenModel(
     private val cartRepository: CartRepository,
-    private val locationRepository: LocationRepository, // Inject location repo
+    private val locationRepository: LocationRepository,
+    private val marketingRepository: MarketingRepository,
 ) : BaseScreenModel() {
     private val _uiState = MutableStateFlow(HomeUiState())
     val uiState = _uiState.asStateFlow()
@@ -64,9 +66,9 @@ class HomeScreenModel(
             try {
                 // Fetch in parallel if possible, or sequentially
                 // Using combine might be better for parallel fetching and combining results
-                val promotions = locationRepository.getPromotions() // Assume suspend fun or Flow
-                val categories = locationRepository.getCategories()
-                val featured = locationRepository.getFeaturedMedicines()
+                val promotions = marketingRepository.getPromotions() // Assume suspend fun or Flow
+                val categories = marketingRepository.getCategories()
+                val featured = marketingRepository.getFeaturedMedicines()
                 // val cities = locationRepository.getAvailableCities() // Fetch if not mock
 
                 _uiState.update {
