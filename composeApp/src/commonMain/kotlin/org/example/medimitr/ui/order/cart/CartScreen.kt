@@ -60,8 +60,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
-    val screenModel = koinViewModel<CartScreenViewModel>()
-    val state by screenModel.uiState.collectAsState()
+    val viewModel = koinViewModel<CartScreenViewModel>()
+    val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = true) // Bottom sheet state
@@ -73,7 +73,7 @@ fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
                 message = state.error!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearError()
+            viewModel.clearError()
         }
     }
 
@@ -89,9 +89,9 @@ fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
             } else {
                 CartContentView(
                     state = state,
-                    onQuantityChange = screenModel::updateQuantity,
-                    onShowPriceDetails = screenModel::showPriceDetailsSheet,
-                    onCheckout = { screenModel.onProceedToCheckout(onCheckout) },
+                    onQuantityChange = viewModel::updateQuantity,
+                    onShowPriceDetails = viewModel::showPriceDetailsSheet,
+                    onCheckout = { viewModel.onProceedToCheckout(onCheckout) },
                 )
             }
         }
@@ -100,14 +100,14 @@ fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
     // --- Remove Item Confirmation Dialog ---
     if (state.showRemoveConfirmationDialog && state.itemPendingRemoval != null) {
         AlertDialog(
-            onDismissRequest = screenModel::cancelRemoveItem,
+            onDismissRequest = viewModel::cancelRemoveItem,
             title = { Text("Remove Item?") },
             text = { Text("Do you want to remove ${state.itemPendingRemoval?.medicine?.name} from your cart?") },
             confirmButton = {
-                Button(onClick = screenModel::confirmRemoveItem) { Text("Remove") }
+                Button(onClick = viewModel::confirmRemoveItem) { Text("Remove") }
             },
             dismissButton = {
-                TextButton(onClick = screenModel::cancelRemoveItem) { Text("Cancel") }
+                TextButton(onClick = viewModel::cancelRemoveItem) { Text("Cancel") }
             },
         )
     }
@@ -115,7 +115,7 @@ fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
     // --- Price Details Bottom Sheet ---
     if (state.showPriceDetailsSheet) {
         ModalBottomSheet(
-            onDismissRequest = screenModel::hidePriceDetailsSheet,
+            onDismissRequest = viewModel::hidePriceDetailsSheet,
             sheetState = sheetState,
             // You can customize shape, colors etc. here
         ) {

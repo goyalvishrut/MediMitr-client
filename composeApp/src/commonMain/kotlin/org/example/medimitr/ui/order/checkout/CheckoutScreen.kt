@@ -64,12 +64,12 @@ fun CheckoutScreen(
     onBack: () -> Unit,
     onOrderPlaced: (String) -> Unit,
 ) {
-    val screenModel = koinViewModel<CheckoutScreenViewModel>()
+    val viewModel = koinViewModel<CheckoutScreenViewModel>()
 
-    val state by screenModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    screenModel.start(priceDetails)
+    viewModel.start(priceDetails)
 
     // Show placing order errors
     LaunchedEffect(state.placeOrderError) {
@@ -78,7 +78,7 @@ fun CheckoutScreen(
                 message = state.placeOrderError!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearPlaceOrderError() // Clear error after showing
+            viewModel.clearPlaceOrderError() // Clear error after showing
         }
     }
 
@@ -98,7 +98,7 @@ fun CheckoutScreen(
                 totalAmount = state.priceDetails.total,
                 isLoading = state.isPlacingOrder,
                 enabled = state.deliveryAddress.isNotBlank() && !state.isLoadingAddress,
-                onPlaceOrder = { screenModel.onPlaceOrder(onOrderPlaced) },
+                onPlaceOrder = { viewModel.onPlaceOrder(onOrderPlaced) },
             )
         },
     ) { paddingValues ->
@@ -117,9 +117,9 @@ fun CheckoutScreen(
                 address = state.deliveryAddress,
                 isEditing = state.isEditingAddress,
                 error = state.addressError,
-                onEditToggle = { screenModel.startEditingAddress() },
-                onSave = { newAddress -> screenModel.updateSelectedAddress(newAddress) }, // Just updates state
-                onCancel = { screenModel.cancelEditingAddress() },
+                onEditToggle = { viewModel.startEditingAddress() },
+                onSave = { newAddress -> viewModel.updateSelectedAddress(newAddress) }, // Just updates state
+                onCancel = { viewModel.cancelEditingAddress() },
             )
             Divider(modifier = Modifier.padding(vertical = 8.dp))
 

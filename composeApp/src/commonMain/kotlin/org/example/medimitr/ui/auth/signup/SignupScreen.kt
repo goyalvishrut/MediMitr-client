@@ -26,7 +26,7 @@ fun SignupScreen(
     onBack: () -> Unit, // Assuming you have a Navigator interface for navigation
     onSignUpSuccess: () -> Unit, // Callback for sign-in action
 ) {
-    val screenModel = koinViewModel<SignupScreenViewModel>()
+    val viewModel = koinViewModel<SignupScreenViewModel>()
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),
@@ -34,54 +34,54 @@ fun SignupScreen(
         verticalArrangement = Arrangement.Center,
     ) {
         TextField(
-            value = screenModel.name,
-            onValueChange = { screenModel.name = it },
+            value = viewModel.name,
+            onValueChange = { viewModel.name = it },
             label = { Text("Name") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         Spacer(Modifier.height(8.dp))
         TextField(
-            value = screenModel.email,
-            onValueChange = { screenModel.email = it },
+            value = viewModel.email,
+            onValueChange = { viewModel.email = it },
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         Spacer(Modifier.height(8.dp))
         TextField(
-            value = screenModel.password,
-            onValueChange = { screenModel.password = it },
+            value = viewModel.password,
+            onValueChange = { viewModel.password = it },
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         TextField(
-            value = screenModel.phone,
-            onValueChange = { screenModel.phone = it },
+            value = viewModel.phone,
+            onValueChange = { viewModel.phone = it },
             label = { Text("Phone") },
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
         )
         Spacer(Modifier.height(8.dp))
         TextField(
-            value = screenModel.address,
-            onValueChange = { screenModel.address = it },
+            value = viewModel.address,
+            onValueChange = { viewModel.address = it },
             label = { Text("Address") },
             modifier = Modifier.fillMaxWidth(),
         )
         Spacer(Modifier.height(8.dp))
         Spacer(Modifier.height(16.dp))
-        if (screenModel.isLoading) {
+        if (viewModel.isLoading) {
             CircularProgressIndicator()
         }
-        screenModel.errorMessage?.let {
+        viewModel.errorMessage?.let {
             Text(it, color = Color.Red)
         }
         Button(
-            onClick = { screenModel.onSignupClick(onSignUpSuccess) },
-            enabled = !screenModel.isLoading,
+            onClick = { viewModel.onSignupClick(onSignUpSuccess) },
+            enabled = !viewModel.isLoading,
         ) {
             Text("Sign Up")
         }

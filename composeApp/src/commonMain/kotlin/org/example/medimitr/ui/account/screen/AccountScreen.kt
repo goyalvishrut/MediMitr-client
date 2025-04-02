@@ -72,8 +72,8 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountScreen() {
-    val screenModel = koinViewModel<AccountSettingViewModel>()
-    val state by screenModel.uiState.collectAsState()
+    val viewModel = koinViewModel<AccountSettingViewModel>()
+    val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Show success/error messages
@@ -83,14 +83,14 @@ fun AccountScreen() {
                 message = state.updateError!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearMessages() // Clear message after showing
+            viewModel.clearMessages() // Clear message after showing
         }
         if (state.updateSuccessMessage != null) {
             snackbarHostState.showSnackbar(
                 message = state.updateSuccessMessage!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearMessages() // Clear message after showing
+            viewModel.clearMessages() // Clear message after showing
         }
     }
 
@@ -115,11 +115,11 @@ fun AccountScreen() {
                     AccountDetails(
                         state = state,
                         user = state.user!!,
-                        onStartEdit = screenModel::startEditing,
-                        onSave = screenModel::saveField,
-                        onCancel = screenModel::cancelEditing,
-                        onChangePasswordRequest = { screenModel.showPasswordDialog(true) },
-                        onLogout = { screenModel.logout() },
+                        onStartEdit = viewModel::startEditing,
+                        onSave = viewModel::saveField,
+                        onCancel = viewModel::cancelEditing,
+                        onChangePasswordRequest = { viewModel.showPasswordDialog(true) },
+                        onLogout = { viewModel.logout() },
                     )
             }
         }
@@ -130,8 +130,8 @@ fun AccountScreen() {
         ChangePasswordDialog(
             isLoading = state.isUpdating,
             error = state.updateError,
-            onConfirm = { old, new -> screenModel.changePassword(old, new) },
-            onDismiss = { screenModel.showPasswordDialog(false) },
+            onConfirm = { old, new -> viewModel.changePassword(old, new) },
+            onDismiss = { viewModel.showPasswordDialog(false) },
         )
     }
 }

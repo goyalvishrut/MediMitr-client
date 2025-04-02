@@ -28,8 +28,8 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrderHistoryScreen(onOrderClick: (orderId: Int) -> Unit) {
-    val screenModel = koinViewModel<OrderHistoryScreenViewModel>()
-    val state by screenModel.uiState.collectAsState()
+    val viewModel = koinViewModel<OrderHistoryScreenViewModel>()
+    val state by viewModel.uiState.collectAsState()
 
     Scaffold(
         topBar = {

@@ -33,11 +33,11 @@ fun OrderDetailScreen(
     orderId: Int,
     onBackPressed: () -> Unit,
 ) {
-    val screenModel = koinViewModel<OrderDetailScreenViewModel>()
-    val state by screenModel.uiState.collectAsState()
+    val viewModel = koinViewModel<OrderDetailScreenViewModel>()
+    val state by viewModel.uiState.collectAsState()
 
     LaunchedEffect(orderId) {
-        screenModel.loadOrderDetails(orderId)
+        viewModel.loadOrderDetails(orderId)
     }
 
     Scaffold(
