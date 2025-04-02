@@ -50,10 +50,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatToTwoDecimal
+import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.example.medimitr.ui.order.cart.PriceDetailRow
 import org.example.medimitr.ui.order.cart.PriceDetails
@@ -61,97 +59,95 @@ import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/CheckoutScreen.kt
-data class CheckoutScreen(
-    val priceDetails: PriceDetails,
-) : Screen {
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-
-        // Manually create ScreenModel instance passing parameters via Koin
-        // Requires Koin setup to handle CheckoutScreenModel creation potentially with parameters
-        // Alternative: Use rememberScreenModel with parameters if Voyager Koin integration supports it well.
-        // Let's try direct Koin get with parameters:
-        val screenModel: CheckoutScreenModel =
-            remember(priceDetails) {
-                // Recreate if priceDetails change
-                getKoin().get { parametersOf(priceDetails) } // Pass priceDetails as Koin parameter
-                // Ensure Koin module defines how to create CheckoutScreenModel with PriceDetails
-                // e.g., factory { params -> CheckoutScreenModel(get(), get(), get(), params.get()) }
-            }
-        // Or simpler manual instantiation if Koin setup is complex:
-        // val userRepo: UserRepository = koinInject()
-        // val orderRepo: OrderRepository = koinInject()
-        // val cartRepo: CartRepository = koinInject()
-        // val screenModel = remember(priceDetails) {
-        //     CheckoutScreenModel(userRepo, orderRepo, cartRepo, priceDetails)
-        // }
-
-        val state by screenModel.uiState.collectAsState()
-        val snackbarHostState = remember { SnackbarHostState() }
-
-        // Show placing order errors
-        LaunchedEffect(state.placeOrderError) {
-            if (state.placeOrderError != null) {
-                snackbarHostState.showSnackbar(
-                    message = state.placeOrderError!!,
-                    duration = SnackbarDuration.Short,
-                )
-                screenModel.clearPlaceOrderError() // Clear error after showing
-            }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CheckoutScreen(
+    priceDetails: PriceDetails,
+    onBack: () -> Unit,
+    onOrderPlaced: (String) -> Unit,
+) {
+    // Manually create ScreenModel instance passing parameters via Koin
+    // Requires Koin setup to handle CheckoutScreenModel creation potentially with parameters
+    // Alternative: Use rememberScreenModel with parameters if Voyager Koin integration supports it well.
+    // Let's try direct Koin get with parameters:
+    val screenModel: CheckoutScreenModel =
+        remember(priceDetails) {
+            // Recreate if priceDetails change
+            getKoin().get { parametersOf(priceDetails) } // Pass priceDetails as Koin parameter
+            // Ensure Koin module defines how to create CheckoutScreenModel with PriceDetails
+            // e.g., factory { params -> CheckoutScreenModel(get(), get(), get(), params.get()) }
         }
+    // Or simpler manual instantiation if Koin setup is complex:
+    // val userRepo: UserRepository = koinInject()
+    // val orderRepo: OrderRepository = koinInject()
+    // val cartRepo: CartRepository = koinInject()
+    // val screenModel = remember(priceDetails) {
+    //     CheckoutScreenModel(userRepo, orderRepo, cartRepo, priceDetails)
+    // }
 
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-            topBar = {
-                MediMitrTopAppBar(
-                    title = "Checkout",
-                    showBackButton = true,
-                ) {
-                    navigator.pop() // Pop the current screen
-                }
-            },
-            // Bottom bar for placing order - stays fixed at the bottom
-            bottomBar = {
-                CheckoutActionBar(
-                    totalAmount = state.priceDetails.total,
-                    isLoading = state.isPlacingOrder,
-                    enabled = state.deliveryAddress.isNotBlank() && !state.isLoadingAddress,
-                    onPlaceOrder = { screenModel.onPlaceOrder(navigator) },
-                )
-            },
-        ) { paddingValues ->
-            // Main content area - Make it scrollable
-            Column(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues) // Apply scaffold padding
-                        .verticalScroll(rememberScrollState()) // Make content scrollable
-                        .padding(bottom = 80.dp), // Add padding to prevent overlap with bottom bar
+    val state by screenModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    // Show placing order errors
+    LaunchedEffect(state.placeOrderError) {
+        if (state.placeOrderError != null) {
+            snackbarHostState.showSnackbar(
+                message = state.placeOrderError!!,
+                duration = SnackbarDuration.Short,
+            )
+            screenModel.clearPlaceOrderError() // Clear error after showing
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            MediMitrTopAppBar(
+                title = "Checkout",
+                showBackButton = true,
             ) {
-                // Address Section
-                AddressSection(
-                    isLoading = state.isLoadingAddress,
-                    address = state.deliveryAddress,
-                    isEditing = state.isEditingAddress,
-                    error = state.addressError,
-                    onEditToggle = { screenModel.startEditingAddress() },
-                    onSave = { newAddress -> screenModel.updateSelectedAddress(newAddress) }, // Just updates state
-                    onCancel = { screenModel.cancelEditingAddress() },
-                )
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
-
-                // Price Summary Section
-                PriceSummarySection(details = state.priceDetails)
-                Divider(modifier = Modifier.padding(vertical = 8.dp))
-
-                // Payment Method Section
-                PaymentMethodSection(method = state.paymentMethod)
-
-                Spacer(Modifier.height(16.dp)) // Space before end of scroll
+                onBack() // Pop the current screen
             }
+        },
+        // Bottom bar for placing order - stays fixed at the bottom
+        bottomBar = {
+            CheckoutActionBar(
+                totalAmount = state.priceDetails.total,
+                isLoading = state.isPlacingOrder,
+                enabled = state.deliveryAddress.isNotBlank() && !state.isLoadingAddress,
+                onPlaceOrder = { screenModel.onPlaceOrder(onOrderPlaced) },
+            )
+        },
+    ) { paddingValues ->
+        // Main content area - Make it scrollable
+        Column(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues) // Apply scaffold padding
+                    .verticalScroll(rememberScrollState()) // Make content scrollable
+                    .padding(bottom = 80.dp), // Add padding to prevent overlap with bottom bar
+        ) {
+            // Address Section
+            AddressSection(
+                isLoading = state.isLoadingAddress,
+                address = state.deliveryAddress,
+                isEditing = state.isEditingAddress,
+                error = state.addressError,
+                onEditToggle = { screenModel.startEditingAddress() },
+                onSave = { newAddress -> screenModel.updateSelectedAddress(newAddress) }, // Just updates state
+                onCancel = { screenModel.cancelEditingAddress() },
+            )
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+            // Price Summary Section
+            PriceSummarySection(details = state.priceDetails)
+            Divider(modifier = Modifier.padding(vertical = 8.dp))
+
+            // Payment Method Section
+            PaymentMethodSection(method = state.paymentMethod)
+
+            Spacer(Modifier.height(16.dp)) // Space before end of scroll
         }
     }
 }

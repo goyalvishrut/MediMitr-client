@@ -66,7 +66,7 @@ kotlin {
             // Koin for Dependency Injection
             implementation(libs.koin.core) // Core Koin library // Use latest Koin version
 
-//            implementation(libs.navigation.compose)
+            implementation(libs.navigation.compose)
 
             implementation(libs.voyager.navigator)
             implementation(libs.voyager.screenmodel)

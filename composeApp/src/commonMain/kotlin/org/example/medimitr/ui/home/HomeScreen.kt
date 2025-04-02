@@ -68,10 +68,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import coil3.ImageLoader
 import coil3.compose.AsyncImage
 import coil3.compose.LocalPlatformContext
@@ -79,93 +75,86 @@ import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.marketing.Category
 import org.example.medimitr.domain.marketing.Promotion
 import org.example.medimitr.domain.medicine.Medicine
-import org.example.medimitr.ui.medicine.MedicineDetailScreen
-import org.example.medimitr.ui.order.cart.CartScreen
-import org.example.medimitr.ui.search.SearchScreen
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/HomeScreen.kt
 @OptIn(ExperimentalMaterial3Api::class)
-class HomeScreen : Screen { // Use object if no params needed
+@Composable
+fun HomeScreen(
+    onCartClick: () -> Unit,
+    onSearchClick: () -> Unit,
+    onMedicineClick: (String) -> Unit,
+) {
+    val screenModel = remember { getKoin().get<HomeScreenModel>() }
+    val state by screenModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val citySheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = rememberScreenModel { getKoin().get<HomeScreenModel>() }
-        val state by screenModel.uiState.collectAsState()
-        val snackbarHostState = remember { SnackbarHostState() }
-        val citySheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-        // Show errors
-        LaunchedEffect(state.error) {
-            if (state.error != null) {
-                snackbarHostState.showSnackbar(state.error!!, duration = SnackbarDuration.Short)
-                screenModel.clearError()
-            }
+    // Show errors
+    LaunchedEffect(state.error) {
+        if (state.error != null) {
+            snackbarHostState.showSnackbar(state.error!!, duration = SnackbarDuration.Short)
+            screenModel.clearError()
         }
+    }
 
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-            topBar = {
-                HomeTopAppBar(
-                    selectedCity = state.selectedCity,
-                    cartItemCount = state.cartItems.size,
-                    onCityClick = { screenModel.toggleCitySelection(true) },
-                    onCartClick = { navigator.push(CartScreen()) },
-                )
-            },
-        ) { paddingValues ->
-            Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-                if (state.isLoading && state.promotions.isEmpty()) { // Show loading only initially
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    HomeContent(
-                        state = state,
-                        onSearchClick = { navigator.push(SearchScreen()) },
-                        onCategoryClick = { /* TODO: Handle category selection (filter/navigate) */ },
-                        onMedicineClick = { medicineId ->
-                            navigator.push(
-                                MedicineDetailScreen(
-                                    medicineId,
-                                ),
-                            )
-                        },
-                        onAddToCart = screenModel::onAddToCart,
-                        onUpdateQuantity = screenModel::onUpdateQuantity,
-                    )
-                }
-            }
-        }
-
-        // --- City Selection Bottom Sheet ---
-        if (state.showCitySelection) {
-            ModalBottomSheet(
-                onDismissRequest = { screenModel.toggleCitySelection(false) },
-                sheetState = citySheetState,
-            ) {
-                CitySelectionBottomSheetContent(
-                    cities = state.availableCities,
-                    selectedCity = state.selectedCity,
-                    onCitySelected = screenModel::selectCity,
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = {
+            HomeTopAppBar(
+                selectedCity = state.selectedCity,
+                cartItemCount = state.cartItems.size,
+                onCityClick = { screenModel.toggleCitySelection(true) },
+                onCartClick = { onCartClick() },
+            )
+        },
+    ) { paddingValues ->
+        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            if (state.isLoading && state.promotions.isEmpty()) { // Show loading only initially
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else {
+                HomeContent(
+                    state = state,
+                    onSearchClick = { onSearchClick() },
+                    onCategoryClick = { /* TODO: Handle category selection (filter/navigate) */ },
+                    onMedicineClick = { medicineId ->
+                        onMedicineClick.invoke(medicineId)
+                    },
+                    onAddToCart = screenModel::onAddToCart,
+                    onUpdateQuantity = screenModel::onUpdateQuantity,
                 )
             }
         }
+    }
 
-        // --- Remove Item Confirmation Dialog ---
-        if (state.showRemoveConfirmation && state.itemPendingRemoval != null) {
-            AlertDialog(
-                onDismissRequest = screenModel::cancelRemoveItem,
-                title = { Text("Remove Item?") },
-                text = { Text("Do you want to remove ${state.itemPendingRemoval?.name} from your cart?") },
-                confirmButton = {
-                    Button(onClick = screenModel::confirmRemoveItem) { Text("Remove") }
-                },
-                dismissButton = {
-                    TextButton(onClick = screenModel::cancelRemoveItem) { Text("Cancel") }
-                },
+    // --- City Selection Bottom Sheet ---
+    if (state.showCitySelection) {
+        ModalBottomSheet(
+            onDismissRequest = { screenModel.toggleCitySelection(false) },
+            sheetState = citySheetState,
+        ) {
+            CitySelectionBottomSheetContent(
+                cities = state.availableCities,
+                selectedCity = state.selectedCity,
+                onCitySelected = screenModel::selectCity,
             )
         }
+    }
+
+    // --- Remove Item Confirmation Dialog ---
+    if (state.showRemoveConfirmation && state.itemPendingRemoval != null) {
+        AlertDialog(
+            onDismissRequest = screenModel::cancelRemoveItem,
+            title = { Text("Remove Item?") },
+            text = { Text("Do you want to remove ${state.itemPendingRemoval?.name} from your cart?") },
+            confirmButton = {
+                Button(onClick = screenModel::confirmRemoveItem) { Text("Remove") }
+            },
+            dismissButton = {
+                TextButton(onClick = screenModel::cancelRemoveItem) { Text("Cancel") }
+            },
+        )
     }
 }
 

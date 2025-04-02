@@ -1,6 +1,5 @@
 package org.example.medimitr.ui.order.checkout
 
-import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.firstOrNull
@@ -11,7 +10,6 @@ import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.order.OrderRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
 import org.example.medimitr.ui.order.cart.PriceDetails
-import org.example.medimitr.ui.order.orderconfirmation.OrderPlacedScreen
 
 data class CheckoutUiState(
     val isLoadingAddress: Boolean = true,
@@ -94,7 +92,7 @@ class CheckoutScreenModel(
         _uiState.update { it.copy(placeOrderError = null) }
     }
 
-    fun onPlaceOrder(navigator: Navigator) {
+    fun onPlaceOrder(onOrderPlaced: (String) -> Unit) {
         val currentState = _uiState.value
         if (currentState.deliveryAddress.isBlank()) {
             _uiState.update { it.copy(placeOrderError = "Please provide a delivery address.") }
@@ -137,11 +135,8 @@ class CheckoutScreenModel(
             if (result.isSuccess) {
                 cartRepository.clearCart() // Clear cart on success
                 // Navigate to Order Placed screen - replace 'OrderPlacedScreen()' with your actual screen class
-                navigator.replaceAll(
-                    OrderPlacedScreen(
-                        orderId = result.getOrNull()?.id.toString(),
-                    ),
-                ) // Pass order ID if returned
+                onOrderPlaced.invoke(result.getOrNull()?.id.toString())
+                // Pass order ID if returned
             } else {
                 _uiState.update {
                     it.copy(

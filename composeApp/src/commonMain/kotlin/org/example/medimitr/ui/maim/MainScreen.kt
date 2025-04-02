@@ -1,8 +1,11 @@
 package org.example.medimitr.ui.maim
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -14,57 +17,115 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.tab.CurrentTab
-import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
-import cafe.adriel.voyager.navigator.tab.Tab
-import cafe.adriel.voyager.navigator.tab.TabNavigator
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.map
 import org.example.medimitr.domain.cart.CartRepository
+import org.example.medimitr.ui.account.screen.AccountScreen
+import org.example.medimitr.ui.home.HomeScreen
+import org.example.medimitr.ui.maim.MainScreenTabs.Account
+import org.example.medimitr.ui.maim.MainScreenTabs.Cart
+import org.example.medimitr.ui.maim.MainScreenTabs.Home
+import org.example.medimitr.ui.maim.MainScreenTabs.OrderHistory
+import org.example.medimitr.ui.order.cart.CartScreen
+import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
 import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/MainScreen.kt
-class MainScreen : Screen {
-    @Composable
-    override fun Content() {
-        val cartRepository = getKoin().get<CartRepository>()
-        val cartItemCount by cartRepository.cartItems.map { it.size }.collectAsState(initial = 0)
+@Composable
+fun MainScreen() {
+    val cartRepository = getKoin().get<CartRepository>()
+    val cartItemCount by cartRepository.cartItems.map { it.size }.collectAsState(initial = 0)
 
-        TabNavigator(HomeTab) { tabNavigator ->
-            Scaffold(
-                bottomBar = {
-                    NavigationBar {
-                        TabNavigationItem(tab = HomeTab)
-                        TabNavigationItem(tab = CartTab, badge = cartItemCount)
-                        TabNavigationItem(tab = OrderTab)
-                        TabNavigationItem(tab = AccountTab)
-                    }
-                },
-            ) { padding ->
-                Box(modifier = Modifier.padding(padding)) {
-                    CurrentTab()
-                }
+    val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    val bottomBarRoutes = MainScreenTabs.allTabsRoutes
+
+    val shouldShowBottomBar = currentRoute in bottomBarRoutes
+
+    Scaffold(
+        bottomBar = {
+            if (shouldShowBottomBar) {
+                BottomNavigationBar(navController, cartItemCount)
             }
+        },
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Home,
+            modifier = Modifier.padding(innerPadding),
+        ) {
+            composable<Home> { HomeScreen({}, {}, {}) }
+            composable<Cart> { CartScreen({}) }
+            composable<OrderHistory> { OrderHistoryScreen({}) }
+            composable<Account> { AccountScreen() }
         }
     }
 }
 
 @Composable
-private fun RowScope.TabNavigationItem(
-    tab: Tab,
+fun BottomNavigationBar(
+    navController: NavHostController,
     badge: Int = 0,
 ) {
-    val tabNavigator = LocalTabNavigator.current
-    NavigationBarItem(
-        selected = tabNavigator.current == tab,
-        onClick = { tabNavigator.current = tab },
-        icon = {
-            BadgedBox(badge = {
-                if (badge > 0) Badge { Text(badge.toString()) }
-            }) {
-                Icon(tab.options.icon!!, contentDescription = tab.options.title)
-            }
-        },
-        label = { Text(tab.options.title) },
-    )
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
+
+    NavigationBar {
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Home, "Home") },
+            label = { Text("Home") },
+            selected = currentRoute == Home::class.qualifiedName,
+            onClick = {
+                navController.navigate(Home) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            },
+        )
+        NavigationBarItem(
+            icon = {
+                BadgedBox(badge = {
+                    if (badge > 0) Badge { Text(badge.toString()) }
+                }) {
+                    Icon(Icons.Default.ShoppingCart, "Cart")
+                }
+            },
+            label = { Text("Cart") },
+            selected = currentRoute == Cart::class.qualifiedName,
+            onClick = {
+                navController.navigate(Cart) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            },
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.Info, "History") },
+            label = { Text("History") },
+            selected = currentRoute == OrderHistory::class.qualifiedName,
+            onClick = {
+                navController.navigate(OrderHistory) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            },
+        )
+        NavigationBarItem(
+            icon = { Icon(Icons.Default.AccountBox, "Account") },
+            label = { Text("Account") },
+            selected = currentRoute == Account::class.qualifiedName,
+            onClick = {
+                navController.navigate(Account) {
+                    popUpTo(navController.graph.startDestinationId)
+                    launchSingleTop = true
+                }
+            },
+        )
+    }
 }

@@ -63,10 +63,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.domain.auth.User
 import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
 import org.example.medimitr.ui.account.screenmodel.AccountUiState
@@ -74,74 +70,69 @@ import org.example.medimitr.ui.account.screenmodel.EditingField
 import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.koin.mp.KoinPlatform.getKoin
 
-class AccountScreen : Screen { // Use object if no parameters needed
+@Composable
+fun AccountScreen() {
+    val screenModel = remember { getKoin().get<AccountScreenModel>() }
+    val state by screenModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    override fun Content() {
-        val screenModel = rememberScreenModel { getKoin().get<AccountScreenModel>() }
-        val navigator = LocalNavigator.currentOrThrow
-        val state by screenModel.uiState.collectAsState()
-        val snackbarHostState = remember { SnackbarHostState() }
-
-        // Show success/error messages
-        LaunchedEffect(state.updateError, state.updateSuccessMessage) {
-            if (state.updateError != null) {
-                snackbarHostState.showSnackbar(
-                    message = state.updateError!!,
-                    duration = SnackbarDuration.Short,
-                )
-                screenModel.clearMessages() // Clear message after showing
-            }
-            if (state.updateSuccessMessage != null) {
-                snackbarHostState.showSnackbar(
-                    message = state.updateSuccessMessage!!,
-                    duration = SnackbarDuration.Short,
-                )
-                screenModel.clearMessages() // Clear message after showing
-            }
-        }
-
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-            topBar = { MediMitrTopAppBar(title = "My Account") },
-        ) { paddingValues ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(paddingValues),
-                contentAlignment = Alignment.Center,
-            ) {
-                when {
-                    state.isLoading -> CircularProgressIndicator()
-                    state.loadError != null ->
-                        Text(
-                            "Error: ${state.loadError}",
-                            color = MaterialTheme.colorScheme.error,
-                        )
-
-                    state.user == null -> Text("User data not available.")
-                    else ->
-                        AccountDetails(
-                            state = state,
-                            user = state.user!!,
-                            onStartEdit = screenModel::startEditing,
-                            onSave = screenModel::saveField,
-                            onCancel = screenModel::cancelEditing,
-                            onChangePasswordRequest = { screenModel.showPasswordDialog(true) },
-                            onLogout = { screenModel.logout() },
-                        )
-                }
-            }
-        }
-
-        // Password Change Dialog
-        if (state.showPasswordChangeDialog) {
-            ChangePasswordDialog(
-                isLoading = state.isUpdating,
-                error = state.updateError,
-                onConfirm = { old, new -> screenModel.changePassword(old, new) },
-                onDismiss = { screenModel.showPasswordDialog(false) },
+    // Show success/error messages
+    LaunchedEffect(state.updateError, state.updateSuccessMessage) {
+        if (state.updateError != null) {
+            snackbarHostState.showSnackbar(
+                message = state.updateError!!,
+                duration = SnackbarDuration.Short,
             )
+            screenModel.clearMessages() // Clear message after showing
         }
+        if (state.updateSuccessMessage != null) {
+            snackbarHostState.showSnackbar(
+                message = state.updateSuccessMessage!!,
+                duration = SnackbarDuration.Short,
+            )
+            screenModel.clearMessages() // Clear message after showing
+        }
+    }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = { MediMitrTopAppBar(title = "My Account") },
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier.fillMaxSize().padding(paddingValues),
+            contentAlignment = Alignment.Center,
+        ) {
+            when {
+                state.isLoading -> CircularProgressIndicator()
+                state.loadError != null ->
+                    Text(
+                        "Error: ${state.loadError}",
+                        color = MaterialTheme.colorScheme.error,
+                    )
+
+                state.user == null -> Text("User data not available.")
+                else ->
+                    AccountDetails(
+                        state = state,
+                        user = state.user!!,
+                        onStartEdit = screenModel::startEditing,
+                        onSave = screenModel::saveField,
+                        onCancel = screenModel::cancelEditing,
+                        onChangePasswordRequest = { screenModel.showPasswordDialog(true) },
+                        onLogout = { screenModel.logout() },
+                    )
+            }
+        }
+    }
+
+    // Password Change Dialog
+    if (state.showPasswordChangeDialog) {
+        ChangePasswordDialog(
+            isLoading = state.isUpdating,
+            error = state.updateError,
+            onConfirm = { old, new -> screenModel.changePassword(old, new) },
+            onDismiss = { screenModel.showPasswordDialog(false) },
+        )
     }
 }
 

@@ -1,16 +1,16 @@
 package org.example.medimitr.ui.order.cart
 
-import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.serialization.Serializable
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.order.checkout.CheckoutScreen
 
+@Serializable
 data class PriceDetails(
     val subtotal: Double = 0.0,
     val deliveryCharge: Double = 40.0, // Dummy value
@@ -146,10 +146,10 @@ class CartScreenModel(
 
     // --- Navigation ---
 
-    fun onProceedToCheckout(navigator: Navigator) {
+    fun onProceedToCheckout(onCheckout: (PriceDetails) -> Unit) {
         // Can add more checks here if needed (e.g., minimum order value)
         if (_uiState.value.cartItems.isNotEmpty()) {
-            navigator.push(CheckoutScreen(priceDetails = uiState.value.priceDetails)) // Navigate to your checkout screen
+            onCheckout.invoke(uiState.value.priceDetails) // Navigate to your checkout screen
         }
     }
 

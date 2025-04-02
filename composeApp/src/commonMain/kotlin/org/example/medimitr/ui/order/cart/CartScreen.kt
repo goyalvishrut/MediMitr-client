@@ -51,10 +51,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.ui.components.MediMitrTopAppBar
@@ -62,71 +58,68 @@ import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/CartScreen.kt
 @OptIn(ExperimentalMaterial3Api::class)
-class CartScreen : Screen {
-    @Composable
-    override fun Content() {
-        val screenModel = rememberScreenModel { getKoin().get<CartScreenModel>() }
-        val navigator = LocalNavigator.currentOrThrow
-        val state by screenModel.uiState.collectAsState()
-        val snackbarHostState = remember { SnackbarHostState() }
-        val sheetState =
-            rememberModalBottomSheetState(skipPartiallyExpanded = true) // Bottom sheet state
+@Composable
+fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
+    val screenModel = remember { getKoin().get<CartScreenModel>() }
+    val state by screenModel.uiState.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val sheetState =
+        rememberModalBottomSheetState(skipPartiallyExpanded = true) // Bottom sheet state
 
-        // Show errors in Snackbar
-        LaunchedEffect(state.error) {
-            if (state.error != null) {
-                snackbarHostState.showSnackbar(
-                    message = state.error!!,
-                    duration = SnackbarDuration.Short,
-                )
-                screenModel.clearError()
-            }
-        }
-
-        Scaffold(
-            snackbarHost = { SnackbarHost(snackbarHostState) },
-            topBar = { MediMitrTopAppBar(title = "Your Cart") },
-        ) { paddingValues ->
-            Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
-                if (state.isLoading) {
-                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
-                } else if (state.cartItems.isEmpty()) {
-                    EmptyCartView(modifier = Modifier.align(Alignment.Center))
-                } else {
-                    CartContentView(
-                        state = state,
-                        onQuantityChange = screenModel::updateQuantity,
-                        onShowPriceDetails = screenModel::showPriceDetailsSheet,
-                        onCheckout = { screenModel.onProceedToCheckout(navigator) },
-                    )
-                }
-            }
-        }
-
-        // --- Remove Item Confirmation Dialog ---
-        if (state.showRemoveConfirmationDialog && state.itemPendingRemoval != null) {
-            AlertDialog(
-                onDismissRequest = screenModel::cancelRemoveItem,
-                title = { Text("Remove Item?") },
-                text = { Text("Do you want to remove ${state.itemPendingRemoval?.medicine?.name} from your cart?") },
-                confirmButton = {
-                    Button(onClick = screenModel::confirmRemoveItem) { Text("Remove") }
-                },
-                dismissButton = {
-                    TextButton(onClick = screenModel::cancelRemoveItem) { Text("Cancel") }
-                },
+    // Show errors in Snackbar
+    LaunchedEffect(state.error) {
+        if (state.error != null) {
+            snackbarHostState.showSnackbar(
+                message = state.error!!,
+                duration = SnackbarDuration.Short,
             )
+            screenModel.clearError()
         }
+    }
 
-        // --- Price Details Bottom Sheet ---
-        if (state.showPriceDetailsSheet) {
-            ModalBottomSheet(
-                onDismissRequest = screenModel::hidePriceDetailsSheet,
-                sheetState = sheetState,
-                // You can customize shape, colors etc. here
-            ) {
-                PriceDetailsBottomSheetContent(details = state.priceDetails)
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        topBar = { MediMitrTopAppBar(title = "Your Cart") },
+    ) { paddingValues ->
+        Box(modifier = Modifier.fillMaxSize().padding(paddingValues)) {
+            if (state.isLoading) {
+                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+            } else if (state.cartItems.isEmpty()) {
+                EmptyCartView(modifier = Modifier.align(Alignment.Center))
+            } else {
+                CartContentView(
+                    state = state,
+                    onQuantityChange = screenModel::updateQuantity,
+                    onShowPriceDetails = screenModel::showPriceDetailsSheet,
+                    onCheckout = { screenModel.onProceedToCheckout(onCheckout) },
+                )
             }
+        }
+    }
+
+    // --- Remove Item Confirmation Dialog ---
+    if (state.showRemoveConfirmationDialog && state.itemPendingRemoval != null) {
+        AlertDialog(
+            onDismissRequest = screenModel::cancelRemoveItem,
+            title = { Text("Remove Item?") },
+            text = { Text("Do you want to remove ${state.itemPendingRemoval?.medicine?.name} from your cart?") },
+            confirmButton = {
+                Button(onClick = screenModel::confirmRemoveItem) { Text("Remove") }
+            },
+            dismissButton = {
+                TextButton(onClick = screenModel::cancelRemoveItem) { Text("Cancel") }
+            },
+        )
+    }
+
+    // --- Price Details Bottom Sheet ---
+    if (state.showPriceDetailsSheet) {
+        ModalBottomSheet(
+            onDismissRequest = screenModel::hidePriceDetailsSheet,
+            sheetState = sheetState,
+            // You can customize shape, colors etc. here
+        ) {
+            PriceDetailsBottomSheetContent(details = state.priceDetails)
         }
     }
 }
