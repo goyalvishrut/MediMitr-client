@@ -29,4 +29,15 @@ interface ApiService {
     suspend fun getOrderById(orderId: Int): OrderHistoryResponse
 
     suspend fun getUser(token: String): UserDetailsResponse
+
+    suspend fun updateEmail(newEmail: String): Boolean
+
+    suspend fun updateAddress(newValue: String): Boolean
+
+    suspend fun updatePhone(newValue: String): Boolean
+
+    suspend fun updatePassword(
+        oldPass: String,
+        newPass: String,
+    ): Boolean
 }

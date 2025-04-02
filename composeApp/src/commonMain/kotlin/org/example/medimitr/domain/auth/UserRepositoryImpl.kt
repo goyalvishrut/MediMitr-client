@@ -1,6 +1,5 @@
 package org.example.medimitr.domain.auth
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.example.medimitr.data.api.ApiService
 import org.example.medimitr.data.local.TokenStorage
@@ -32,23 +31,47 @@ class UserRepositoryImpl(
         }
     }
 
-    override fun updateEmail(newValue: String): Flow<Result<Unit>> {
-        TODO("Not yet implemented")
+    override suspend fun updateEmail(newEmail: String): Result<Boolean> {
+        try {
+            tokenStorage.getToken() ?: return Result.failure(Exception("Token not found"))
+            val response = apiService.updateEmail(newEmail)
+            return Result.success(response)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 
-    override fun updateAddress(newValue: String): Flow<Result<Unit>> {
-        TODO("Not yet implemented")
+    override suspend fun updateAddress(newValue: String): Result<Boolean> {
+        try {
+            tokenStorage.getToken() ?: return Result.failure(Exception("Token not found"))
+            val response = apiService.updateAddress(newValue)
+            return Result.success(response)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 
-    override fun updatePhone(newValue: String): Flow<Result<Unit>> {
-        TODO("Not yet implemented")
+    override suspend fun updatePhone(newValue: String): Result<Boolean> {
+        try {
+            tokenStorage.getToken() ?: return Result.failure(Exception("Token not found"))
+            val response = apiService.updatePhone(newValue)
+            return Result.success(response)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 
-    override fun changePassword(
+    override suspend fun changePassword(
         oldPass: String,
         newPass: String,
-    ): Flow<Result<Unit>> {
-        TODO("Not yet implemented")
+    ): Result<Boolean> {
+        try {
+            tokenStorage.getToken() ?: return Result.failure(Exception("Token not found"))
+            val response = apiService.updatePassword(oldPass, newPass)
+            return Result.success(response)
+        } catch (e: Exception) {
+            return Result.failure(e)
+        }
     }
 
     override fun logout() {

@@ -131,6 +131,77 @@ class ApiServiceImpl(
             }
     }
 
+    override suspend fun updateEmail(newEmail: String): Boolean {
+        client
+            .post("$BASE_URL/user/email") {
+                contentType(ContentType.Application.Json)
+                setBody(mapOf("email" to newEmail))
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body<Boolean>()
+            .let { response ->
+                return response
+            }
+    }
+
+    override suspend fun updateAddress(newValue: String): Boolean {
+        client
+            .post("$BASE_URL/user/address") {
+                contentType(ContentType.Application.Json)
+                setBody(mapOf("address" to newValue))
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body<Boolean>()
+            .let { response ->
+                return response
+            }
+    }
+
+    override suspend fun updatePhone(newValue: String): Boolean {
+        client
+            .post("$BASE_URL/user/phone") {
+                contentType(ContentType.Application.Json)
+                setBody(mapOf("phone" to newValue))
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body<Boolean>()
+            .let { response ->
+                return response
+            }
+    }
+
+    override suspend fun updatePassword(
+        oldPass: String,
+        newPass: String,
+    ): Boolean {
+        client
+            .post("$BASE_URL/user/password") {
+                contentType(ContentType.Application.Json)
+                setBody(mapOf("oldPassword" to oldPass, "newPassword" to newPass))
+                headers {
+                    append(
+                        HttpHeaders.Authorization,
+                        "${AuthScheme.Bearer} ${tokenStorage.getToken()}",
+                    )
+                }
+            }.body<Boolean>()
+            .let { response ->
+                return response
+            }
+    }
+
     companion object {
         private const val BASE_URL = "http://192.168.29.57:8080"
     }

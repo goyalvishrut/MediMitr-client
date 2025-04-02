@@ -2,7 +2,6 @@ package org.example.medimitr.ui.account.screenmodel
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.User
@@ -113,7 +112,7 @@ class AccountScreenModel(
             )
         }
         viewModelScope.launch {
-            val resultFlow =
+            val result =
                 when (field) {
                     EditingField.EMAIL -> userRepository.updateEmail(newValue)
                     EditingField.ADDRESS -> userRepository.updateAddress(newValue)
@@ -121,9 +120,7 @@ class AccountScreenModel(
                     EditingField.NONE -> return@launch // Should not happen
                 }
 
-            resultFlow
-                .catch { e -> handleUpdateResult(Result.failure(e)) }
-                .collect { result -> handleUpdateResult(result) }
+            handleUpdateResult(result)
         }
     }
 
@@ -139,10 +136,7 @@ class AccountScreenModel(
             )
         }
         viewModelScope.launch {
-            userRepository
-                .changePassword(oldPass, newPass)
-                .catch { e -> handleUpdateResult(Result.failure(e), passwordChange = true) }
-                .collect { result -> handleUpdateResult(result, passwordChange = true) }
+            handleUpdateResult(userRepository.changePassword(oldPass, newPass), true)
         }
     }
 
@@ -177,7 +171,7 @@ class AccountScreenModel(
     }
 
     private fun handleUpdateResult(
-        result: Result<Unit>,
+        result: Result<Boolean>,
         passwordChange: Boolean = false,
     ) {
         result

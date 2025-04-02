@@ -1,6 +1,5 @@
 package org.example.medimitr.domain.auth
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface UserRepository {
@@ -8,16 +7,16 @@ interface UserRepository {
 
     suspend fun getCurrentUser(): Result<User>
 
-    fun updateEmail(newValue: String): Flow<Result<Unit>>
+    suspend fun updateEmail(newEmail: String): Result<Boolean>
 
-    fun updateAddress(newValue: String): Flow<Result<Unit>>
+    suspend fun updateAddress(newValue: String): Result<Boolean>
 
-    fun updatePhone(newValue: String): Flow<Result<Unit>>
+    suspend fun updatePhone(newValue: String): Result<Boolean>
 
-    fun changePassword(
+    suspend fun changePassword(
         oldPass: String,
         newPass: String,
-    ): Flow<Result<Unit>>
+    ): Result<Boolean>
 
     fun logout()
 
