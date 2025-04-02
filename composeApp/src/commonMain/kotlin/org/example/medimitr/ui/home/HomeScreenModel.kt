@@ -98,6 +98,7 @@ class HomeScreenModel(
         _uiState.update { it.copy(showCitySelection = false) } // Hide sheet after selection
         viewModelScope.launch {
             locationRepository.selectCity(city) // Update preference
+            _uiState.update { it.copy(selectedCity = city) } // Update UI state
             // Optionally reload data based on the new city
             loadHomeScreenData()
         }
