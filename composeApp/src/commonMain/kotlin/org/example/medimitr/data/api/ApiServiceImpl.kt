@@ -135,7 +135,7 @@ class ApiServiceImpl(
         client
             .post("$BASE_URL/user/email") {
                 contentType(ContentType.Application.Json)
-                setBody(mapOf("email" to newEmail))
+                setBody(newEmail)
                 headers {
                     append(
                         HttpHeaders.Authorization,
@@ -152,7 +152,7 @@ class ApiServiceImpl(
         client
             .post("$BASE_URL/user/address") {
                 contentType(ContentType.Application.Json)
-                setBody(mapOf("address" to newValue))
+                setBody(newValue)
                 headers {
                     append(
                         HttpHeaders.Authorization,
@@ -169,7 +169,7 @@ class ApiServiceImpl(
         client
             .post("$BASE_URL/user/phone") {
                 contentType(ContentType.Application.Json)
-                setBody(mapOf("phone" to newValue))
+                setBody(newValue)
                 headers {
                     append(
                         HttpHeaders.Authorization,
