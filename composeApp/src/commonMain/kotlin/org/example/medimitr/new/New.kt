@@ -42,17 +42,15 @@ import kotlin.reflect.typeOf
 
 // Top-level screens
 @Serializable
-sealed class Screen(
-    val route: String,
-) {
+sealed class Screen {
     @Serializable
-    object Auth : Screen("auth")
+    object Auth : Screen()
 
     @Serializable
-    object LoginFlow : Screen("login_flow")
+    object LoginFlow : Screen()
 
     @Serializable
-    object HomeFlow : Screen("home_flow")
+    object HomeFlow : Screen()
 }
 
 // Screens for the HomeFlow (the tabs)
@@ -75,50 +73,42 @@ sealed class AuthorisedFlowScreen(
 
 // Screens for HomeTab flow
 @Serializable
-sealed class HomeTabFlowScreen(
-    val route: String,
-) {
+sealed class HomeTabFlowScreen {
     @Serializable
-    object SearchScreen : HomeTabFlowScreen("search_screen")
+    object SearchScreen : HomeTabFlowScreen()
 
     @Serializable
     data class MedicineDetails(
         val medicineId: String,
-    ) : HomeTabFlowScreen("medicine_details")
+    ) : HomeTabFlowScreen()
 }
 
 // Screens for CartTab flow
 @Serializable
-sealed class CartTabFlowScreen(
-    val route: String,
-) {
+sealed class CartTabFlowScreen {
     @Serializable
     data class CheckoutScreen(
         val priceDetails: PriceDetails,
-    ) : CartTabFlowScreen("checkout_screen")
+    ) : CartTabFlowScreen()
 
     @Serializable
     data class OrderConfirmation(
         val orderId: String,
-    ) : CartTabFlowScreen("order_confirmation")
+    ) : CartTabFlowScreen()
 }
 
 // Screens for OrdersTab flow
 @Serializable
-sealed class OrdersTabFlowScreen(
-    val route: String,
-) {
+sealed class OrdersTabFlowScreen {
     @Serializable
     data class OrderDetails(
         val orderId: Int,
-    ) : OrdersTabFlowScreen("order_details")
+    ) : OrdersTabFlowScreen()
 }
 
 // Screens for AccountTab flow (empty for now, but keeping it modular)
 @Serializable
-sealed class AccountTabFlowScreen(
-    val route: String,
-) {
+sealed class AccountTabFlowScreen {
     // Add screens here if needed
 }
 
