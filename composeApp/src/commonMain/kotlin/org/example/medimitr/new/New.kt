@@ -25,6 +25,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 
 // Top-level screens
@@ -93,7 +94,9 @@ sealed class OrdersTabFlowScreen(
     object OrderList : OrdersTabFlowScreen("order_list")
 
     @Serializable
-    object OrderDetails : OrdersTabFlowScreen("order_details")
+    data class OrderDetails(
+        val orderId: Int,
+    ) : OrdersTabFlowScreen("order_details")
 }
 
 // Screens for AccountTab flow (empty for now, but keeping it modular)
@@ -365,11 +368,12 @@ fun OrdersTabFlow(onCurrentScreenChanged: (String) -> Unit) {
         }
         composable<OrdersTabFlowScreen.OrderList> {
             OrderListScreen(
-                onOrderClick = { navController.navigate(OrdersTabFlowScreen.OrderDetails) },
+                onOrderClick = { navController.navigate(OrdersTabFlowScreen.OrderDetails(orderId = 1)) },
             )
         }
         composable<OrdersTabFlowScreen.OrderDetails> {
-            OrderDetailsScreen()
+            val args = it.toRoute<OrdersTabFlowScreen.OrderDetails>()
+            OrderDetailsScreen(args.orderId)
         }
     }
 }
@@ -492,8 +496,8 @@ fun OrderListScreen(onOrderClick: () -> Unit) {
 }
 
 @Composable
-fun OrderDetailsScreen() {
+fun OrderDetailsScreen(orderId: Int) {
     Box(modifier = Modifier.padding(16.dp)) {
-        Text("Order Details")
+        Text("Order Details with ID: $orderId")
     }
 }
