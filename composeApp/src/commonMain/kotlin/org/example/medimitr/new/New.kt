@@ -1,7 +1,6 @@
 package org.example.medimitr.new
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -28,6 +27,16 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
+import org.example.medimitr.ui.account.screen.AccountScreen
+import org.example.medimitr.ui.home.HomeScreen
+import org.example.medimitr.ui.medicine.MedicineDetailScreen
+import org.example.medimitr.ui.order.cart.CartScreen
+import org.example.medimitr.ui.order.cart.PriceDetails
+import org.example.medimitr.ui.order.checkout.CheckoutScreen
+import org.example.medimitr.ui.order.orderconfirmation.OrderPlacedScreen
+import org.example.medimitr.ui.order.orderhistory.OrderDetailScreen
+import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
+import org.example.medimitr.ui.search.SearchScreen
 
 // Top-level screens
 @Serializable
@@ -71,7 +80,9 @@ sealed class HomeTabFlowScreen(
     object SearchScreen : HomeTabFlowScreen("search_screen")
 
     @Serializable
-    object MedicineDetails : HomeTabFlowScreen("medicine_details")
+    data class MedicineDetails(
+        val medicineId: String,
+    ) : HomeTabFlowScreen("medicine_details")
 }
 
 // Screens for CartTab flow
@@ -80,10 +91,14 @@ sealed class CartTabFlowScreen(
     val route: String,
 ) {
     @Serializable
-    object CheckoutScreen : CartTabFlowScreen("checkout_screen")
+    data class CheckoutScreen(
+        val priceDetails: PriceDetails,
+    ) : CartTabFlowScreen("checkout_screen")
 
     @Serializable
-    object OrderConfirmation : CartTabFlowScreen("order_confirmation")
+    data class OrderConfirmation(
+        val orderId: String,
+    ) : CartTabFlowScreen("order_confirmation")
 }
 
 // Screens for OrdersTab flow
@@ -91,9 +106,6 @@ sealed class CartTabFlowScreen(
 sealed class OrdersTabFlowScreen(
     val route: String,
 ) {
-    @Serializable
-    object OrderList : OrdersTabFlowScreen("order_list")
-
     @Serializable
     data class OrderDetails(
         val orderId: Int,
@@ -290,17 +302,23 @@ fun HomeTabFlow(
         startDestination = "home_tab_content",
     ) {
         composable("home_tab_content") {
-            HomeTabScreen(
+            HomeScreen(
+                onMedicineClick = { navController.navigate(HomeTabFlowScreen.MedicineDetails(it)) },
                 onSearchClick = { navController.navigate(HomeTabFlowScreen.SearchScreen) },
+                onCartClick = { },
             )
         }
         composable<HomeTabFlowScreen.SearchScreen> {
             SearchScreen(
-                onMedicineClick = { navController.navigate(HomeTabFlowScreen.MedicineDetails) },
+                onMedicineClick = { navController.navigate(HomeTabFlowScreen.MedicineDetails(it)) },
+                onBackClick = { navController.popBackStack() },
             )
         }
         composable<HomeTabFlowScreen.MedicineDetails> {
-            MedicineDetailsScreen()
+            val args = it.toRoute<HomeTabFlowScreen.MedicineDetails>()
+            MedicineDetailScreen(medicineId = args.medicineId) {
+                navController.popBackStack()
+            }
         }
     }
 }
@@ -325,17 +343,22 @@ fun CartTabFlow(
         startDestination = "cart_tab_content",
     ) {
         composable("cart_tab_content") {
-            CartTabScreen(
-                onCheckoutClick = { navController.navigate(CartTabFlowScreen.CheckoutScreen) },
+            CartScreen(
+                onCheckout = { navController.navigate(CartTabFlowScreen.CheckoutScreen(priceDetails = it)) },
             )
         }
         composable<CartTabFlowScreen.CheckoutScreen> {
+            val args = it.toRoute<CartTabFlowScreen.CheckoutScreen>()
             CheckoutScreen(
-                onConfirmClick = { navController.navigate(CartTabFlowScreen.OrderConfirmation) },
+                priceDetails = args.priceDetails, // Replace with actual price details
+                onBack = { navController.popBackStack() },
+                onOrderPlaced = { navController.navigate(CartTabFlowScreen.OrderConfirmation) },
             )
         }
         composable<CartTabFlowScreen.OrderConfirmation> {
-            OrderConfirmationScreen(
+            val args = it.toRoute<CartTabFlowScreen.OrderConfirmation>()
+            OrderPlacedScreen(
+                orderId = args.orderId,
                 onGoToHome = {
                     parentNavController.navigate(HomeFlowScreen.HomeTab) {
                         popUpTo(HomeFlowScreen.CartTab) { inclusive = true }
@@ -363,18 +386,13 @@ fun OrdersTabFlow(onCurrentScreenChanged: (String) -> Unit) {
         startDestination = "orders_tab_content",
     ) {
         composable("orders_tab_content") {
-            OrdersTabScreen(
-                onOrderListClick = { navController.navigate(OrdersTabFlowScreen.OrderList) },
-            )
-        }
-        composable<OrdersTabFlowScreen.OrderList> {
-            OrderListScreen(
-                onOrderClick = { navController.navigate(OrdersTabFlowScreen.OrderDetails(orderId = 1)) },
+            OrderHistoryScreen(
+                onOrderClick = { navController.navigate(OrdersTabFlowScreen.OrderDetails(orderId = it)) },
             )
         }
         composable<OrdersTabFlowScreen.OrderDetails> {
             val args = it.toRoute<OrdersTabFlowScreen.OrderDetails>()
-            OrderDetailsScreen(args.orderId) {
+            OrderDetailScreen(args.orderId) {
                 navController.popBackStack()
             }
         }
@@ -398,7 +416,7 @@ fun AccountTabFlow(onCurrentScreenChanged: (String) -> Unit) {
         startDestination = "account_tab_content",
     ) {
         composable("account_tab_content") {
-            AccountTabScreen()
+            AccountScreen()
         }
     }
 }
@@ -417,97 +435,6 @@ fun LoginFlowScreen(onLoginSuccess: () -> Unit) {
     Box(modifier = Modifier.padding(16.dp)) {
         Button(onClick = onLoginSuccess) {
             Text("Login")
-        }
-    }
-}
-
-@Composable
-fun HomeTabScreen(onSearchClick: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onSearchClick) {
-            Text("Go to Search")
-        }
-    }
-}
-
-@Composable
-fun CartTabScreen(onCheckoutClick: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onCheckoutClick) {
-            Text("Go to Checkout")
-        }
-    }
-}
-
-@Composable
-fun OrdersTabScreen(onOrderListClick: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onOrderListClick) {
-            Text("View Orders")
-        }
-    }
-}
-
-@Composable
-fun AccountTabScreen() {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Text("Account Tab")
-    }
-}
-
-@Composable
-fun SearchScreen(onMedicineClick: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onMedicineClick) {
-            Text("View Medicine Details")
-        }
-    }
-}
-
-@Composable
-fun MedicineDetailsScreen() {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Text("Medicine Details")
-    }
-}
-
-@Composable
-fun CheckoutScreen(onConfirmClick: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onConfirmClick) {
-            Text("Confirm Order")
-        }
-    }
-}
-
-@Composable
-fun OrderConfirmationScreen(onGoToHome: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onGoToHome) {
-            Text("Go to Home")
-        }
-    }
-}
-
-@Composable
-fun OrderListScreen(onOrderClick: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onOrderClick) {
-            Text("View Order Details")
-        }
-    }
-}
-
-@Composable
-fun OrderDetailsScreen(
-    orderId: Int,
-    onBackClicked: () -> Unit,
-) {
-    Column(modifier = Modifier.padding(16.dp)) {
-        Text("Order Details with ID: $orderId")
-
-        Button(onClick = { onBackClicked.invoke() }) {
-            Text("Go Back")
         }
     }
 }

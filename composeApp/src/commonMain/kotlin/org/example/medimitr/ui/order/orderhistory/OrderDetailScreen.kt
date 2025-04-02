@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,95 +22,89 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.order.Order
 import org.koin.mp.KoinPlatform.getKoin
 
-data class OrderDetailScreen(
-    val orderId: Int,
-) : Screen {
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = rememberScreenModel { getKoin().get<OrderDetailScreenModel>() }
-        val state by screenModel.uiState.collectAsState()
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OrderDetailScreen(
+    orderId: Int,
+    onBackPressed: () -> Unit,
+) {
+    val screenModel = remember { getKoin().get<OrderDetailScreenModel>() }
+    val state by screenModel.uiState.collectAsState()
 
-        LaunchedEffect(orderId) {
-            screenModel.loadOrderDetails(orderId)
-        }
+    LaunchedEffect(orderId) {
+        screenModel.loadOrderDetails(orderId)
+    }
 
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            "Order #$orderId",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
-                        )
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(
-                                Icons.AutoMirrored.Filled.ArrowBack,
-                                contentDescription = "Back",
-                                tint = MaterialTheme.colorScheme.onPrimary,
-                            )
-                        }
-                    },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                )
-            },
-            containerColor = Color(0xFFF5F7FA), // Light gray background
-        ) { paddingValues ->
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                when {
-                    state.isLoading -> {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary,
-                            strokeWidth = 4.dp,
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        "Order #$orderId",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp,
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBackPressed() }) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onPrimary,
                         )
                     }
+                },
+                colors =
+                    TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        titleContentColor = MaterialTheme.colorScheme.onPrimary,
+                    ),
+            )
+        },
+        containerColor = Color(0xFFF5F7FA), // Light gray background
+    ) { paddingValues ->
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary,
+                        strokeWidth = 4.dp,
+                    )
+                }
 
-                    state.error != null -> {
-                        Text(
-                            "Error: ${state.error}",
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(16.dp),
-                        )
-                    }
+                state.error != null -> {
+                    Text(
+                        "Error: ${state.error}",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
 
-                    state.order == null -> {
-                        Text(
-                            "Order details not available.",
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Gray,
-                        )
-                    }
+                state.order == null -> {
+                    Text(
+                        "Order details not available.",
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Medium,
+                        color = Color.Gray,
+                    )
+                }
 
-                    else -> {
-                        OrderDetailsContent(state.order!!)
-                    }
+                else -> {
+                    OrderDetailsContent(state.order!!)
                 }
             }
         }

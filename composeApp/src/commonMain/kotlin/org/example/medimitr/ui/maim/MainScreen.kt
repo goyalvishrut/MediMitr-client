@@ -22,7 +22,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.flow.map
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.ui.account.screen.AccountScreen
@@ -61,10 +60,10 @@ fun MainScreen() {
             startDestination = Home,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable<Home> { Navigator(HomeScreen()) }
-            composable<Cart> { Navigator(CartScreen()) }
-            composable<OrderHistory> { Navigator(OrderHistoryScreen()) }
-            composable<Account> { Navigator(AccountScreen()) }
+            composable<Home> { HomeScreen({}, {}, {}) }
+            composable<Cart> { CartScreen({}) }
+            composable<OrderHistory> { OrderHistoryScreen({}) }
+            composable<Account> { AccountScreen() }
         }
     }
 }

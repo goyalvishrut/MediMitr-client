@@ -11,6 +11,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,77 +20,74 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.core.model.rememberScreenModel
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
+import androidx.compose.ui.unit.sp
 import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.order.Order
 import org.example.medimitr.ui.components.MediMitrTopAppBar
+import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.koin.mp.KoinPlatform.getKoin
 
-class OrderHistoryScreen : Screen {
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        val screenModel = rememberScreenModel { getKoin().get<OrderHistoryScreenModel>() }
-        val state by screenModel.uiState.collectAsState()
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun OrderHistoryScreen(onOrderClick: (orderId: Int) -> Unit) {
+    val screenModel = remember { getKoin().get<OrderHistoryScreenModel>() }
+    val state by screenModel.uiState.collectAsState()
 
-        Scaffold(
-            topBar = { MediMitrTopAppBar("Order History") },
-            containerColor = Color(0xFFF5F7FA), // Light gray background
-        ) { paddingValues ->
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .padding(paddingValues)
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                contentAlignment = Alignment.Center,
-            ) {
-                when {
-                    state.isLoading -> {
-                        CircularProgressIndicator(
-                            color = MaterialTheme.colorScheme.primary,
-                            strokeWidth = 4.dp,
-                        )
-                    }
+    Scaffold(
+        topBar = {
+            MediMitrTopAppBar("Order History")
+        },
+        containerColor = Color(0xFFF5F7FA), // Light gray background
+    ) { paddingValues ->
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+            contentAlignment = Alignment.Center,
+        ) {
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(
+                        color = MaterialTheme.colorScheme.primary,
+                        strokeWidth = 4.dp,
+                    )
+                }
 
-                    state.error != null -> {
+                state.error != null -> {
+                    Text(
+                        "Error: ${state.error}",
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+
+                state.orders.isEmpty() -> {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center,
+                    ) {
                         Text(
-                            "Error: ${state.error}",
-                            color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge,
-                            modifier = Modifier.padding(16.dp),
+                            "No Orders Yet",
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Gray,
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            "Start shopping to see your orders here!",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.Gray,
                         )
                     }
+                }
 
-                    state.orders.isEmpty() -> {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            verticalArrangement = Arrangement.Center,
-                        ) {
-                            Text(
-                                "No Orders Yet",
-                                style = MaterialTheme.typography.headlineSmall,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Gray,
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Text(
-                                "Start shopping to see your orders here!",
-                                style = MaterialTheme.typography.bodyMedium,
-                                color = Color.Gray,
-                            )
-                        }
-                    }
-
-                    else -> {
-                        OrderHistoryList(state.orders) { orderId ->
-                            navigator.push(OrderDetailScreen(orderId))
-                        }
+                else -> {
+                    OrderHistoryList(state.orders) { orderId ->
+                        onOrderClick.invoke(orderId)
                     }
                 }
             }

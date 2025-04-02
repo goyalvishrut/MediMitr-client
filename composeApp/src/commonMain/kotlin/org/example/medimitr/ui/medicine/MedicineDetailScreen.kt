@@ -14,38 +14,33 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.LocalNavigator
-import cafe.adriel.voyager.navigator.currentOrThrow
 
-data class MedicineDetailScreen(
-    val medicineId: String,
-) : Screen {
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    override fun Content() {
-        val navigator = LocalNavigator.currentOrThrow
-        // TODO: Implement MedicineDetailScreenModel to fetch details by medicineId
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MedicineDetailScreen(
+    medicineId: String,
+    onBack: () -> Unit,
+) {
+    // TODO: Implement MedicineDetailScreenModel to fetch details by medicineId
 
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Medicine Details") }, // TODO: Show actual name
-                    navigationIcon = {
-                        IconButton(onClick = { navigator.pop() }) {
-                            Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
-                        }
-                    },
-                )
-            },
-        ) { padding ->
-            Box(
-                modifier = Modifier.fillMaxSize().padding(padding),
-                contentAlignment = Alignment.Center,
-            ) {
-                // TODO: Display medicine details (image, description, price, add to cart/quantity)
-                Text("Details for Medicine ID: $medicineId")
-            }
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text("Medicine Details") }, // TODO: Show actual name
+                navigationIcon = {
+                    IconButton(onClick = { onBack() }) {
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
+                    }
+                },
+            )
+        },
+    ) { padding ->
+        Box(
+            modifier = Modifier.fillMaxSize().padding(padding),
+            contentAlignment = Alignment.Center,
+        ) {
+            // TODO: Display medicine details (image, description, price, add to cart/quantity)
+            Text("Details for Medicine ID: $medicineId")
         }
     }
 }
