@@ -50,7 +50,7 @@ sealed class Screen {
     data object LoginFlow : Screen()
 
     @Serializable
-    data object HomeFlow : Screen()
+    data object AuthorisedFlow : Screen()
 }
 
 // Screens for the HomeFlow (the tabs)
@@ -119,13 +119,13 @@ fun MainApp() {
 
     NavHost(
         navController = navController,
-        startDestination = if (isAuthenticated) Screen.HomeFlow else Screen.Auth,
+        startDestination = if (isAuthenticated) Screen.AuthorisedFlow else Screen.Auth,
     ) {
         composable<Screen.Auth> {
             AuthScreen(
                 onAuthSuccess = {
                     isAuthenticated = true
-                    navController.navigate(Screen.HomeFlow) {
+                    navController.navigate(Screen.AuthorisedFlow) {
                         popUpTo(Screen.Auth) { inclusive = true }
                     }
                 },
@@ -135,20 +135,20 @@ fun MainApp() {
             LoginFlowScreen(
                 onLoginSuccess = {
                     isAuthenticated = true
-                    navController.navigate(Screen.HomeFlow) {
+                    navController.navigate(Screen.AuthorisedFlow) {
                         popUpTo(Screen.LoginFlow) { inclusive = true }
                     }
                 },
             )
         }
-        composable<Screen.HomeFlow> {
-            HomeFlowScreen()
+        composable<Screen.AuthorisedFlow> {
+            AuthorisedFlowScreen()
         }
     }
 }
 
 @Composable
-fun HomeFlowScreen() {
+fun AuthorisedFlowScreen() {
     val navController = rememberNavController()
     val currentTabRoute =
         navController
