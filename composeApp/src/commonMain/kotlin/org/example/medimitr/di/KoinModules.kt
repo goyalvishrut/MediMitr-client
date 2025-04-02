@@ -76,15 +76,6 @@ val viewModelModule =
 
 val screenModelModule =
     module {
-//        factory { LoginScreenModel(get()) }
-//        factory { SignupScreenModel(get()) }
-//        factory { HomeScreenModel(get(), get(), get()) }
-//        factory { CartScreenModel(get()) }
-//        factory { CheckoutScreenModel(get(), get(), get(), get()) }
-//        factory { OrderDetailScreenModel(get()) }
-//        factory { OrderHistoryScreenModel(get()) }
-//        factory { AccountScreenModel(get()) }
-
         viewModelOf(::LoginScreenModel)
         viewModelOf(::SignupScreenModel)
         viewModelOf(::HomeScreenModel)
