@@ -1,6 +1,7 @@
 package org.example.medimitr.new
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -373,7 +374,9 @@ fun OrdersTabFlow(onCurrentScreenChanged: (String) -> Unit) {
         }
         composable<OrdersTabFlowScreen.OrderDetails> {
             val args = it.toRoute<OrdersTabFlowScreen.OrderDetails>()
-            OrderDetailsScreen(args.orderId)
+            OrderDetailsScreen(args.orderId) {
+                navController.popBackStack()
+            }
         }
     }
 }
@@ -496,8 +499,15 @@ fun OrderListScreen(onOrderClick: () -> Unit) {
 }
 
 @Composable
-fun OrderDetailsScreen(orderId: Int) {
-    Box(modifier = Modifier.padding(16.dp)) {
+fun OrderDetailsScreen(
+    orderId: Int,
+    onBackClicked: () -> Unit,
+) {
+    Column(modifier = Modifier.padding(16.dp)) {
         Text("Order Details with ID: $orderId")
+
+        Button(onClick = { onBackClicked.invoke() }) {
+            Text("Go Back")
+        }
     }
 }
