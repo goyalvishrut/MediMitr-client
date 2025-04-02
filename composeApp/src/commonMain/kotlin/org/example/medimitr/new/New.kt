@@ -44,13 +44,13 @@ import kotlin.reflect.typeOf
 @Serializable
 sealed class Screen {
     @Serializable
-    object Auth : Screen()
+    data object Auth : Screen()
 
     @Serializable
-    object LoginFlow : Screen()
+    data object LoginFlow : Screen()
 
     @Serializable
-    object HomeFlow : Screen()
+    data object HomeFlow : Screen()
 }
 
 // Screens for the HomeFlow (the tabs)
@@ -59,23 +59,23 @@ sealed class AuthorisedFlowScreen(
     val route: String,
 ) {
     @Serializable
-    object HomeTab : AuthorisedFlowScreen("home_tab")
+    data object HomeTab : AuthorisedFlowScreen("home_tab")
 
     @Serializable
-    object CartTab : AuthorisedFlowScreen("cart_tab")
+    data object CartTab : AuthorisedFlowScreen("cart_tab")
 
     @Serializable
-    object OrdersTab : AuthorisedFlowScreen("orders_tab")
+    data object OrdersTab : AuthorisedFlowScreen("orders_tab")
 
     @Serializable
-    object AccountTab : AuthorisedFlowScreen("account_tab")
+    data object AccountTab : AuthorisedFlowScreen("account_tab")
 }
 
 // Screens for HomeTab flow
 @Serializable
 sealed class HomeTabFlowScreen {
     @Serializable
-    object SearchScreen : HomeTabFlowScreen()
+    data object SearchScreen : HomeTabFlowScreen()
 
     @Serializable
     data class MedicineDetails(
