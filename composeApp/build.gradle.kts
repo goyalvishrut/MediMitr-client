@@ -70,10 +70,10 @@ kotlin {
             implementation(libs.koin.core) // Core Koin library // Use latest Koin version
 
             implementation(libs.navigation.compose)
-
-            implementation(libs.voyager.navigator)
-            implementation(libs.voyager.screenmodel)
-            implementation(libs.voyager.tab.navigator)
+//
+//            implementation(libs.voyager.navigator)
+//            implementation(libs.voyager.screenmodel)
+//            implementation(libs.voyager.tab.navigator)
 
             implementation(libs.multiplatform.settings.no.arg)
 
