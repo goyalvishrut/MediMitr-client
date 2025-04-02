@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
@@ -27,6 +26,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.order.Order
+import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.koin.mp.KoinPlatform.getKoin
 
 class OrderHistoryScreen : Screen {
@@ -38,22 +38,7 @@ class OrderHistoryScreen : Screen {
         val state by screenModel.uiState.collectAsState()
 
         Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = {
-                        Text(
-                            "Order History",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 24.sp,
-                        )
-                    },
-                    colors =
-                        TopAppBarDefaults.topAppBarColors(
-                            containerColor = MaterialTheme.colorScheme.primary,
-                            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                        ),
-                )
-            },
+            topBar = { MediMitrTopAppBar("Order History") },
             containerColor = Color(0xFFF5F7FA), // Light gray background
         ) { paddingValues ->
             Box(

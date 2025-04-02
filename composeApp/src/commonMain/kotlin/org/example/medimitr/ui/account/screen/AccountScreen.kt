@@ -46,7 +46,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -72,6 +71,7 @@ import org.example.medimitr.domain.auth.User
 import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
 import org.example.medimitr.ui.account.screenmodel.AccountUiState
 import org.example.medimitr.ui.account.screenmodel.EditingField
+import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.koin.mp.KoinPlatform.getKoin
 
 class AccountScreen : Screen { // Use object if no parameters needed
@@ -104,9 +104,7 @@ class AccountScreen : Screen { // Use object if no parameters needed
 
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
-            topBar = {
-                TopAppBar(title = { Text("My Account") })
-            },
+            topBar = { MediMitrTopAppBar(title = "My Account") },
         ) { paddingValues ->
             Box(
                 modifier = Modifier.fillMaxSize().padding(paddingValues),
