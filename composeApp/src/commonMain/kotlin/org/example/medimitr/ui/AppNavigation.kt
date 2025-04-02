@@ -9,11 +9,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import cafe.adriel.voyager.navigator.Navigator
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import org.example.medimitr.domain.auth.AuthStatus
 import org.example.medimitr.domain.auth.UserRepository
-import org.example.medimitr.ui.auth.login.LoginScreen
-import org.example.medimitr.ui.maim.MainScreen
+import org.example.medimitr.new.AuthorisedFlowScreen
+import org.example.medimitr.new.LoginFlowScreen
+import org.example.medimitr.new.Screen
 import org.koin.mp.KoinPlatform.getKoin
 
 @Composable
@@ -21,27 +24,37 @@ fun AppNavigation() {
     val userRepository: UserRepository = getKoin().get<UserRepository>()
     val authStatus by userRepository.observeAuthStatus.collectAsState()
 
+    val navController = rememberNavController()
     MaterialTheme {
-        when (authStatus) {
-            AuthStatus.UNKNOWN -> {
-                // Optional: Show a loading indicator while checking auth status
+        NavHost(
+            navController = navController,
+            startDestination = getStartDestination(authStatus),
+        ) {
+            composable<Screen.Auth> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator()
                     userRepository.updateAuthStatus()
                 }
             }
-
-            AuthStatus.LOGGED_IN -> {
-                // User is logged in, show the main app UI with bottom navigation
-                // This composable likely contains its own nested Voyager Navigator
-                MainScreen()
+            composable<Screen.LoginFlow> {
+                LoginFlowScreen(
+                    onLoginSuccess = {
+                        navController.navigate(Screen.AuthorisedFlow) {
+                            popUpTo(Screen.LoginFlow) { inclusive = true }
+                        }
+                    },
+                )
             }
-
-            AuthStatus.LOGGED_OUT -> {
-                // User is logged out, show the authentication flow screens
-                // This uses a separate Voyager Navigator instance for the auth flow
-                Navigator(LoginScreen()) // Start auth flow
+            composable<Screen.AuthorisedFlow> {
+                AuthorisedFlowScreen()
             }
         }
     }
 }
+
+fun getStartDestination(authStatus: AuthStatus): Screen =
+    when (authStatus) {
+        AuthStatus.UNKNOWN -> Screen.Auth
+        AuthStatus.LOGGED_IN -> Screen.AuthorisedFlow
+        AuthStatus.LOGGED_OUT -> Screen.LoginFlow
+    }

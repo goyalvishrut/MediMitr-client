@@ -3,11 +3,9 @@ package org.example.medimitr.ui.auth.signup
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import cafe.adriel.voyager.navigator.Navigator
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.presentation.base.BaseScreenModel
-import org.example.medimitr.ui.auth.login.LoginScreen
 
 // ui/screenmodel/SignupScreenModel.kt
 class SignupScreenModel(
@@ -21,7 +19,7 @@ class SignupScreenModel(
     var isLoading by mutableStateOf(false)
     var errorMessage by mutableStateOf<String?>(null)
 
-    fun onSignupClick(navigator: Navigator) {
+    fun onSignupClick(onSignUpSuccess: () -> Unit) {
         if (name.isBlank() || password.isBlank() || email.isBlank() || name.isBlank() || address.isBlank()) {
             errorMessage = "Please fill all fields"
             return
@@ -38,7 +36,7 @@ class SignupScreenModel(
                 )
             isLoading = false
             if (result.isSuccess) {
-                navigator.replaceAll(LoginScreen())
+                onSignUpSuccess()
             } else {
                 errorMessage = result.exceptionOrNull()?.message ?: "Signup failed"
             }

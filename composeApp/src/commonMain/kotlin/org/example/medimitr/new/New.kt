@@ -29,6 +29,8 @@ import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
 import org.example.medimitr.common.serializableType
 import org.example.medimitr.ui.account.screen.AccountScreen
+import org.example.medimitr.ui.auth.login.LoginScreen
+import org.example.medimitr.ui.auth.signup.SignupScreen
 import org.example.medimitr.ui.home.HomeScreen
 import org.example.medimitr.ui.medicine.MedicineDetailScreen
 import org.example.medimitr.ui.order.cart.CartScreen
@@ -110,6 +112,15 @@ sealed class OrdersTabFlowScreen {
 @Serializable
 sealed class AccountTabFlowScreen {
     // Add screens here if needed
+}
+
+@Serializable
+sealed class LoginFlowScreen {
+    @Serializable
+    data object Login : LoginFlowScreen()
+
+    @Serializable
+    data object SignUp : LoginFlowScreen()
 }
 
 @Composable
@@ -344,7 +355,9 @@ fun CartTabFlow(
             CheckoutScreen(
                 priceDetails = args.priceDetails, // Replace with actual price details
                 onBack = { navController.popBackStack() },
-                onOrderPlaced = { navController.navigate(CartTabFlowScreen.OrderConfirmation) },
+                onOrderPlaced = { orderId ->
+                    navController.navigate(CartTabFlowScreen.OrderConfirmation(orderId = orderId))
+                },
             )
         }
         composable<CartTabFlowScreen.OrderConfirmation> {
@@ -424,9 +437,28 @@ fun AuthScreen(onAuthSuccess: () -> Unit) {
 
 @Composable
 fun LoginFlowScreen(onLoginSuccess: () -> Unit) {
-    Box(modifier = Modifier.padding(16.dp)) {
-        Button(onClick = onLoginSuccess) {
-            Text("Login")
+    val navController = rememberNavController()
+
+    NavHost(
+        navController = navController,
+        startDestination = LoginFlowScreen.Login,
+    ) {
+        composable<LoginFlowScreen.Login> {
+            LoginScreen(
+                onSignUpClicked = {
+                    navController.navigate(LoginFlowScreen.SignUp)
+                },
+            )
+        }
+        composable<LoginFlowScreen.SignUp> {
+            SignupScreen(
+                onBack = { navController.popBackStack() },
+                onSignUpSuccess = {
+                    navController.navigate(LoginFlowScreen.Login) {
+                        popUpTo(LoginFlowScreen.SignUp) { inclusive = true }
+                    }
+                },
+            )
         }
     }
 }
