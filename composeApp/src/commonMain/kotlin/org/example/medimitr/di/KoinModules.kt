@@ -29,8 +29,11 @@ import org.example.medimitr.ui.order.cart.CartScreenModel
 import org.example.medimitr.ui.order.checkout.CheckoutScreenModel
 import org.example.medimitr.ui.order.orderhistory.OrderDetailScreenModel
 import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreenModel
+import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
+
+expect val platformModule: Module
 
 val localDataSourceModule =
     module {

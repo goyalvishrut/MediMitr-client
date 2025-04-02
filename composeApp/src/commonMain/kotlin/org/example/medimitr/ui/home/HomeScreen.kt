@@ -72,6 +72,9 @@ import cafe.adriel.voyager.core.model.rememberScreenModel
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import coil3.ImageLoader
+import coil3.compose.AsyncImage
+import coil3.compose.LocalPlatformContext
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.medicine.Medicine
 import org.example.medimitr.domain.promotion.Category
@@ -79,6 +82,7 @@ import org.example.medimitr.domain.promotion.Promotion
 import org.example.medimitr.ui.medicine.MedicineDetailScreen
 import org.example.medimitr.ui.order.cart.CartScreen
 import org.example.medimitr.ui.search.SearchScreen
+import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform.getKoin
 
 // ui/screen/HomeScreen.kt
@@ -370,6 +374,8 @@ fun CategoryChip(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalPlatformContext.current
+    val imageLoader: ImageLoader = getKoin().get { parametersOf(context) }
     FilterChip(
         // Using FilterChip for a selectable look, adjust if needed
         selected = false, // Selection state managed externally if filtering
@@ -378,11 +384,12 @@ fun CategoryChip(
         label = { Text(category.name) },
         leadingIcon = {
             if (category.iconUrl != null) {
-//                AsyncImage(
-//                    model = category.iconUrl,
-//                    contentDescription = null,
-//                    modifier = Modifier.size(FilterChipDefaults.IconSize),
-//                )
+                AsyncImage(
+                    model = category.iconUrl,
+                    contentDescription = null,
+                    modifier = Modifier.size(FilterChipDefaults.IconSize),
+                    imageLoader = imageLoader,
+                )
             } else {
                 // Fallback icon
                 Icon(
