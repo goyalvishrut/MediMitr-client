@@ -25,59 +25,79 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kotlinx.serialization.Serializable
 
 // Top-level screens
+@Serializable
 sealed class Screen(
     val route: String,
 ) {
+    @Serializable
     object Auth : Screen("auth")
 
+    @Serializable
     object LoginFlow : Screen("login_flow")
 
+    @Serializable
     object HomeFlow : Screen("home_flow")
 }
 
 // Screens for the HomeFlow (the tabs)
+@Serializable
 sealed class HomeFlowScreen(
     val route: String,
 ) {
+    @Serializable
     object HomeTab : HomeFlowScreen("home_tab")
 
+    @Serializable
     object CartTab : HomeFlowScreen("cart_tab")
 
+    @Serializable
     object OrdersTab : HomeFlowScreen("orders_tab")
 
+    @Serializable
     object AccountTab : HomeFlowScreen("account_tab")
 }
 
 // Screens for HomeTab flow
+@Serializable
 sealed class HomeTabFlowScreen(
     val route: String,
 ) {
+    @Serializable
     object SearchScreen : HomeTabFlowScreen("search_screen")
 
+    @Serializable
     object MedicineDetails : HomeTabFlowScreen("medicine_details")
 }
 
 // Screens for CartTab flow
+@Serializable
 sealed class CartTabFlowScreen(
     val route: String,
 ) {
+    @Serializable
     object CheckoutScreen : CartTabFlowScreen("checkout_screen")
 
+    @Serializable
     object OrderConfirmation : CartTabFlowScreen("order_confirmation")
 }
 
 // Screens for OrdersTab flow
+@Serializable
 sealed class OrdersTabFlowScreen(
     val route: String,
 ) {
+    @Serializable
     object OrderList : OrdersTabFlowScreen("order_list")
 
+    @Serializable
     object OrderDetails : OrdersTabFlowScreen("order_details")
 }
 
 // Screens for AccountTab flow (empty for now, but keeping it modular)
+@Serializable
 sealed class AccountTabFlowScreen(
     val route: String,
 ) {
@@ -91,29 +111,29 @@ fun MainApp() {
 
     NavHost(
         navController = navController,
-        startDestination = if (isAuthenticated) Screen.HomeFlow.route else Screen.Auth.route,
+        startDestination = if (isAuthenticated) Screen.HomeFlow else Screen.Auth,
     ) {
-        composable(Screen.Auth.route) {
+        composable<Screen.Auth> {
             AuthScreen(
                 onAuthSuccess = {
                     isAuthenticated = true
-                    navController.navigate(Screen.HomeFlow.route) {
-                        popUpTo(Screen.Auth.route) { inclusive = true }
+                    navController.navigate(Screen.HomeFlow) {
+                        popUpTo(Screen.Auth) { inclusive = true }
                     }
                 },
             )
         }
-        composable(Screen.LoginFlow.route) {
+        composable<Screen.LoginFlow> {
             LoginFlowScreen(
                 onLoginSuccess = {
                     isAuthenticated = true
-                    navController.navigate(Screen.HomeFlow.route) {
-                        popUpTo(Screen.LoginFlow.route) { inclusive = true }
+                    navController.navigate(Screen.HomeFlow) {
+                        popUpTo(Screen.LoginFlow) { inclusive = true }
                     }
                 },
             )
         }
-        composable(Screen.HomeFlow.route) {
+        composable<Screen.HomeFlow> {
             HomeFlowScreen()
         }
     }
@@ -153,17 +173,17 @@ fun HomeFlowScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = HomeFlowScreen.HomeTab.route,
+            startDestination = HomeFlowScreen.HomeTab,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable(HomeFlowScreen.HomeTab.route) {
+            composable<HomeFlowScreen.HomeTab> {
                 HomeTabFlow(
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
                     },
                 )
             }
-            composable(HomeFlowScreen.CartTab.route) {
+            composable<HomeFlowScreen.CartTab> {
                 CartTabFlow(
                     parentNavController = navController,
                     onCurrentScreenChanged = { route ->
@@ -171,14 +191,14 @@ fun HomeFlowScreen() {
                     },
                 )
             }
-            composable(HomeFlowScreen.OrdersTab.route) {
+            composable<HomeFlowScreen.OrdersTab> {
                 OrdersTabFlow(
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
                     },
                 )
             }
-            composable(HomeFlowScreen.AccountTab.route) {
+            composable<HomeFlowScreen.AccountTab> {
                 AccountTabFlow(
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
@@ -204,7 +224,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             label = { Text("Home") },
             selected = currentRoute == HomeFlowScreen.HomeTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.HomeTab.route) {
+                navController.navigate(HomeFlowScreen.HomeTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -215,7 +235,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             label = { Text("Cart") },
             selected = currentRoute == HomeFlowScreen.CartTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.CartTab.route) {
+                navController.navigate(HomeFlowScreen.CartTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -226,7 +246,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             label = { Text("Orders") },
             selected = currentRoute == HomeFlowScreen.OrdersTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.OrdersTab.route) {
+                navController.navigate(HomeFlowScreen.OrdersTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -237,7 +257,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             label = { Text("Account") },
             selected = currentRoute == HomeFlowScreen.AccountTab.route,
             onClick = {
-                navController.navigate(HomeFlowScreen.AccountTab.route) {
+                navController.navigate(HomeFlowScreen.AccountTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -267,15 +287,15 @@ fun HomeTabFlow(
     ) {
         composable("home_tab_content") {
             HomeTabScreen(
-                onSearchClick = { navController.navigate(HomeTabFlowScreen.SearchScreen.route) },
+                onSearchClick = { navController.navigate(HomeTabFlowScreen.SearchScreen) },
             )
         }
-        composable(HomeTabFlowScreen.SearchScreen.route) {
+        composable<HomeTabFlowScreen.SearchScreen> {
             SearchScreen(
-                onMedicineClick = { navController.navigate(HomeTabFlowScreen.MedicineDetails.route) },
+                onMedicineClick = { navController.navigate(HomeTabFlowScreen.MedicineDetails) },
             )
         }
-        composable(HomeTabFlowScreen.MedicineDetails.route) {
+        composable<HomeTabFlowScreen.MedicineDetails> {
             MedicineDetailsScreen()
         }
     }
@@ -302,19 +322,19 @@ fun CartTabFlow(
     ) {
         composable("cart_tab_content") {
             CartTabScreen(
-                onCheckoutClick = { navController.navigate(CartTabFlowScreen.CheckoutScreen.route) },
+                onCheckoutClick = { navController.navigate(CartTabFlowScreen.CheckoutScreen) },
             )
         }
-        composable(CartTabFlowScreen.CheckoutScreen.route) {
+        composable<CartTabFlowScreen.CheckoutScreen> {
             CheckoutScreen(
-                onConfirmClick = { navController.navigate(CartTabFlowScreen.OrderConfirmation.route) },
+                onConfirmClick = { navController.navigate(CartTabFlowScreen.OrderConfirmation) },
             )
         }
-        composable(CartTabFlowScreen.OrderConfirmation.route) {
+        composable<CartTabFlowScreen.OrderConfirmation> {
             OrderConfirmationScreen(
                 onGoToHome = {
-                    parentNavController.navigate(HomeFlowScreen.HomeTab.route) {
-                        popUpTo(HomeFlowScreen.CartTab.route) { inclusive = true }
+                    parentNavController.navigate(HomeFlowScreen.HomeTab) {
+                        popUpTo(HomeFlowScreen.CartTab) { inclusive = true }
                     }
                 },
             )
@@ -340,15 +360,15 @@ fun OrdersTabFlow(onCurrentScreenChanged: (String) -> Unit) {
     ) {
         composable("orders_tab_content") {
             OrdersTabScreen(
-                onOrderListClick = { navController.navigate(OrdersTabFlowScreen.OrderList.route) },
+                onOrderListClick = { navController.navigate(OrdersTabFlowScreen.OrderList) },
             )
         }
-        composable(OrdersTabFlowScreen.OrderList.route) {
+        composable<OrdersTabFlowScreen.OrderList> {
             OrderListScreen(
-                onOrderClick = { navController.navigate(OrdersTabFlowScreen.OrderDetails.route) },
+                onOrderClick = { navController.navigate(OrdersTabFlowScreen.OrderDetails) },
             )
         }
-        composable(OrdersTabFlowScreen.OrderDetails.route) {
+        composable<OrdersTabFlowScreen.OrderDetails> {
             OrderDetailsScreen()
         }
     }
