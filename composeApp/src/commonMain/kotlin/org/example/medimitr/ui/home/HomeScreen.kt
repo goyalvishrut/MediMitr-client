@@ -87,7 +87,7 @@ fun HomeScreen(
     onSearchClick: () -> Unit,
     onMedicineClick: (String) -> Unit,
 ) {
-    val screenModel = koinViewModel<HomeScreenModel>()
+    val screenModel = koinViewModel<HomeScreenViewModel>()
 
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }

@@ -23,7 +23,7 @@ import org.koin.compose.viewmodel.koinViewModel
 // ui/screen/LoginScreen.kt
 @Composable
 fun LoginScreen(onSignUpClicked: () -> Unit) {
-    val screenModel = koinViewModel<LoginScreenModel>()
+    val screenModel = koinViewModel<LoginScreenViewModel>()
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),

@@ -27,7 +27,7 @@ data class AccountUiState(
     val isLoggingOut: Boolean = false,
 )
 
-class AccountScreenModel(
+class AccountSettingViewModel(
     private val userRepository: UserRepository,
 ) : BaseViewModel() {
     private val _uiState = MutableStateFlow(AccountUiState())

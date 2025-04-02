@@ -26,7 +26,7 @@ fun SignupScreen(
     onBack: () -> Unit, // Assuming you have a Navigator interface for navigation
     onSignUpSuccess: () -> Unit, // Callback for sign-in action
 ) {
-    val screenModel = koinViewModel<SignupScreenModel>()
+    val screenModel = koinViewModel<SignupScreenViewModel>()
 
     Column(
         modifier = Modifier.fillMaxSize().padding(16.dp),

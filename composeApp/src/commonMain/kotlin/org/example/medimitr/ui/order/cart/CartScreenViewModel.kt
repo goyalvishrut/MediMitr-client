@@ -30,7 +30,7 @@ data class CartUiState(
 )
 
 // ui/screenmodel/CartScreenModel.kt
-class CartScreenModel(
+class CartScreenViewModel(
     private val cartRepository: CartRepository,
     // Inject other services if needed for price calculation
 ) : BaseViewModel() {

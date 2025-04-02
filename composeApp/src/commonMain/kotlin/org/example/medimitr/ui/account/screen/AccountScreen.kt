@@ -64,7 +64,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.example.medimitr.domain.auth.User
-import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
+import org.example.medimitr.ui.account.screenmodel.AccountSettingViewModel
 import org.example.medimitr.ui.account.screenmodel.AccountUiState
 import org.example.medimitr.ui.account.screenmodel.EditingField
 import org.example.medimitr.ui.components.MediMitrTopAppBar
@@ -72,7 +72,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountScreen() {
-    val screenModel = koinViewModel<AccountScreenModel>()
+    val screenModel = koinViewModel<AccountSettingViewModel>()
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 

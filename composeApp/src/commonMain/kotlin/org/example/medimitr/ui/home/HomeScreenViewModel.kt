@@ -28,7 +28,7 @@ data class HomeUiState(
 )
 
 // ui/screenmodel/HomeScreenModel.kt
-class HomeScreenModel(
+class HomeScreenViewModel(
     private val cartRepository: CartRepository,
     private val locationRepository: LocationRepository,
     private val marketingRepository: MarketingRepository,

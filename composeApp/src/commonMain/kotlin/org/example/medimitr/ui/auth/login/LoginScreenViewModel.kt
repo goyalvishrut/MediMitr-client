@@ -8,7 +8,7 @@ import org.example.medimitr.domain.auth.AuthRepository
 import org.example.medimitr.presentation.base.BaseViewModel
 
 // ui/screenmodel/LoginScreenModel.kt
-class LoginScreenModel(
+class LoginScreenViewModel(
     private val authRepository: AuthRepository,
 ) : BaseViewModel() {
     var email by mutableStateOf("")

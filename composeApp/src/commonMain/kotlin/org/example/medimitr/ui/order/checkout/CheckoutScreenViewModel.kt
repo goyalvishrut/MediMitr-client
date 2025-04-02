@@ -22,7 +22,7 @@ data class CheckoutUiState(
     val placeOrderError: String? = null,
 )
 
-class CheckoutScreenModel(
+class CheckoutScreenViewModel(
     private val cartRepository: CartRepository,
     private val userRepository: UserRepository,
     private val orderRepository: OrderRepository,

@@ -15,7 +15,7 @@ data class OrderHistoryUiState(
     val error: String? = null,
 )
 
-class OrderHistoryScreenModel(
+class OrderHistoryScreenViewModel(
     private val orderRepository: OrderRepository,
 ) : BaseViewModel() {
     private val _uiState = MutableStateFlow(OrderHistoryUiState())

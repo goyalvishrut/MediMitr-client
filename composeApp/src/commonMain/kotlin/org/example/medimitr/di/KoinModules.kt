@@ -23,14 +23,14 @@ import org.example.medimitr.domain.order.OrderRepositoryImpl
 import org.example.medimitr.network.createHttpClient
 import org.example.medimitr.presentation.checkout.CheckoutViewModel
 import org.example.medimitr.presentation.search.SearchResultsViewModel
-import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
-import org.example.medimitr.ui.auth.login.LoginScreenModel
-import org.example.medimitr.ui.auth.signup.SignupScreenModel
-import org.example.medimitr.ui.home.HomeScreenModel
-import org.example.medimitr.ui.order.cart.CartScreenModel
-import org.example.medimitr.ui.order.checkout.CheckoutScreenModel
-import org.example.medimitr.ui.order.orderhistory.OrderDetailScreenModel
-import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreenModel
+import org.example.medimitr.ui.account.screenmodel.AccountSettingViewModel
+import org.example.medimitr.ui.auth.login.LoginScreenViewModel
+import org.example.medimitr.ui.auth.signup.SignupScreenViewModel
+import org.example.medimitr.ui.home.HomeScreenViewModel
+import org.example.medimitr.ui.order.cart.CartScreenViewModel
+import org.example.medimitr.ui.order.checkout.CheckoutScreenViewModel
+import org.example.medimitr.ui.order.orderhistory.OrderDetailScreenViewModel
+import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreenViewModel
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
@@ -76,14 +76,14 @@ val viewModelModule =
 
 val screenModelModule =
     module {
-        viewModelOf(::LoginScreenModel)
-        viewModelOf(::SignupScreenModel)
-        viewModelOf(::HomeScreenModel)
-        viewModelOf(::CartScreenModel)
-        viewModelOf(::CheckoutScreenModel)
-        viewModelOf(::OrderDetailScreenModel)
-        viewModelOf(::OrderHistoryScreenModel)
-        viewModelOf(::AccountScreenModel)
+        viewModelOf(::LoginScreenViewModel)
+        viewModelOf(::SignupScreenViewModel)
+        viewModelOf(::HomeScreenViewModel)
+        viewModelOf(::CartScreenViewModel)
+        viewModelOf(::CheckoutScreenViewModel)
+        viewModelOf(::OrderDetailScreenViewModel)
+        viewModelOf(::OrderHistoryScreenViewModel)
+        viewModelOf(::AccountSettingViewModel)
     }
 
 // List of all modules

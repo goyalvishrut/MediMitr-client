@@ -60,7 +60,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CartScreen(onCheckout: (PriceDetails) -> Unit) {
-    val screenModel = koinViewModel<CartScreenModel>()
+    val screenModel = koinViewModel<CartScreenViewModel>()
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val sheetState =

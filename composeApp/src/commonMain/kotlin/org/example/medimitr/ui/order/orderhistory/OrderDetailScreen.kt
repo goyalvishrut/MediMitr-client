@@ -33,7 +33,7 @@ fun OrderDetailScreen(
     orderId: Int,
     onBackPressed: () -> Unit,
 ) {
-    val screenModel = koinViewModel<OrderDetailScreenModel>()
+    val screenModel = koinViewModel<OrderDetailScreenViewModel>()
     val state by screenModel.uiState.collectAsState()
 
     LaunchedEffect(orderId) {

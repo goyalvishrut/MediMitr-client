@@ -64,7 +64,7 @@ fun CheckoutScreen(
     onBack: () -> Unit,
     onOrderPlaced: (String) -> Unit,
 ) {
-    val screenModel = koinViewModel<CheckoutScreenModel>()
+    val screenModel = koinViewModel<CheckoutScreenViewModel>()
 
     val state by screenModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
