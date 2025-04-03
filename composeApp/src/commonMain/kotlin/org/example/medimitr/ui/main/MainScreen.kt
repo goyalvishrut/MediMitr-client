@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.maim
+package org.example.medimitr.ui.main
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -21,9 +21,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.map
 import org.example.medimitr.domain.cart.CartRepository
-import org.example.medimitr.new.AuthorisedFlowScreen
 import org.example.medimitr.ui.account.screen.AccountScreen
 import org.example.medimitr.ui.home.HomeScreen
+import org.example.medimitr.ui.main.navigation.AuthorisedFlowScreen
 import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
 import org.koin.mp.KoinPlatform.getKoin
 
