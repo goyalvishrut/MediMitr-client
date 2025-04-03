@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.main.navigation
+package org.example.medimitr.ui.common.navigation
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
@@ -26,10 +26,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import kotlinx.serialization.Serializable
-import org.example.medimitr.common.serializableType
 import org.example.medimitr.ui.account.screen.AccountScreen
 import org.example.medimitr.ui.auth.login.LoginScreen
 import org.example.medimitr.ui.auth.signup.SignupScreen
+import org.example.medimitr.ui.common.serializableType
 import org.example.medimitr.ui.home.HomeScreen
 import org.example.medimitr.ui.medicine.MedicineDetailScreen
 import org.example.medimitr.ui.order.cart.CartScreen

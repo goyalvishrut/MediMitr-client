@@ -53,7 +53,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.cart.CartItem
-import org.example.medimitr.ui.components.MediMitrTopAppBar
+import org.example.medimitr.ui.common.components.MediMitrTopAppBar
 import org.koin.compose.viewmodel.koinViewModel
 
 // ui/screen/CartScreen.kt

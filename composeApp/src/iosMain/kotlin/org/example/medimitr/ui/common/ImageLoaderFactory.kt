@@ -1,4 +1,4 @@
-package org.example.medimitr.ui
+package org.example.medimitr.ui.common
 
 import coil3.ImageLoader
 import platform.UIKit.UIImage

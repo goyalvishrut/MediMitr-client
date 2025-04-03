@@ -1,4 +1,4 @@
-package org.example.medimitr.ui.components
+package org.example.medimitr.ui.common.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack

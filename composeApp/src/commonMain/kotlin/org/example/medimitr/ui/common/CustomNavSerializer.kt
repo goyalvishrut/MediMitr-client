@@ -1,4 +1,4 @@
-package org.example.medimitr.common
+package org.example.medimitr.ui.common
 
 import androidx.core.bundle.Bundle
 import androidx.navigation.NavType

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import org.example.medimitr.common.formatReadableDate
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.order.Order
-import org.example.medimitr.ui.components.MediMitrTopAppBar
+import org.example.medimitr.ui.common.components.MediMitrTopAppBar
 import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

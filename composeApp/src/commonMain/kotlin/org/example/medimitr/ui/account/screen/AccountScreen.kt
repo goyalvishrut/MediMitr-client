@@ -67,7 +67,7 @@ import org.example.medimitr.domain.auth.User
 import org.example.medimitr.ui.account.screenmodel.AccountSettingViewModel
 import org.example.medimitr.ui.account.screenmodel.AccountUiState
 import org.example.medimitr.ui.account.screenmodel.EditingField
-import org.example.medimitr.ui.components.MediMitrTopAppBar
+import org.example.medimitr.ui.common.components.MediMitrTopAppBar
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable

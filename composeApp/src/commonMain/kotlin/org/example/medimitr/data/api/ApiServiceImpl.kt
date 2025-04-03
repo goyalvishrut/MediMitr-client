@@ -203,6 +203,6 @@ class ApiServiceImpl(
     }
 
     companion object {
-        private const val BASE_URL = "http://192.168.29.57:8080"
+        private const val BASE_URL = "http://192.168.29.194:8080"
     }
 }

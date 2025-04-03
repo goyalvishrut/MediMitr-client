@@ -14,9 +14,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.example.medimitr.domain.auth.AuthStatus
 import org.example.medimitr.domain.auth.UserRepository
-import org.example.medimitr.ui.main.navigation.AuthorisedFlowScreen
-import org.example.medimitr.ui.main.navigation.LoginFlowScreen
-import org.example.medimitr.ui.main.navigation.Screen
+import org.example.medimitr.ui.common.navigation.AuthorisedFlowScreen
+import org.example.medimitr.ui.common.navigation.LoginFlowScreen
+import org.example.medimitr.ui.common.navigation.Screen
 import org.koin.mp.KoinPlatform.getKoin
 
 @Composable

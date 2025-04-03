@@ -51,7 +51,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import org.example.medimitr.common.formatToTwoDecimal
-import org.example.medimitr.ui.components.MediMitrTopAppBar
+import org.example.medimitr.ui.common.components.MediMitrTopAppBar
 import org.example.medimitr.ui.order.cart.PriceDetailRow
 import org.example.medimitr.ui.order.cart.PriceDetails
 import org.koin.compose.viewmodel.koinViewModel
