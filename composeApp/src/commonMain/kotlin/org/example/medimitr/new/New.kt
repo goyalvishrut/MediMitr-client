@@ -3,10 +3,9 @@ package org.example.medimitr.new
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.List
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -64,9 +63,6 @@ sealed class AuthorisedFlowScreen(
     data object HomeTab : AuthorisedFlowScreen("home_tab")
 
     @Serializable
-    data object CartTab : AuthorisedFlowScreen("cart_tab")
-
-    @Serializable
     data object OrdersTab : AuthorisedFlowScreen("orders_tab")
 
     @Serializable
@@ -83,20 +79,19 @@ sealed class HomeTabFlowScreen {
     data class MedicineDetails(
         val medicineId: String,
     ) : HomeTabFlowScreen()
-}
 
-// Screens for CartTab flow
-@Serializable
-sealed class CartTabFlowScreen {
+    @Serializable
+    data object CartScreen : HomeTabFlowScreen()
+
     @Serializable
     data class CheckoutScreen(
         val priceDetails: PriceDetails,
-    ) : CartTabFlowScreen()
+    ) : HomeTabFlowScreen()
 
     @Serializable
     data class OrderConfirmation(
         val orderId: String,
-    ) : CartTabFlowScreen()
+    ) : HomeTabFlowScreen()
 }
 
 // Screens for OrdersTab flow
@@ -175,7 +170,6 @@ fun AuthorisedFlowScreen() {
     val tabContentRoutes =
         listOf(
             "home_tab_content",
-            "cart_tab_content",
             "orders_tab_content",
             "account_tab_content",
         )
@@ -197,14 +191,6 @@ fun AuthorisedFlowScreen() {
         ) {
             composable<AuthorisedFlowScreen.HomeTab> {
                 HomeTabFlow(
-                    onCurrentScreenChanged = { route ->
-                        currentNestedRoute = route
-                    },
-                )
-            }
-            composable<AuthorisedFlowScreen.CartTab> {
-                CartTabFlow(
-                    parentNavController = navController,
                     onCurrentScreenChanged = { route ->
                         currentNestedRoute = route
                     },
@@ -250,18 +236,7 @@ fun BottomNavigationBar(navController: NavHostController) {
             },
         )
         NavigationBarItem(
-            icon = { Icon(Icons.Default.ShoppingCart, contentDescription = "Cart") },
-            label = { Text("Cart") },
-            selected = currentRoute == AuthorisedFlowScreen.CartTab.route,
-            onClick = {
-                navController.navigate(AuthorisedFlowScreen.CartTab) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
-                }
-            },
-        )
-        NavigationBarItem(
-            icon = { Icon(Icons.Default.List, contentDescription = "Orders") },
+            icon = { Icon(Icons.AutoMirrored.Filled.List, contentDescription = "Orders") },
             label = { Text("Orders") },
             selected = currentRoute == AuthorisedFlowScreen.OrdersTab.route,
             onClick = {
@@ -308,7 +283,9 @@ fun HomeTabFlow(
             HomeScreen(
                 onMedicineClick = { navController.navigate(HomeTabFlowScreen.MedicineDetails(it)) },
                 onSearchClick = { navController.navigate(HomeTabFlowScreen.SearchScreen) },
-                onCartClick = { },
+                onCartClick = {
+                    navController.navigate(HomeTabFlowScreen.CartScreen)
+                },
             )
         }
         composable<HomeTabFlowScreen.SearchScreen> {
@@ -323,51 +300,29 @@ fun HomeTabFlow(
                 navController.popBackStack()
             }
         }
-    }
-}
 
-@Composable
-fun CartTabFlow(
-    parentNavController: NavHostController,
-    onCurrentScreenChanged: (String) -> Unit,
-) {
-    val navController = rememberNavController()
-    val currentRoute =
-        navController
-            .currentBackStackEntryAsState()
-            .value
-            ?.destination
-            ?.route
-
-    currentRoute?.let { onCurrentScreenChanged(it) }
-
-    NavHost(
-        navController = navController,
-        startDestination = "cart_tab_content",
-    ) {
-        composable("cart_tab_content") {
+        composable<HomeTabFlowScreen.CartScreen> {
             CartScreen(
-                onCheckout = { navController.navigate(CartTabFlowScreen.CheckoutScreen(priceDetails = it)) },
+                onCheckout = { navController.navigate(HomeTabFlowScreen.CheckoutScreen(priceDetails = it)) },
             )
         }
-        composable<CartTabFlowScreen.CheckoutScreen>(typeMap = mapOf(typeOf<PriceDetails>() to serializableType<PriceDetails>())) {
-            val args = it.toRoute<CartTabFlowScreen.CheckoutScreen>()
+
+        composable<HomeTabFlowScreen.CheckoutScreen>(typeMap = mapOf(typeOf<PriceDetails>() to serializableType<PriceDetails>())) {
+            val args = it.toRoute<HomeTabFlowScreen.CheckoutScreen>()
             CheckoutScreen(
                 priceDetails = args.priceDetails, // Replace with actual price details
                 onBack = { navController.popBackStack() },
                 onOrderPlaced = { orderId ->
-                    navController.navigate(CartTabFlowScreen.OrderConfirmation(orderId = orderId))
+                    navController.navigate(HomeTabFlowScreen.OrderConfirmation(orderId = orderId))
                 },
             )
         }
-        composable<CartTabFlowScreen.OrderConfirmation> {
-            val args = it.toRoute<CartTabFlowScreen.OrderConfirmation>()
+        composable<HomeTabFlowScreen.OrderConfirmation> {
+            val args = it.toRoute<HomeTabFlowScreen.OrderConfirmation>()
             OrderPlacedScreen(
                 orderId = args.orderId,
                 onGoToHome = {
-                    parentNavController.navigate(AuthorisedFlowScreen.HomeTab) {
-                        popUpTo(AuthorisedFlowScreen.CartTab) { inclusive = true }
-                    }
+                    navController.popBackStack(HomeTabFlowScreen.CartScreen, inclusive = true)
                 },
             )
         }

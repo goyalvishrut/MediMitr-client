@@ -5,9 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material3.Badge
-import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -27,7 +24,6 @@ import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.new.AuthorisedFlowScreen
 import org.example.medimitr.ui.account.screen.AccountScreen
 import org.example.medimitr.ui.home.HomeScreen
-import org.example.medimitr.ui.order.cart.CartScreen
 import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
 import org.koin.mp.KoinPlatform.getKoin
 
@@ -44,7 +40,6 @@ fun MainScreen() {
     val bottomBarRoutes =
         listOf(
             AuthorisedFlowScreen.HomeTab::class.qualifiedName,
-            AuthorisedFlowScreen.CartTab::class.qualifiedName,
             AuthorisedFlowScreen.OrdersTab::class.qualifiedName,
             AuthorisedFlowScreen.AccountTab::class.qualifiedName,
         )
@@ -64,7 +59,6 @@ fun MainScreen() {
             modifier = Modifier.padding(innerPadding),
         ) {
             composable<AuthorisedFlowScreen.HomeTab> { HomeScreen({}, {}, {}) }
-            composable<AuthorisedFlowScreen.CartTab> { CartScreen({}) }
             composable<AuthorisedFlowScreen.OrdersTab> { OrderHistoryScreen({}) }
             composable<AuthorisedFlowScreen.AccountTab> { AccountScreen() }
         }
@@ -86,23 +80,6 @@ fun BottomNavigationBar(
             selected = currentRoute == AuthorisedFlowScreen.HomeTab::class.qualifiedName,
             onClick = {
                 navController.navigate(AuthorisedFlowScreen.HomeTab) {
-                    popUpTo(navController.graph.startDestinationId)
-                    launchSingleTop = true
-                }
-            },
-        )
-        NavigationBarItem(
-            icon = {
-                BadgedBox(badge = {
-                    if (badge > 0) Badge { Text(badge.toString()) }
-                }) {
-                    Icon(Icons.Default.ShoppingCart, "Cart")
-                }
-            },
-            label = { Text("Cart") },
-            selected = currentRoute == AuthorisedFlowScreen.CartTab::class.qualifiedName,
-            onClick = {
-                navController.navigate(AuthorisedFlowScreen.CartTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
