@@ -24,12 +24,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.flow.map
 import org.example.medimitr.domain.cart.CartRepository
+import org.example.medimitr.new.AuthorisedFlowScreen
 import org.example.medimitr.ui.account.screen.AccountScreen
 import org.example.medimitr.ui.home.HomeScreen
-import org.example.medimitr.ui.maim.MainScreenTabs.Account
-import org.example.medimitr.ui.maim.MainScreenTabs.Cart
-import org.example.medimitr.ui.maim.MainScreenTabs.Home
-import org.example.medimitr.ui.maim.MainScreenTabs.OrderHistory
 import org.example.medimitr.ui.order.cart.CartScreen
 import org.example.medimitr.ui.order.orderhistory.OrderHistoryScreen
 import org.koin.mp.KoinPlatform.getKoin
@@ -44,7 +41,13 @@ fun MainScreen() {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    val bottomBarRoutes = MainScreenTabs.allTabsRoutes
+    val bottomBarRoutes =
+        listOf(
+            AuthorisedFlowScreen.HomeTab::class.qualifiedName,
+            AuthorisedFlowScreen.CartTab::class.qualifiedName,
+            AuthorisedFlowScreen.OrdersTab::class.qualifiedName,
+            AuthorisedFlowScreen.AccountTab::class.qualifiedName,
+        )
 
     val shouldShowBottomBar = currentRoute in bottomBarRoutes
 
@@ -57,13 +60,13 @@ fun MainScreen() {
     ) { innerPadding ->
         NavHost(
             navController = navController,
-            startDestination = Home,
+            startDestination = AuthorisedFlowScreen.HomeTab,
             modifier = Modifier.padding(innerPadding),
         ) {
-            composable<Home> { HomeScreen({}, {}, {}) }
-            composable<Cart> { CartScreen({}) }
-            composable<OrderHistory> { OrderHistoryScreen({}) }
-            composable<Account> { AccountScreen() }
+            composable<AuthorisedFlowScreen.HomeTab> { HomeScreen({}, {}, {}) }
+            composable<AuthorisedFlowScreen.CartTab> { CartScreen({}) }
+            composable<AuthorisedFlowScreen.OrdersTab> { OrderHistoryScreen({}) }
+            composable<AuthorisedFlowScreen.AccountTab> { AccountScreen() }
         }
     }
 }
@@ -80,9 +83,9 @@ fun BottomNavigationBar(
         NavigationBarItem(
             icon = { Icon(Icons.Default.Home, "Home") },
             label = { Text("Home") },
-            selected = currentRoute == Home::class.qualifiedName,
+            selected = currentRoute == AuthorisedFlowScreen.HomeTab::class.qualifiedName,
             onClick = {
-                navController.navigate(Home) {
+                navController.navigate(AuthorisedFlowScreen.HomeTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -97,9 +100,9 @@ fun BottomNavigationBar(
                 }
             },
             label = { Text("Cart") },
-            selected = currentRoute == Cart::class.qualifiedName,
+            selected = currentRoute == AuthorisedFlowScreen.CartTab::class.qualifiedName,
             onClick = {
-                navController.navigate(Cart) {
+                navController.navigate(AuthorisedFlowScreen.CartTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -108,9 +111,9 @@ fun BottomNavigationBar(
         NavigationBarItem(
             icon = { Icon(Icons.Default.Info, "History") },
             label = { Text("History") },
-            selected = currentRoute == OrderHistory::class.qualifiedName,
+            selected = currentRoute == AuthorisedFlowScreen.OrdersTab::class.qualifiedName,
             onClick = {
-                navController.navigate(OrderHistory) {
+                navController.navigate(AuthorisedFlowScreen.OrdersTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
@@ -119,9 +122,9 @@ fun BottomNavigationBar(
         NavigationBarItem(
             icon = { Icon(Icons.Default.AccountBox, "Account") },
             label = { Text("Account") },
-            selected = currentRoute == Account::class.qualifiedName,
+            selected = currentRoute == AuthorisedFlowScreen.AccountTab::class.qualifiedName,
             onClick = {
-                navController.navigate(Account) {
+                navController.navigate(AuthorisedFlowScreen.AccountTab) {
                     popUpTo(navController.graph.startDestinationId)
                     launchSingleTop = true
                 }
