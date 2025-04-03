@@ -5,12 +5,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.AuthRepository
-import org.example.medimitr.presentation.base.BaseScreenModel
+import org.example.medimitr.presentation.base.BaseViewModel
 
 // ui/screenmodel/LoginScreenModel.kt
-class LoginScreenModel(
+class LoginScreenViewModel(
     private val authRepository: AuthRepository,
-) : BaseScreenModel() {
+) : BaseViewModel() {
     var email by mutableStateOf("")
     var password by mutableStateOf("")
     var isLoading by mutableStateOf(false)

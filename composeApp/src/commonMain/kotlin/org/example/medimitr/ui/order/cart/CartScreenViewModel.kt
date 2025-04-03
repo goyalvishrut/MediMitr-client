@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
 import org.example.medimitr.domain.cart.CartItem
 import org.example.medimitr.domain.cart.CartRepository
-import org.example.medimitr.presentation.base.BaseScreenModel
+import org.example.medimitr.presentation.base.BaseViewModel
 
 @Serializable
 data class PriceDetails(
@@ -30,10 +30,10 @@ data class CartUiState(
 )
 
 // ui/screenmodel/CartScreenModel.kt
-class CartScreenModel(
+class CartScreenViewModel(
     private val cartRepository: CartRepository,
     // Inject other services if needed for price calculation
-) : BaseScreenModel() {
+) : BaseViewModel() {
     private val _uiState = MutableStateFlow(CartUiState(isLoading = true))
     val uiState = _uiState.asStateFlow()
 

@@ -64,16 +64,16 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import org.example.medimitr.domain.auth.User
-import org.example.medimitr.ui.account.screenmodel.AccountScreenModel
+import org.example.medimitr.ui.account.screenmodel.AccountSettingViewModel
 import org.example.medimitr.ui.account.screenmodel.AccountUiState
 import org.example.medimitr.ui.account.screenmodel.EditingField
 import org.example.medimitr.ui.components.MediMitrTopAppBar
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun AccountScreen() {
-    val screenModel = remember { getKoin().get<AccountScreenModel>() }
-    val state by screenModel.uiState.collectAsState()
+    val viewModel = koinViewModel<AccountSettingViewModel>()
+    val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Show success/error messages
@@ -83,14 +83,14 @@ fun AccountScreen() {
                 message = state.updateError!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearMessages() // Clear message after showing
+            viewModel.clearMessages() // Clear message after showing
         }
         if (state.updateSuccessMessage != null) {
             snackbarHostState.showSnackbar(
                 message = state.updateSuccessMessage!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearMessages() // Clear message after showing
+            viewModel.clearMessages() // Clear message after showing
         }
     }
 
@@ -115,11 +115,11 @@ fun AccountScreen() {
                     AccountDetails(
                         state = state,
                         user = state.user!!,
-                        onStartEdit = screenModel::startEditing,
-                        onSave = screenModel::saveField,
-                        onCancel = screenModel::cancelEditing,
-                        onChangePasswordRequest = { screenModel.showPasswordDialog(true) },
-                        onLogout = { screenModel.logout() },
+                        onStartEdit = viewModel::startEditing,
+                        onSave = viewModel::saveField,
+                        onCancel = viewModel::cancelEditing,
+                        onChangePasswordRequest = { viewModel.showPasswordDialog(true) },
+                        onLogout = { viewModel.logout() },
                     )
             }
         }
@@ -130,8 +130,8 @@ fun AccountScreen() {
         ChangePasswordDialog(
             isLoading = state.isUpdating,
             error = state.updateError,
-            onConfirm = { old, new -> screenModel.changePassword(old, new) },
-            onDismiss = { screenModel.showPasswordDialog(false) },
+            onConfirm = { old, new -> viewModel.changePassword(old, new) },
+            onDismiss = { viewModel.showPasswordDialog(false) },
         )
     }
 }

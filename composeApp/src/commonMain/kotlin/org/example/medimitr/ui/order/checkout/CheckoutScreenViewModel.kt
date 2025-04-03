@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.UserRepository
 import org.example.medimitr.domain.cart.CartRepository
 import org.example.medimitr.domain.order.OrderRepository
-import org.example.medimitr.presentation.base.BaseScreenModel
+import org.example.medimitr.presentation.base.BaseViewModel
 import org.example.medimitr.ui.order.cart.PriceDetails
 
 data class CheckoutUiState(
@@ -22,19 +22,22 @@ data class CheckoutUiState(
     val placeOrderError: String? = null,
 )
 
-class CheckoutScreenModel(
+class CheckoutScreenViewModel(
     private val cartRepository: CartRepository,
     private val userRepository: UserRepository,
     private val orderRepository: OrderRepository,
-    passedPriceDetails: PriceDetails, // Receive PriceDetails during creation
-) : BaseScreenModel() {
+) : BaseViewModel() {
     // Use mutableStateOf for simpler single-value states if preferred over full StateFlow emission
     // Or keep using StateFlow as below
-    private val _uiState = MutableStateFlow(CheckoutUiState(priceDetails = passedPriceDetails))
+    private val _uiState = MutableStateFlow(CheckoutUiState(priceDetails = PriceDetails()))
     val uiState = _uiState.asStateFlow()
 
     init {
         loadUserDefaultAddress()
+    }
+
+    fun start(priceDetails: PriceDetails) {
+        _uiState.update { it.copy(priceDetails = priceDetails) }
     }
 
     private fun loadUserDefaultAddress() {

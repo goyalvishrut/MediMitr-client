@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.example.medimitr.domain.auth.User
 import org.example.medimitr.domain.auth.UserRepository
-import org.example.medimitr.presentation.base.BaseScreenModel
+import org.example.medimitr.presentation.base.BaseViewModel
 
 // Enum to track which field is being edited inline
 enum class EditingField { NONE, EMAIL, ADDRESS, PHONE }
@@ -27,9 +27,9 @@ data class AccountUiState(
     val isLoggingOut: Boolean = false,
 )
 
-class AccountScreenModel(
+class AccountSettingViewModel(
     private val userRepository: UserRepository,
-) : BaseScreenModel() {
+) : BaseViewModel() {
     private val _uiState = MutableStateFlow(AccountUiState())
     val uiState = _uiState.asStateFlow()
 

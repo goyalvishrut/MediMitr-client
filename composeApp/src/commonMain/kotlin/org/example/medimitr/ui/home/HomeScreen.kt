@@ -75,6 +75,7 @@ import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.domain.marketing.Category
 import org.example.medimitr.domain.marketing.Promotion
 import org.example.medimitr.domain.medicine.Medicine
+import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.parameter.parametersOf
 import org.koin.mp.KoinPlatform.getKoin
 
@@ -86,8 +87,9 @@ fun HomeScreen(
     onSearchClick: () -> Unit,
     onMedicineClick: (String) -> Unit,
 ) {
-    val screenModel = remember { getKoin().get<HomeScreenModel>() }
-    val state by screenModel.uiState.collectAsState()
+    val viewModel = koinViewModel<HomeScreenViewModel>()
+
+    val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     val citySheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
@@ -95,7 +97,7 @@ fun HomeScreen(
     LaunchedEffect(state.error) {
         if (state.error != null) {
             snackbarHostState.showSnackbar(state.error!!, duration = SnackbarDuration.Short)
-            screenModel.clearError()
+            viewModel.clearError()
         }
     }
 
@@ -105,7 +107,7 @@ fun HomeScreen(
             HomeTopAppBar(
                 selectedCity = state.selectedCity,
                 cartItemCount = state.cartItems.size,
-                onCityClick = { screenModel.toggleCitySelection(true) },
+                onCityClick = { viewModel.toggleCitySelection(true) },
                 onCartClick = { onCartClick() },
             )
         },
@@ -121,8 +123,8 @@ fun HomeScreen(
                     onMedicineClick = { medicineId ->
                         onMedicineClick.invoke(medicineId)
                     },
-                    onAddToCart = screenModel::onAddToCart,
-                    onUpdateQuantity = screenModel::onUpdateQuantity,
+                    onAddToCart = viewModel::onAddToCart,
+                    onUpdateQuantity = viewModel::onUpdateQuantity,
                 )
             }
         }
@@ -131,13 +133,13 @@ fun HomeScreen(
     // --- City Selection Bottom Sheet ---
     if (state.showCitySelection) {
         ModalBottomSheet(
-            onDismissRequest = { screenModel.toggleCitySelection(false) },
+            onDismissRequest = { viewModel.toggleCitySelection(false) },
             sheetState = citySheetState,
         ) {
             CitySelectionBottomSheetContent(
                 cities = state.availableCities,
                 selectedCity = state.selectedCity,
-                onCitySelected = screenModel::selectCity,
+                onCitySelected = viewModel::selectCity,
             )
         }
     }
@@ -145,14 +147,14 @@ fun HomeScreen(
     // --- Remove Item Confirmation Dialog ---
     if (state.showRemoveConfirmation && state.itemPendingRemoval != null) {
         AlertDialog(
-            onDismissRequest = screenModel::cancelRemoveItem,
+            onDismissRequest = viewModel::cancelRemoveItem,
             title = { Text("Remove Item?") },
             text = { Text("Do you want to remove ${state.itemPendingRemoval?.name} from your cart?") },
             confirmButton = {
-                Button(onClick = screenModel::confirmRemoveItem) { Text("Remove") }
+                Button(onClick = viewModel::confirmRemoveItem) { Text("Remove") }
             },
             dismissButton = {
-                TextButton(onClick = screenModel::cancelRemoveItem) { Text("Cancel") }
+                TextButton(onClick = viewModel::cancelRemoveItem) { Text("Cancel") }
             },
         )
     }

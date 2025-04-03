@@ -52,11 +52,9 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import org.example.medimitr.common.formatToTwoDecimal
 import org.example.medimitr.ui.components.MediMitrTopAppBar
-import org.example.medimitr.ui.components.MediMitrTopAppBar
 import org.example.medimitr.ui.order.cart.PriceDetailRow
 import org.example.medimitr.ui.order.cart.PriceDetails
-import org.koin.core.parameter.parametersOf
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.compose.viewmodel.koinViewModel
 
 // ui/screen/CheckoutScreen.kt
 @OptIn(ExperimentalMaterial3Api::class)
@@ -66,27 +64,12 @@ fun CheckoutScreen(
     onBack: () -> Unit,
     onOrderPlaced: (String) -> Unit,
 ) {
-    // Manually create ScreenModel instance passing parameters via Koin
-    // Requires Koin setup to handle CheckoutScreenModel creation potentially with parameters
-    // Alternative: Use rememberScreenModel with parameters if Voyager Koin integration supports it well.
-    // Let's try direct Koin get with parameters:
-    val screenModel: CheckoutScreenModel =
-        remember(priceDetails) {
-            // Recreate if priceDetails change
-            getKoin().get { parametersOf(priceDetails) } // Pass priceDetails as Koin parameter
-            // Ensure Koin module defines how to create CheckoutScreenModel with PriceDetails
-            // e.g., factory { params -> CheckoutScreenModel(get(), get(), get(), params.get()) }
-        }
-    // Or simpler manual instantiation if Koin setup is complex:
-    // val userRepo: UserRepository = koinInject()
-    // val orderRepo: OrderRepository = koinInject()
-    // val cartRepo: CartRepository = koinInject()
-    // val screenModel = remember(priceDetails) {
-    //     CheckoutScreenModel(userRepo, orderRepo, cartRepo, priceDetails)
-    // }
+    val viewModel = koinViewModel<CheckoutScreenViewModel>()
 
-    val state by screenModel.uiState.collectAsState()
+    val state by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    viewModel.start(priceDetails)
 
     // Show placing order errors
     LaunchedEffect(state.placeOrderError) {
@@ -95,7 +78,7 @@ fun CheckoutScreen(
                 message = state.placeOrderError!!,
                 duration = SnackbarDuration.Short,
             )
-            screenModel.clearPlaceOrderError() // Clear error after showing
+            viewModel.clearPlaceOrderError() // Clear error after showing
         }
     }
 
@@ -115,7 +98,7 @@ fun CheckoutScreen(
                 totalAmount = state.priceDetails.total,
                 isLoading = state.isPlacingOrder,
                 enabled = state.deliveryAddress.isNotBlank() && !state.isLoadingAddress,
-                onPlaceOrder = { screenModel.onPlaceOrder(onOrderPlaced) },
+                onPlaceOrder = { viewModel.onPlaceOrder(onOrderPlaced) },
             )
         },
     ) { paddingValues ->
@@ -134,9 +117,9 @@ fun CheckoutScreen(
                 address = state.deliveryAddress,
                 isEditing = state.isEditingAddress,
                 error = state.addressError,
-                onEditToggle = { screenModel.startEditingAddress() },
-                onSave = { newAddress -> screenModel.updateSelectedAddress(newAddress) }, // Just updates state
-                onCancel = { screenModel.cancelEditingAddress() },
+                onEditToggle = { viewModel.startEditingAddress() },
+                onSave = { newAddress -> viewModel.updateSelectedAddress(newAddress) }, // Just updates state
+                onCancel = { viewModel.cancelEditingAddress() },
             )
             Divider(modifier = Modifier.padding(vertical = 8.dp))
 
